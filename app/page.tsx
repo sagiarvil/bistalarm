@@ -11,6 +11,7 @@ import NextGenArcadeHubModal from '@/components/NextGenArcadeHubModal';
 import MonteCarloGrandCasinoModal from '@/components/MonteCarloGrandCasinoModal';
 import GameTacticsGuideModal from '@/components/GameTacticsGuideModal';
 import AuthModal from '@/components/AuthModal';
+import LiveTickerTape from '@/components/LiveTickerTape';
 import { AuthStore, AuthUser } from '@/lib/authStore';
 import Decimal from 'decimal.js';
 import Link from 'next/link';
@@ -438,23 +439,29 @@ export default function Home() {
           onOpenAuth={() => setIsAuthModalOpen(true)}
         />
       ) : (
-        <div className="w-full h-[calc(100vh-37px)]">
-          <ProFXTerminal
-            account={account}
-            currentPrices={prices}
-            onPlaceOrder={handlePlaceOrder}
-            onCloseFull={handleCloseFull}
-            onClosePartial={handleClosePartial}
-            onUpdateSLTP={handleUpdateSLTP}
-            onDeposit={handleDeposit}
-            onChangeLeverage={handleChangeLeverage}
-            onOpenModal={(m) => setActiveModal(m)}
-            onOpenNextGenHub={() => setIsNextGenOpen(true)}
-            onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
-            onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
-            onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
-            onBackToPortal={() => setMainView('portal')}
+        <div className="w-full h-[calc(100vh-37px)] flex flex-col overflow-hidden">
+          <LiveTickerTape 
+            currentPrices={prices} 
+            onSelectSymbol={(sym) => setSelectedSymbolFromPortal(sym)} 
           />
+          <div className="flex-1 overflow-hidden">
+            <ProFXTerminal
+              account={account}
+              currentPrices={prices}
+              onPlaceOrder={handlePlaceOrder}
+              onCloseFull={handleCloseFull}
+              onClosePartial={handleClosePartial}
+              onUpdateSLTP={handleUpdateSLTP}
+              onDeposit={handleDeposit}
+              onChangeLeverage={handleChangeLeverage}
+              onOpenModal={(m) => setActiveModal(m)}
+              onOpenNextGenHub={() => setIsNextGenOpen(true)}
+              onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
+              onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
+              onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
+              onBackToPortal={() => setMainView('portal')}
+            />
+          </div>
         </div>
       )}
 

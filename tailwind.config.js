@@ -20,6 +20,15 @@ module.exports = {
           dark: "#0b0e14",
           highlight: "#1e293b",
         }
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translate3d(0, 0, 0)' },
+          '100%': { transform: 'translate3d(-50%, 0, 0)' }
+        }
+      },
+      animation: {
+        marquee: 'marquee 30s linear infinite',
       }
     },
   },

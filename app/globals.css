@@ -71,3 +71,82 @@ body {
 .flash-red {
   animation: tick-red 0.8s ease-out;
 }
+
+/* ========================================================================= */
+/* KESİNTİSİZ 60FPS CANLI PİYASA KAYAN BANTI (SEAMLESS GPU DUAL-MARQUEE) */
+/* HER CİHAZDA (IOS, ANDROID, MAC, PC) ENGELLENMEDEN SÜREKLİ AKAR */
+/* ========================================================================= */
+@keyframes ticker-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes ticker-marquee-legacy {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.ticker-track {
+  display: flex !important;
+  width: max-content !important;
+  overflow: hidden !important;
+  user-select: none !important;
+}
+
+.ticker-marquee {
+  display: flex !important;
+  flex-shrink: 0 !important;
+  align-items: center !important;
+  min-width: 100% !important;
+  gap: 2rem !important;
+  animation: ticker-scroll 26s linear infinite !important;
+  will-change: transform !important;
+  -webkit-transform: translateZ(0) !important;
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+.animate-marquee {
+  display: flex !important;
+  width: max-content !important;
+  animation: ticker-marquee-legacy 28s linear infinite !important;
+  will-change: transform !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+/* Dokunmatik veya fare ile üzerine gelindiğinde duraklatma */
+.ticker-track:hover .ticker-marquee,
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Mobil Cihazlarda Akıcı Hız Ayarı */
+@media (max-width: 768px) {
+  .ticker-marquee {
+    animation-duration: 20s !important;
+    gap: 1.25rem !important;
+  }
+  .animate-marquee {
+    animation-duration: 20s !important;
+  }
+}
+
+/* Cihaz Erişilebilirlik ve Pil Kısıtlamalarını Kesin Olarak Bypass Etme */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-marquee {
+    animation: ticker-scroll 26s linear infinite !important;
+  }
+  .animate-marquee {
+    animation: ticker-marquee-legacy 28s linear infinite !important;
+  }
+}

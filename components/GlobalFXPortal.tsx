@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { UserAccount, SYMBOL_SPECS } from '@/lib/tradingEngine';
 import { AuthUser } from '@/lib/authStore';
+import LiveTickerTape from './LiveTickerTape';
 
 interface GlobalFXPortalProps {
   account: UserAccount;
@@ -140,27 +141,12 @@ export default function GlobalFXPortal({
       </nav>
 
       {/* ========================================================================= */}
-      {/* 2. CANLI PARİTE KAYAN BANTI (LIVE TICKER MARQUEE) */}
+      {/* 2. CANLI PARİTE KAYAN BANTI (LIVE TICKER DUAL-MARQUEE - HER CİHAZDA ÇALIŞIR) */}
       {/* ========================================================================= */}
-      <div className="bg-[#0a0d14] border-b border-[#182030] py-2 overflow-hidden select-none">
-        <div className="flex items-center gap-8 whitespace-nowrap animate-marquee font-mono text-xs">
-          {marqueeSymbols.concat(marqueeSymbols).map((sym, idx) => {
-            const sp = SYMBOL_SPECS[sym] || { basePrice: 100, digits: 2, spread: 0.1 };
-            const p = currentPrices[sym] || { bid: sp.basePrice, ask: sp.basePrice + sp.spread };
-            return (
-              <div 
-                key={idx} 
-                onClick={() => onOpenTerminal(sym)}
-                className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition"
-              >
-                <span className="font-bold text-gray-200">{sym}</span>
-                <span className="text-blue-400 font-semibold">{p.bid.toFixed(sp.digits)}</span>
-                <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-1 rounded">+0.48%</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <LiveTickerTape 
+        currentPrices={currentPrices} 
+        onSelectSymbol={(sym) => onOpenTerminal(sym)} 
+      />
 
       {/* ========================================================================= */}
       {/* 3. HERO SECTION (DÜNYA STANDARDI BAŞLIK VE ÇAĞRI) */}
