@@ -539,7 +539,7 @@ export default function MonteCarloGrandCasinoModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-md p-2 sm:p-3 overflow-y-auto animate-fadeIn select-none">
       
       {/* Monte Carlo Salle Garnier Ana Muhafaza Kutusu - Ekrana Tam Dinamik Uyum */}
-      <div className={`relative w-full max-w-5xl max-h-[94vh] bg-gradient-to-b from-[#1b1008] via-[#0d1e12] to-[#051109] border-4 border-[#d4af37] rounded-2xl sm:rounded-3xl shadow-[0_0_80px_rgba(212,175,55,0.4)] overflow-hidden flex flex-col my-auto text-white transition-transform duration-200 ${
+      <div className={`relative w-full max-w-5xl h-[96vh] sm:h-[92vh] max-h-[880px] bg-gradient-to-b from-[#1b1008] via-[#0d1e12] to-[#051109] border-2 sm:border-4 border-[#d4af37] rounded-xl sm:rounded-2xl shadow-[0_0_80px_rgba(212,175,55,0.4)] overflow-hidden flex flex-col my-auto text-white transition-transform duration-200 ${
         screenShake ? 'scale-[1.01] translate-y-[-2px] ring-4 ring-yellow-400' : ''
       }`}>
         
@@ -571,7 +571,7 @@ export default function MonteCarloGrandCasinoModal({
 
             {/* Zafer Kartı */}
             <div className="relative bg-gradient-to-b from-[#3a1b07] via-[#5c2b0c] to-[#200c02] border-4 border-[#ffd700] rounded-3xl p-6 sm:p-10 text-center shadow-[0_0_90px_rgba(255,215,0,0.8)] max-w-lg mx-4 transform scale-105 transition-all">
-              <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-amber-400 via-yellow-200 to-amber-600 border-4 border-white shadow-[0_0_30px_rgba(255,215,0,1)] flex items-center justify-center text-4xl mb-3 animate-pulse">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-gradient-to-tr from-amber-400 via-yellow-200 to-amber-600 border-4 border-white shadow-[0_0_30px_rgba(255,215,0,1)] flex items-center justify-center text-3xl sm:text-4xl mb-2 sm:mb-3 animate-pulse">
                 🏆
               </div>
 
@@ -579,64 +579,64 @@ export default function MonteCarloGrandCasinoModal({
                 ⚜️ SALLE GARNIER HIGH ROLLER ⚜️
               </span>
 
-              <h2 className="text-2xl sm:text-4xl font-black font-serif text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 tracking-wider my-2 drop-shadow-[0_2px_12px_rgba(255,215,0,0.5)]">
+              <h2 className="text-xl sm:text-3xl font-black font-serif text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 tracking-wider my-1 sm:my-2 drop-shadow-[0_2px_12px_rgba(255,215,0,0.5)]">
                 {grandWinBanner.title}
               </h2>
 
-              <div className="my-4 py-3 px-6 bg-black/60 rounded-2xl border-2 border-yellow-400/80 inline-block shadow-inner">
-                <span className="text-3xl sm:text-5xl font-black font-mono text-emerald-400 tracking-tight drop-shadow-[0_0_20px_rgba(52,211,153,0.8)]">
+              <div className="my-2 sm:my-3 py-2 px-5 bg-black/60 rounded-2xl border-2 border-yellow-400/80 inline-block shadow-inner">
+                <span className="text-2xl sm:text-4xl font-black font-mono text-emerald-400 tracking-tight drop-shadow-[0_0_20px_rgba(52,211,153,0.8)]">
                   +${grandWinBanner.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </div>
 
-              <p className="text-xs sm:text-sm text-amber-200/90 font-serif italic mt-1">
+              <p className="text-[11px] sm:text-xs text-amber-200/90 font-serif italic">
                 Monaco Kraliyet Kasasından Bakiyenize Anında Aktarıldı!
               </p>
             </div>
           </div>
         )}
 
-        {/* Lüks Maun Ağacı ve Altın Barok Başlık */}
-        <div className="relative bg-gradient-to-r from-[#2a1408] via-[#4a240c] to-[#2a1408] border-b-2 border-[#d4af37] p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 shrink-0">
-          <div className="flex items-center gap-3">
+        {/* Lüks Maun Ağacı ve Altın Barok Başlık (Kompakt Tek Ekran) */}
+        <div className="relative bg-gradient-to-r from-[#2a1408] via-[#4a240c] to-[#2a1408] border-b border-[#d4af37] py-1.5 px-3 sm:px-4 flex items-center justify-between gap-2 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={onClose}
-              className="px-3 py-1.5 bg-[#3d1a0b] hover:bg-[#5a250e] border border-[#d4af37] text-yellow-300 hover:text-white rounded-xl text-xs font-bold font-serif transition flex items-center gap-1.5 shadow"
+              className="px-2.5 py-1 bg-[#3d1a0b] hover:bg-[#5a250e] border border-[#d4af37] text-yellow-300 hover:text-white rounded-lg text-xs font-bold font-serif transition flex items-center gap-1 shadow"
               title="Salondan Çıkış Yap"
             >
               <span>←</span>
               <span>Geri Dön</span>
             </button>
 
-            <div className="w-10 h-10 rounded-full border-2 border-[#d4af37] bg-gradient-to-tr from-amber-700 to-yellow-300 flex items-center justify-center shadow-lg">
-              <span className="text-xl">⚜️</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#d4af37] bg-gradient-to-tr from-amber-700 to-yellow-300 flex items-center justify-center shadow">
+              <span className="text-sm sm:text-base">⚜️</span>
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-base sm:text-xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 font-serif">
+              <div className="flex items-center gap-1.5">
+                <h1 className="text-xs sm:text-base font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 font-serif">
                   CASINO DE MONTE-CARLO
                 </h1>
-                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 text-yellow-300 border border-yellow-400/50 uppercase tracking-widest font-mono hidden sm:inline">
+                <span className="text-[8px] font-bold px-1.5 py-0.2 rounded-full bg-amber-500/20 text-yellow-300 border border-yellow-400/50 uppercase tracking-widest font-mono hidden sm:inline">
                   Monaco
                 </span>
               </div>
-              <p className="text-[11px] text-amber-200/80 font-serif italic hidden sm:block">
+              <p className="text-[9px] sm:text-[10px] text-amber-200/80 font-serif italic hidden md:block">
                 Salle Médecin & Salle Garnier VIP • Hautes Mises
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="bg-[#062414] border-2 border-[#d4af37]/60 px-3 py-1.5 rounded-xl text-right font-mono shadow-inner">
-              <span className="text-[9px] text-amber-300/80 block uppercase tracking-wider">Crédit VIP</span>
-              <span className="text-sm sm:text-base font-black text-emerald-300">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="bg-[#062414] border border-[#d4af37]/60 px-2.5 py-1 rounded-lg text-right font-mono shadow-inner">
+              <span className="text-[8px] text-amber-300/80 block uppercase tracking-wider leading-none">Crédit VIP</span>
+              <span className="text-xs sm:text-sm font-black text-emerald-300 leading-tight">
                 ${userBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
 
             <button 
               onClick={onClose}
-              className="w-8 h-8 rounded-full bg-[#3d1a0b] hover:bg-rose-900 border border-[#d4af37] text-amber-200 flex items-center justify-center font-bold text-sm transition shadow"
+              className="w-7 h-7 rounded-full bg-[#3d1a0b] hover:bg-rose-900 border border-[#d4af37] text-amber-200 flex items-center justify-center font-bold text-xs transition shadow"
             >
               ✕
             </button>
@@ -644,7 +644,7 @@ export default function MonteCarloGrandCasinoModal({
         </div>
 
         {/* Canlı VIP Salon Akışı */}
-        <div className="bg-gradient-to-r from-[#140b05] via-[#241306] to-[#140b05] border-b border-[#d4af37]/30 px-3 py-1 flex items-center justify-between text-[10px] font-mono shrink-0">
+        <div className="bg-gradient-to-r from-[#140b05] via-[#241306] to-[#140b05] border-b border-[#d4af37]/30 px-3 py-0.5 flex items-center justify-between text-[9px] sm:text-[10px] font-mono shrink-0">
           <div className="flex items-center gap-2 overflow-hidden">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping shrink-0" />
             <span className="text-yellow-400 font-bold uppercase shrink-0 font-serif">
@@ -663,10 +663,10 @@ export default function MonteCarloGrandCasinoModal({
         </div>
 
         {/* Oyun Seçim Menüsü - KAYDIRMASIZ TEK EKRAN GRİD (6'LI DİNAMİK BUTONLAR) */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-b border-[#d4af37]/40 bg-[#071b10] p-1.5 gap-1.5 text-xs font-serif shrink-0">
+        <div className="grid grid-cols-3 sm:grid-cols-6 border-b border-[#d4af37]/40 bg-[#071b10] p-1 gap-1 text-[11px] sm:text-xs font-serif shrink-0">
           <button
             onClick={() => setActiveTab('ROULETTE')}
-            className={`px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-center tracking-wide ${
+            className={`px-1.5 py-1.5 rounded-lg font-bold transition flex items-center justify-center gap-1 text-center tracking-wide ${
               activeTab === 'ROULETTE'
                 ? 'bg-gradient-to-t from-[#0e3b22] to-[#165a34] text-yellow-300 border border-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.3)]'
                 : 'text-gray-400 hover:text-amber-200 bg-[#05140b]'
@@ -677,7 +677,7 @@ export default function MonteCarloGrandCasinoModal({
 
           <button
             onClick={() => setActiveTab('BLACKJACK')}
-            className={`px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-center tracking-wide ${
+            className={`px-1.5 py-1.5 rounded-lg font-bold transition flex items-center justify-center gap-1 text-center tracking-wide ${
               activeTab === 'BLACKJACK'
                 ? 'bg-gradient-to-t from-[#0e3b22] to-[#165a34] text-yellow-300 border border-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.3)]'
                 : 'text-gray-400 hover:text-amber-200 bg-[#05140b]'
@@ -688,7 +688,7 @@ export default function MonteCarloGrandCasinoModal({
 
           <button
             onClick={() => setActiveTab('BACCARAT')}
-            className={`px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-center tracking-wide ${
+            className={`px-1.5 py-1.5 rounded-lg font-bold transition flex items-center justify-center gap-1 text-center tracking-wide ${
               activeTab === 'BACCARAT'
                 ? 'bg-gradient-to-t from-[#0e3b22] to-[#165a34] text-yellow-300 border border-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.3)]'
                 : 'text-gray-400 hover:text-amber-200 bg-[#05140b]'
@@ -700,16 +700,16 @@ export default function MonteCarloGrandCasinoModal({
           {onOpenTacticsGuide && (
             <button
               onClick={() => { onClose(); onOpenTacticsGuide(); }}
-              className="px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1 text-yellow-300 hover:text-yellow-100 hover:bg-yellow-500/20 border border-yellow-500/40 bg-yellow-950/40 text-center"
+              className="px-1.5 py-1.5 rounded-lg font-bold transition flex items-center justify-center gap-1 text-yellow-300 hover:text-yellow-100 hover:bg-yellow-500/20 border border-yellow-500/40 bg-yellow-950/40 text-center"
             >
-              <span>⚡</span> Taktik Manifestosu
+              <span>⚡</span> Taktik
             </button>
           )}
 
           {onOpenSlots && (
             <button
               onClick={() => { onClose(); onOpenSlots(); }}
-              className="px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1 text-amber-400 hover:text-amber-200 hover:bg-amber-500/10 border border-amber-500/30 bg-[#05140b] text-center"
+              className="px-1.5 py-1.5 rounded-lg font-bold transition flex items-center justify-center gap-1 text-amber-400 hover:text-amber-200 hover:bg-amber-500/10 border border-amber-500/30 bg-[#05140b] text-center"
             >
               <span>🍓</span> Vegas Slots
             </button>
@@ -718,12 +718,13 @@ export default function MonteCarloGrandCasinoModal({
           {onOpenArcade && (
             <button
               onClick={() => { onClose(); onOpenArcade(); }}
-              className="px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1 text-cyan-400 hover:text-cyan-200 hover:bg-cyan-500/10 border border-cyan-500/30 bg-[#05140b] text-center"
+              className="px-1.5 py-1.5 rounded-lg font-bold transition flex items-center justify-center gap-1 text-cyan-400 hover:text-cyan-200 hover:bg-cyan-500/10 border border-cyan-500/30 bg-[#05140b] text-center"
             >
               <span>🎮</span> Nova Arcade
             </button>
           )}
         </div>
+
 
         {/* İÇ OYUN ALANI - DİKEYDE SERBEST KAYDIRILABİLİR (FLEX-1 OVERFLOW-Y-AUTO) */}
         <div className="flex-1 overflow-y-auto">
@@ -732,131 +733,129 @@ export default function MonteCarloGrandCasinoModal({
         {/* 1. SEKME: MONTE CARLO AVRUPA RULETİ (CANVAS ÇARK & FİLDİŞİ TOP) */}
         {/* ================================================================== */}
         {activeTab === 'ROULETTE' && (
-          <div className="p-4 sm:p-6 space-y-5 bg-[#051c0f]">
+          <div className="p-2 sm:p-3 space-y-2 bg-[#051c0f]">
             
             {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
-            <div className="bg-gradient-to-r from-yellow-950/60 via-amber-950/40 to-yellow-950/60 border border-[#d4af37]/40 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-serif">
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded bg-yellow-500 text-black font-black text-[10px] uppercase font-mono">1. ADIM</span>
-                <span className="text-gray-300 font-bold">Fiş Değerini Seç ($25 - $1000)</span>
+            <div className="bg-gradient-to-r from-yellow-950/60 via-amber-950/40 to-yellow-950/60 border border-[#d4af37]/40 rounded-lg p-1.5 px-2.5 flex items-center justify-between gap-2 text-[11px] font-serif">
+              <div className="flex items-center gap-1.5">
+                <span className="px-1.5 py-0.2 rounded bg-yellow-500 text-black font-black text-[9px] uppercase font-mono">1. ADIM</span>
+                <span className="text-gray-300 font-bold truncate">Fiş Seç ($5 - $1000)</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded bg-emerald-500 text-black font-black text-[10px] uppercase font-mono animate-pulse">2. ADIM</span>
-                <span className="text-emerald-300 font-bold">Numaraya / Renge Tıkla & ÇEVİR!</span>
+              <div className="flex items-center gap-1.5">
+                <span className="px-1.5 py-0.2 rounded bg-emerald-500 text-black font-black text-[9px] uppercase font-mono animate-pulse">2. ADIM</span>
+                <span className="text-emerald-300 font-bold truncate">Numaraya / Renge Tıkla & ÇEVİR!</span>
               </div>
-              <span className="text-yellow-300 font-bold bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/30">
-                🔥 Sıcak Sayılar: 17 Siyah (36x), 7 Kırmızı, 0 Yeşil
+              <span className="text-yellow-300 font-bold bg-yellow-500/10 px-2 py-0.2 rounded border border-yellow-500/30 text-[10px] hidden md:inline">
+                🔥 Sıcak: 17 Siyah (36x), 7 Kırmızı, 0 Yeşil
               </span>
             </div>
 
-            {/* Canlı Çark ve Krupiye Sahnesi */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center bg-[#072415] border-2 border-[#d4af37]/40 rounded-2xl p-4 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)]">
+            {/* Canlı Çark ve Krupiye Sahnesi (Kompakt 3 Sütun) */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3 items-center bg-[#072415] border border-[#d4af37]/40 rounded-xl p-2 sm:p-2.5 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
               
               {/* Sol: 60FPS Fiziksel Rulet Çarkı */}
-              <div className="lg:col-span-4 flex flex-col items-center justify-center">
+              <div className="md:col-span-3 flex flex-col items-center justify-center">
                 <canvas 
                   ref={canvasRef} 
-                  width={220} 
-                  height={220} 
-                  className="rounded-full shadow-[0_0_25px_rgba(212,175,55,0.4)] border-2 border-[#d4af37]"
+                  width={150} 
+                  height={150} 
+                  className="rounded-full shadow-[0_0_15px_rgba(212,175,55,0.4)] border border-[#d4af37]"
                 />
               </div>
 
               {/* Orta: Krupiye Anonsu & Kazanan Numara */}
-              <div className="lg:col-span-4 text-center space-y-3">
-                <div className="inline-block px-4 py-1.5 rounded-full bg-black/60 border border-[#d4af37]/40 text-xs font-serif text-yellow-300 tracking-wider">
+              <div className="md:col-span-5 text-center space-y-1.5">
+                <div className="inline-block px-3 py-1 rounded-full bg-black/60 border border-[#d4af37]/40 text-[11px] font-serif text-yellow-300 tracking-wider">
                   🗣️ {krupiyeCallout}
                 </div>
 
-                <div className="flex items-center justify-center pt-1">
+                <div className="flex items-center justify-center">
                   {rouletteLastResult ? (
-                    <div className={`w-20 h-20 rounded-2xl flex flex-col items-center justify-center text-3xl font-black border-2 shadow-2xl animate-bounce ${
+                    <div className={`w-14 h-14 rounded-xl flex flex-col items-center justify-center text-2xl font-black border shadow-xl animate-bounce ${
                       rouletteLastResult.color === 'green'
                         ? 'bg-emerald-700 border-emerald-400 text-white shadow-emerald-500/50'
                         : rouletteLastResult.color === 'red'
                         ? 'bg-rose-700 border-rose-400 text-white shadow-rose-500/50'
                         : 'bg-zinc-950 border-zinc-600 text-white shadow-zinc-500/50'
                     }`}>
-                      <span>{rouletteLastResult.winningNumber}</span>
-                      <span className="text-[10px] uppercase font-mono tracking-wider">{rouletteLastResult.color}</span>
+                      <span className="leading-none">{rouletteLastResult.winningNumber}</span>
+                      <span className="text-[8px] uppercase font-mono tracking-wider">{rouletteLastResult.color}</span>
                     </div>
                   ) : (
-                    <div className="w-20 h-20 rounded-2xl bg-[#03140a] border border-[#d4af37]/30 flex items-center justify-center text-amber-400/50 text-3xl font-serif">
+                    <div className="w-14 h-14 rounded-xl bg-[#03140a] border border-[#d4af37]/30 flex items-center justify-center text-amber-400/50 text-2xl font-serif">
                       ⚜️
                     </div>
                   )}
                 </div>
 
                 {rouletteLastResult && (
-                  <div className={`text-sm font-bold font-mono ${rouletteLastResult.netWin > 0 ? 'text-emerald-400' : 'text-gray-400'}`}>
+                  <div className={`text-xs font-bold font-mono ${rouletteLastResult.netWin > 0 ? 'text-emerald-400' : 'text-gray-400'}`}>
                     {rouletteLastResult.netWin > 0 
-                      ? `🎉 KAZANDINIZ: +$${rouletteLastResult.totalPayout.toFixed(2)}` 
-                      : 'La Banque prend tout (Kasa kazandı).'}
+                      ? `🎉 +$${rouletteLastResult.totalPayout.toFixed(2)}` 
+                      : 'Kasa kazandı.'}
                   </div>
                 )}
 
                 {/* Son Çıkan Numaralar */}
-                <div>
-                  <span className="text-[10px] text-gray-400 block mb-1 font-mono uppercase tracking-wider">Derniers Numéros:</span>
-                  <div className="flex items-center justify-center gap-1.5 flex-wrap">
-                    {recentRouletteNumbers.map((num, i) => (
-                      <span 
-                        key={i}
-                        className={`w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-mono font-bold ${
-                          num === 0 ? 'bg-emerald-600 text-white' : RED_NUMBERS.includes(num) ? 'bg-rose-600 text-white' : 'bg-zinc-900 text-white border border-zinc-700'
-                        }`}
-                      >
-                        {num}
-                      </span>
-                    ))}
-                  </div>
+                <div className="flex items-center justify-center gap-1 flex-wrap">
+                  <span className="text-[9px] text-gray-400 font-mono uppercase mr-1">Son:</span>
+                  {recentRouletteNumbers.slice(0, 7).map((num, i) => (
+                    <span 
+                      key={i} 
+                      className={`w-5 h-5 rounded flex items-center justify-center text-[9px] font-mono font-bold ${
+                        num === 0 ? 'bg-emerald-600 text-white' : RED_NUMBERS.includes(num) ? 'bg-rose-600 text-white' : 'bg-zinc-900 text-white border border-zinc-700'
+                      }`}
+                    >
+                      {num}
+                    </span>
+                  ))}
                 </div>
               </div>
 
               {/* Sağ: Bahis Özeti & Çevir Butonu */}
-              <div className="lg:col-span-4 flex flex-col justify-center gap-3 bg-[#03140a] p-4 rounded-xl border border-[#d4af37]/30">
-                <div className="flex justify-between text-xs font-mono">
+              <div className="md:col-span-4 flex flex-col justify-center gap-1.5 bg-[#03140a] p-2.5 rounded-lg border border-[#d4af37]/30">
+                <div className="flex justify-between text-[11px] font-mono">
                   <span className="text-gray-400">Toplam Bahis:</span>
                   <span className="font-bold text-yellow-300">
                     ${rouletteBets.reduce((a, b) => a + b.amount, 0)}
                   </span>
                 </div>
-                <div className="flex justify-between text-xs font-mono">
-                  <span className="text-gray-400">Aktif Pozisyon:</span>
+                <div className="flex justify-between text-[11px] font-mono">
+                  <span className="text-gray-400">Pozisyon:</span>
                   <span className="text-gray-200">{rouletteBets.length} Bahis</span>
                 </div>
 
-                <div className="flex gap-2 pt-2">
+                <div className="flex gap-1.5 pt-1">
                   <button
                     onClick={clearRouletteBets}
                     disabled={isSpinningRoulette || rouletteBets.length === 0}
-                    className="flex-1 py-3 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 text-xs font-bold text-gray-300 disabled:opacity-40"
+                    className="flex-1 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 text-[11px] font-bold text-gray-300 disabled:opacity-40"
                   >
-                    Effacer (Temizle)
+                    Temizle
                   </button>
                   <button
                     onClick={handleSpinRoulette}
                     disabled={isSpinningRoulette || rouletteBets.length === 0}
-                    className="flex-2 py-3 px-6 rounded-lg bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-600 hover:from-yellow-400 hover:to-amber-400 text-black font-black text-sm uppercase tracking-wider shadow-[0_0_20px_rgba(212,175,55,0.4)] disabled:opacity-40 font-serif"
+                    className="flex-2 py-1.5 px-3 rounded-lg bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-600 hover:from-yellow-400 hover:to-amber-400 text-black font-black text-xs uppercase tracking-wider shadow-md shadow-amber-500/40 disabled:opacity-40 font-serif"
                   >
-                    {isSpinningRoulette ? 'TOURNER...' : 'TOURNER LA ROUE'}
+                    {isSpinningRoulette ? 'ÇEVRİLİYOR...' : 'ÇEVİR (SPIN)'}
                   </button>
                 </div>
               </div>
 
             </div>
 
-            {/* Ağır Kil Fişler (Monaco Heavy Clay Chips) */}
-            <div className="flex items-center justify-center gap-3 flex-wrap bg-[#051a0f] p-3 rounded-xl border border-[#d4af37]/30">
-              <span className="text-xs font-serif text-yellow-300 tracking-wider">JETON CHOISIR (FİŞ SEÇİN):</span>
+            {/* Ağır Kil Fişler (Monaco Heavy Clay Chips) - Kompakt Tek Satır */}
+            <div className="flex items-center justify-center gap-2 flex-wrap bg-[#051a0f] p-1.5 rounded-lg border border-[#d4af37]/30">
+              <span className="text-[11px] font-serif text-yellow-300 tracking-wider">FİŞ SEÇİN:</span>
               {[5, 25, 100, 500, 1000].map(val => (
                 <button
                   key={val}
                   onClick={() => { playChipSound(); setSelectedChip(val); }}
-                  className={`w-12 h-12 rounded-full font-mono font-black text-xs border-2 shadow-2xl transition transform hover:scale-110 flex items-center justify-center ${
+                  className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full font-mono font-black text-[10px] sm:text-xs border transition transform hover:scale-105 flex items-center justify-center ${
                     selectedChip === val 
-                      ? 'border-yellow-200 scale-110 ring-4 ring-yellow-400/60 shadow-[0_0_20px_rgba(254,240,138,0.7)]' 
-                      : 'border-zinc-700 opacity-85'
+                      ? 'border-yellow-200 scale-105 ring-2 ring-yellow-400 shadow-[0_0_12px_rgba(254,240,138,0.7)]' 
+                      : 'border-zinc-700 opacity-80'
                   } ${
                     val === 5 ? 'bg-gradient-to-tr from-red-900 to-rose-700 text-white' :
                     val === 25 ? 'bg-gradient-to-tr from-emerald-900 to-green-700 text-white' :
@@ -868,6 +867,7 @@ export default function MonteCarloGrandCasinoModal({
                 </button>
               ))}
             </div>
+
 
             {/* Fransız Rulet Yarış Pisti (Racetrack Call Bets) */}
             <div className="bg-[#041a0e] border-2 border-[#d4af37]/50 rounded-2xl p-3 shadow-inner">
@@ -1033,97 +1033,98 @@ export default function MonteCarloGrandCasinoModal({
         )}
 
         {/* ================================================================== */}
-        {/* 2. SEKME: MONACO VIP BLACKJACK 21 */}
+        {/* 2. SEKME: MONACO VIP BLACKJACK 21 (DİNAMİK TEK EKRAN ÖLÇEĞİ) */}
         {/* ================================================================== */}
         {activeTab === 'BLACKJACK' && (
-          <div className="p-4 sm:p-6 space-y-6 bg-[#051c0f]">
+          <div className="h-full flex flex-col justify-between p-2 sm:p-3 space-y-2 bg-[#051c0f]">
             
             {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
-            <div className="bg-gradient-to-r from-blue-950/60 via-indigo-950/50 to-blue-950/60 border border-blue-500/40 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded bg-blue-500 text-white font-black text-[10px] uppercase">HEDEF 21</span>
-                <span className="text-gray-300 font-bold">Krupiyeyi Geç, 21'i Aşma! As = 1 veya 11</span>
+            <div className="bg-gradient-to-r from-blue-950/60 via-indigo-950/50 to-blue-950/60 border border-blue-500/40 rounded-lg p-1.5 px-2.5 flex items-center justify-between gap-2 text-[11px] font-mono shrink-0">
+              <div className="flex items-center gap-1.5">
+                <span className="px-1.5 py-0.2 rounded bg-blue-500 text-white font-black text-[9px] uppercase">HEDEF 21</span>
+                <span className="text-gray-300 font-bold truncate">Krupiyeyi Geç, 21'i Aşma! As = 1 veya 11</span>
               </div>
-              <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+              <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.2 rounded border border-emerald-500/30 text-[10px] shrink-0">
                 ⚡ GOD MODE: Oyuncuya Her Elde Doğal Blackjack!
               </span>
             </div>
 
-            <div className="bg-[#09351e] border-4 border-[#d4af37]/60 rounded-2xl p-6 shadow-2xl space-y-6">
+            {/* Çuha Masa - Ekrana Tam Dinamik Sığan Esnek Yapı */}
+            <div className="bg-[#09351e] border-2 sm:border-3 border-[#d4af37]/60 rounded-xl p-2 sm:p-3 shadow-2xl flex-1 flex flex-col justify-between min-h-0">
               
               {/* Krupiye Alanı */}
-              <div className="flex flex-col items-center gap-2">
-                <span className="text-xs font-serif text-yellow-300 uppercase tracking-widest">
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-[10px] sm:text-xs font-serif text-yellow-300 uppercase tracking-widest leading-none">
                   LA BANQUE (DEALER STANDS ON 17)
                 </span>
-                <div className="flex gap-3 min-h-[105px] items-center">
+                <div className="flex gap-2 min-h-[75px] sm:min-h-[85px] items-center">
                   {bjDealerCards.map((card, idx) => (
                     <div 
                       key={idx} 
-                      className={`w-16 h-24 rounded-lg bg-white border-2 border-zinc-300 shadow-2xl flex flex-col justify-between p-1.5 font-bold ${
+                      className={`w-12 h-18 sm:w-14 sm:h-20 rounded-md bg-white border border-zinc-300 shadow-lg flex flex-col justify-between p-1 font-bold ${
                         ['♥', '♦'].includes(card.suit) ? 'text-rose-600' : 'text-zinc-900'
                       }`}
                     >
-                      <div className="text-xs font-mono">{card.rank}{card.suit}</div>
-                      <div className="text-center text-2xl">{card.suit}</div>
-                      <div className="text-xs font-mono text-right">{card.rank}</div>
+                      <div className="text-[10px] font-mono leading-none">{card.rank}{card.suit}</div>
+                      <div className="text-center text-lg sm:text-xl leading-none">{card.suit}</div>
+                      <div className="text-[10px] font-mono text-right leading-none">{card.rank}</div>
                     </div>
                   ))}
                   {bjGameStage === 'PLAYER_TURN' && (
-                    <div className="w-16 h-24 rounded-lg bg-gradient-to-br from-blue-950 to-indigo-950 border-2 border-[#d4af37] shadow-2xl flex items-center justify-center text-yellow-300 font-serif text-2xl">
+                    <div className="w-12 h-18 sm:w-14 sm:h-20 rounded-md bg-gradient-to-br from-blue-950 to-indigo-950 border border-[#d4af37] shadow-lg flex items-center justify-center text-yellow-300 font-serif text-xl">
                       ⚜️
                     </div>
                   )}
                 </div>
                 {bjGameStage === 'ROUND_OVER' && (
-                  <span className="text-xs font-mono bg-black/60 px-3 py-1 rounded-full text-yellow-200 border border-[#d4af37]/30">
+                  <span className="text-[10px] font-mono bg-black/60 px-2 py-0.5 rounded-full text-yellow-200 border border-[#d4af37]/30">
                     Krupiye: {calculateHandValue(bjDealerCards).total}
                   </span>
                 )}
               </div>
 
               {/* Masa Mesajı */}
-              <div className="text-center py-2.5 px-4 rounded-xl bg-black/50 border border-[#d4af37]/40 text-sm font-serif text-yellow-200">
+              <div className="text-center py-1 px-3 rounded-lg bg-black/50 border border-[#d4af37]/40 text-xs sm:text-sm font-serif text-yellow-200 my-1">
                 {bjMessage}
               </div>
 
               {/* Oyuncu Alanı */}
-              <div className="flex flex-col items-center gap-2">
-                <div className="flex gap-3 min-h-[105px] items-center">
+              <div className="flex flex-col items-center gap-1">
+                <div className="flex gap-2 min-h-[75px] sm:min-h-[85px] items-center">
                   {bjPlayerCards.map((card, idx) => (
                     <div 
                       key={idx} 
-                      className={`w-16 h-24 rounded-lg bg-white border-2 border-zinc-300 shadow-2xl flex flex-col justify-between p-1.5 font-bold animate-fadeIn ${
+                      className={`w-12 h-18 sm:w-14 sm:h-20 rounded-md bg-white border border-zinc-300 shadow-lg flex flex-col justify-between p-1 font-bold animate-fadeIn ${
                         ['♥', '♦'].includes(card.suit) ? 'text-rose-600' : 'text-zinc-900'
                       }`}
                     >
-                      <div className="text-xs font-mono">{card.rank}{card.suit}</div>
-                      <div className="text-center text-2xl">{card.suit}</div>
-                      <div className="text-xs font-mono text-right">{card.rank}</div>
+                      <div className="text-[10px] font-mono leading-none">{card.rank}{card.suit}</div>
+                      <div className="text-center text-lg sm:text-xl leading-none">{card.suit}</div>
+                      <div className="text-[10px] font-mono text-right leading-none">{card.rank}</div>
                     </div>
                   ))}
                 </div>
                 {bjPlayerCards.length > 0 && (
-                  <span className="text-xs font-mono bg-black/60 px-3 py-1 rounded-full text-emerald-300 font-bold border border-emerald-500/40">
-                    Main (Eliniz): {calculateHandValue(bjPlayerCards).total} {calculateHandValue(bjPlayerCards).isSoft ? '(Soft)' : ''}
+                  <span className="text-[10px] font-mono bg-black/60 px-2 py-0.5 rounded-full text-emerald-300 font-bold border border-emerald-500/40">
+                    Main: {calculateHandValue(bjPlayerCards).total} {calculateHandValue(bjPlayerCards).isSoft ? '(Soft)' : ''}
                   </span>
                 )}
-                <span className="text-xs font-serif text-yellow-300 uppercase tracking-widest mt-1">
+                <span className="text-[10px] sm:text-xs font-serif text-yellow-300 uppercase tracking-widest leading-none">
                   JOUEUR VIP (SİZ)
                 </span>
               </div>
 
-              {/* Kontroller */}
-              <div className="flex flex-wrap items-center justify-center gap-4 pt-4 border-t border-[#d4af37]/30">
+              {/* Kontroller (Tek Satır Kompakt Çip & Aksiyon Barı) */}
+              <div className="flex flex-wrap items-center justify-center gap-2 pt-2 border-t border-[#d4af37]/30 shrink-0">
                 {bjGameStage === 'BETTING' || bjGameStage === 'ROUND_OVER' ? (
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-serif text-gray-300">MISE (BAHİS):</span>
+                  <div className="flex items-center gap-2 flex-wrap justify-center">
+                    <span className="text-[11px] font-serif text-gray-300">BAHİS:</span>
                     {[25, 50, 100, 250, 500].map(val => (
                       <button
                         key={val}
                         onClick={() => { playChipSound(); setBjBet(val); }}
-                        className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border ${
-                          bjBet === val ? 'bg-yellow-400 text-black border-yellow-200 shadow' : 'bg-zinc-800 text-white border-zinc-600'
+                        className={`px-2.5 py-1 rounded-lg font-mono text-xs font-bold border transition ${
+                          bjBet === val ? 'bg-yellow-400 text-black border-yellow-200 shadow scale-105' : 'bg-zinc-800 hover:bg-zinc-700 text-white border-zinc-600'
                         }`}
                       >
                         ${val}
@@ -1132,22 +1133,22 @@ export default function MonteCarloGrandCasinoModal({
                     <button
                       onClick={startBlackjackRound}
                       disabled={userBalance < bjBet}
-                      className="px-8 py-3 rounded-xl bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-600 text-black font-black text-sm uppercase tracking-wider shadow-lg shadow-amber-500/40 ml-2 font-serif"
+                      className="px-6 py-2 rounded-xl bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-600 hover:from-yellow-400 hover:to-amber-400 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-amber-500/40 ml-1 font-serif disabled:opacity-40"
                     >
                       DONNER (DEAL)
                     </button>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     <button
                       onClick={handleBjHit}
-                      className="px-8 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-emerald-600/30"
+                      className="px-6 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-emerald-600/30"
                     >
                       CARTE (HIT)
                     </button>
                     <button
                       onClick={handleBjStand}
-                      className="px-8 py-3 rounded-xl bg-rose-700 hover:bg-rose-600 text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-rose-700/30"
+                      className="px-6 py-2 rounded-xl bg-rose-700 hover:bg-rose-600 text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-rose-700/30"
                     >
                       RESTE (STAND)
                     </button>
@@ -1160,31 +1161,32 @@ export default function MonteCarloGrandCasinoModal({
         )}
 
         {/* ================================================================== */}
-        {/* 3. SEKME: BACCARAT PUNTO BANCO */}
+        {/* 3. SEKME: BACCARAT PUNTO BANCO (DİNAMİK TEK EKRAN ÖLÇEĞİ) */}
         {/* ================================================================== */}
         {activeTab === 'BACCARAT' && (
-          <div className="p-4 sm:p-6 space-y-6 bg-[#051c0f]">
+          <div className="h-full flex flex-col justify-between p-2 sm:p-3 space-y-2 bg-[#051c0f]">
+
             
             {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
-            <div className="bg-gradient-to-r from-purple-950/60 via-amber-950/50 to-purple-950/60 border border-amber-500/40 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-serif">
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded bg-amber-500 text-black font-black text-[10px] uppercase font-mono">PUNTO / BANCO</span>
-                <span className="text-gray-300 font-bold">9'a en yakın ele oyna (Oyuncu / Beraberlik / Banker)</span>
+            <div className="bg-gradient-to-r from-purple-950/60 via-amber-950/50 to-purple-950/60 border border-amber-500/40 rounded-lg p-1.5 px-2.5 flex items-center justify-between gap-2 text-[11px] font-serif shrink-0">
+              <div className="flex items-center gap-1.5">
+                <span className="px-1.5 py-0.2 rounded bg-amber-500 text-black font-black text-[9px] uppercase font-mono">PUNTO / BANCO</span>
+                <span className="text-gray-300 font-bold truncate">9'a en yakın ele oyna (Oyuncu / Beraberlik / Banker)</span>
               </div>
-              <span className="text-yellow-300 font-bold bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/30">
-                👑 Salle Médecin Yüksek Bahis Masası
+              <span className="text-yellow-300 font-bold bg-yellow-500/10 px-2 py-0.2 rounded border border-yellow-500/30 text-[10px] shrink-0">
+                👑 Salle Médecin VIP
               </span>
             </div>
 
-            <div className="bg-[#09351e] border-4 border-[#d4af37]/60 rounded-2xl p-6 shadow-2xl space-y-6">
+            <div className="bg-[#09351e] border-2 sm:border-3 border-[#d4af37]/60 rounded-xl p-2 sm:p-3 shadow-2xl flex-1 flex flex-col justify-between min-h-0">
               
               {/* Yol Haritası */}
-              <div className="flex items-center gap-2 bg-black/50 p-3 rounded-xl border border-[#d4af37]/30 overflow-x-auto text-xs font-mono">
-                <span className="text-yellow-300 font-serif mr-2">GRANDE ROUTE:</span>
+              <div className="flex items-center gap-1.5 bg-black/50 p-1.5 px-2.5 rounded-lg border border-[#d4af37]/30 overflow-x-auto text-[11px] font-mono shrink-0">
+                <span className="text-yellow-300 font-serif mr-1 text-[10px]">ROUTE:</span>
                 {bacRoadmap.map((r, i) => (
                   <span 
                     key={i} 
-                    className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-[10px] ${
+                    className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-[9px] ${
                       r === 'P' ? 'bg-blue-600 text-white' : r === 'B' ? 'bg-rose-600 text-white' : 'bg-emerald-600 text-white'
                     }`}
                   >
@@ -1194,55 +1196,55 @@ export default function MonteCarloGrandCasinoModal({
               </div>
 
               {/* Masa Düzeni (Punto vs Banco) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-2 sm:gap-4 my-1">
                 
                 {/* PUNTO */}
-                <div className={`p-4 rounded-xl border-2 flex flex-col items-center gap-3 transition ${
-                  bacBetSide === 'PLAYER' ? 'border-blue-400 bg-blue-950/40' : 'border-zinc-700 bg-black/40'
+                <div className={`p-2 sm:p-2.5 rounded-lg border flex flex-col items-center gap-1.5 transition ${
+                  bacBetSide === 'PLAYER' ? 'border-blue-400 bg-blue-950/40 ring-2 ring-blue-500/40' : 'border-zinc-700 bg-black/40'
                 }`}>
-                  <span className="font-serif font-black text-blue-400 tracking-wider">PUNTO (OYUNCU) [1:1]</span>
-                  <div className="flex gap-2 min-h-[90px] items-center">
+                  <span className="font-serif font-black text-blue-400 tracking-wider text-[11px] sm:text-xs">PUNTO [1:1]</span>
+                  <div className="flex gap-1.5 min-h-[65px] sm:min-h-[75px] items-center">
                     {bacResult?.playerCards.map((card, idx) => (
                       <div 
                         key={idx}
-                        className={`w-14 h-20 rounded-lg bg-white border-2 border-zinc-300 shadow flex flex-col justify-between p-1 font-bold ${
+                        className={`w-11 h-16 sm:w-13 sm:h-18 rounded-md bg-white border border-zinc-300 shadow flex flex-col justify-between p-1 font-bold ${
                           ['♥', '♦'].includes(card.suit) ? 'text-rose-600' : 'text-zinc-900'
                         }`}
                       >
-                        <div className="text-xs font-mono">{card.rank}{card.suit}</div>
-                        <div className="text-center text-lg">{card.suit}</div>
-                        <div className="text-xs font-mono text-right">{card.rank}</div>
+                        <div className="text-[10px] font-mono leading-none">{card.rank}{card.suit}</div>
+                        <div className="text-center text-base sm:text-lg leading-none">{card.suit}</div>
+                        <div className="text-[10px] font-mono text-right leading-none">{card.rank}</div>
                       </div>
                     ))}
                   </div>
                   {bacResult && (
-                    <span className="text-sm font-mono font-bold text-blue-300">
+                    <span className="text-xs font-mono font-bold text-blue-300">
                       Score: {bacResult.playerScore}
                     </span>
                   )}
                 </div>
 
                 {/* BANCO */}
-                <div className={`p-4 rounded-xl border-2 flex flex-col items-center gap-3 transition ${
-                  bacBetSide === 'BANKER' ? 'border-rose-400 bg-rose-950/40' : 'border-zinc-700 bg-black/40'
+                <div className={`p-2 sm:p-2.5 rounded-lg border flex flex-col items-center gap-1.5 transition ${
+                  bacBetSide === 'BANKER' ? 'border-rose-400 bg-rose-950/40 ring-2 ring-rose-500/40' : 'border-zinc-700 bg-black/40'
                 }`}>
-                  <span className="font-serif font-black text-rose-400 tracking-wider">BANCO (KASA) [0.95:1]</span>
-                  <div className="flex gap-2 min-h-[90px] items-center">
+                  <span className="font-serif font-black text-rose-400 tracking-wider text-[11px] sm:text-xs">BANCO [0.95:1]</span>
+                  <div className="flex gap-1.5 min-h-[65px] sm:min-h-[75px] items-center">
                     {bacResult?.bankerCards.map((card, idx) => (
                       <div 
                         key={idx}
-                        className={`w-14 h-20 rounded-lg bg-white border-2 border-zinc-300 shadow flex flex-col justify-between p-1 font-bold ${
+                        className={`w-11 h-16 sm:w-13 sm:h-18 rounded-md bg-white border border-zinc-300 shadow flex flex-col justify-between p-1 font-bold ${
                           ['♥', '♦'].includes(card.suit) ? 'text-rose-600' : 'text-zinc-900'
                         }`}
                       >
-                        <div className="text-xs font-mono">{card.rank}{card.suit}</div>
-                        <div className="text-center text-lg">{card.suit}</div>
-                        <div className="text-xs font-mono text-right">{card.rank}</div>
+                        <div className="text-[10px] font-mono leading-none">{card.rank}{card.suit}</div>
+                        <div className="text-center text-base sm:text-lg leading-none">{card.suit}</div>
+                        <div className="text-[10px] font-mono text-right leading-none">{card.rank}</div>
                       </div>
                     ))}
                   </div>
                   {bacResult && (
-                    <span className="text-sm font-mono font-bold text-rose-300">
+                    <span className="text-xs font-mono font-bold text-rose-300">
                       Score: {bacResult.bankerScore}
                     </span>
                   )}
@@ -1251,43 +1253,43 @@ export default function MonteCarloGrandCasinoModal({
               </div>
 
               {/* Bahis Kutuları */}
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-2">
                 <button
                   onClick={() => { playChipSound(); setBacBetSide('PLAYER'); }}
-                  className={`py-3.5 rounded-xl border text-center transition font-serif font-bold ${
-                    bacBetSide === 'PLAYER' ? 'bg-blue-600 border-blue-400 text-white shadow-xl' : 'bg-black/50 border-zinc-700 text-gray-300'
+                  className={`py-2 rounded-lg border text-center transition font-serif font-bold text-xs sm:text-sm ${
+                    bacBetSide === 'PLAYER' ? 'bg-blue-600 border-blue-400 text-white shadow-lg' : 'bg-black/50 border-zinc-700 text-gray-300'
                   }`}
                 >
                   PUNTO (1:1)
                 </button>
                 <button
                   onClick={() => { playChipSound(); setBacBetSide('TIE'); }}
-                  className={`py-3.5 rounded-xl border text-center transition font-serif font-bold ${
-                    bacBetSide === 'TIE' ? 'bg-emerald-600 border-emerald-400 text-white shadow-xl' : 'bg-black/50 border-zinc-700 text-gray-300'
+                  className={`py-2 rounded-lg border text-center transition font-serif font-bold text-xs sm:text-sm ${
+                    bacBetSide === 'TIE' ? 'bg-emerald-600 border-emerald-400 text-white shadow-lg' : 'bg-black/50 border-zinc-700 text-gray-300'
                   }`}
                 >
-                  EGALITÉ (TIE 8:1)
+                  EGALITÉ (8:1)
                 </button>
                 <button
                   onClick={() => { playChipSound(); setBacBetSide('BANKER'); }}
-                  className={`py-3.5 rounded-xl border text-center transition font-serif font-bold ${
-                    bacBetSide === 'BANKER' ? 'bg-rose-700 border-rose-500 text-white shadow-xl' : 'bg-black/50 border-zinc-700 text-gray-300'
+                  className={`py-2 rounded-lg border text-center transition font-serif font-bold text-xs sm:text-sm ${
+                    bacBetSide === 'BANKER' ? 'bg-rose-700 border-rose-500 text-white shadow-lg' : 'bg-black/50 border-zinc-700 text-gray-300'
                   }`}
                 >
                   BANCO (0.95:1)
                 </button>
               </div>
 
-              {/* Bahis Miktarı ve Deal Butonu */}
-              <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#d4af37]/30">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-serif text-gray-300">MISE:</span>
+              {/* Bahis Miktarı ve Deal Butonu (Tek Satır) */}
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#d4af37]/30 shrink-0">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[11px] font-serif text-gray-300">BAHİS:</span>
                   {[25, 50, 100, 500, 1000].map(val => (
                     <button
                       key={val}
                       onClick={() => { playChipSound(); setBacBetAmount(val); }}
-                      className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border ${
-                        bacBetAmount === val ? 'bg-yellow-400 text-black border-yellow-200' : 'bg-zinc-800 text-white border-zinc-600'
+                      className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md font-mono text-[11px] sm:text-xs font-bold border transition ${
+                        bacBetAmount === val ? 'bg-yellow-400 text-black border-yellow-200 shadow scale-105' : 'bg-zinc-800 hover:bg-zinc-700 text-white border-zinc-600'
                       }`}
                     >
                       ${val}
@@ -1298,9 +1300,9 @@ export default function MonteCarloGrandCasinoModal({
                 <button
                   onClick={handlePlayBaccarat}
                   disabled={isBacDealing || userBalance < bacBetAmount}
-                  className="px-8 py-3 rounded-xl bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-600 text-black font-black text-sm uppercase tracking-wider shadow-lg shadow-amber-500/40 disabled:opacity-40 font-serif"
+                  className="px-6 py-2 rounded-xl bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-600 hover:from-yellow-400 hover:to-amber-400 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-amber-500/40 disabled:opacity-40 font-serif"
                 >
-                  {isBacDealing ? 'DISTRIBUTION...' : 'FAITES VOS JEUX'}
+                  {isBacDealing ? 'DAĞITILIYOR...' : 'DAĞIT (DEAL)'}
                 </button>
               </div>
 
@@ -1309,6 +1311,7 @@ export default function MonteCarloGrandCasinoModal({
         )}
 
         </div>
+
       </div>
     </div>
   );
