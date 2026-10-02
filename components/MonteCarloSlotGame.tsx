@@ -232,13 +232,15 @@ export default function MonteCarloSlotGame({
 
     // 1. Makara Duruşu
     const t1 = setTimeout(() => {
+      setReels(prev => [result.grid[0], prev[1], prev[2], prev[3], prev[4]]);
       setStoppingReels(prev => [true, false, false, false, false]);
       playSound('click');
-    }, 400);
+    }, 450);
     stepTimerRefs.current.push(t1);
 
     // 2. Makara Duruşu & Gerilim Kontrolü
     const t2 = setTimeout(() => {
+      setReels(prev => [result.grid[0], result.grid[1], prev[2], prev[3], prev[4]]);
       setStoppingReels(prev => [true, true, false, false, false]);
       playSound('click');
 
@@ -252,34 +254,36 @@ export default function MonteCarloSlotGame({
         const hbTimer = setTimeout(playHeartbeat, 500);
         stepTimerRefs.current.push(hbTimer);
       }
-    }, 700);
+    }, 800);
     stepTimerRefs.current.push(t2);
 
     // 3. Makara Duruşu
     const t3 = setTimeout(() => {
+      setReels(prev => [result.grid[0], result.grid[1], result.grid[2], prev[3], prev[4]]);
       setStoppingReels(prev => [true, true, true, false, false]);
       playSound('click');
-    }, 1050);
+    }, 1150);
     stepTimerRefs.current.push(t3);
 
     // 4. Makara Duruşu
     const t4 = setTimeout(() => {
+      setReels(prev => [result.grid[0], result.grid[1], result.grid[2], result.grid[3], prev[4]]);
       setStoppingReels(prev => [true, true, true, true, false]);
       playSound('click');
-    }, 1350);
+    }, 1500);
     stepTimerRefs.current.push(t4);
 
     // 5. Makara Duruşu
     const t5 = setTimeout(() => {
+      setReels(result.grid);
       setStoppingReels([true, true, true, true, true]);
       playSound('click');
       setIsTensionSpin(false);
-    }, 1650);
+    }, 1850);
     stepTimerRefs.current.push(t5);
 
     // Final Sonuç ve Kazanç Bildirimi
     const tFinal = setTimeout(() => {
-      setReels(result.grid);
       setIsSpinning(false);
       setLastWin(result.totalWin);
       setLastMultiplier(result.multiplier);
@@ -479,7 +483,7 @@ export default function MonteCarloSlotGame({
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent pointer-events-none"></div>
 
             <div className="flex items-center gap-2 w-full">
-              {/* 5x3 Makaralar */}
+              {/* 5x3 Makaralar - Gerçek Mekanik Şerit Akışı (Reel Strip) */}
               <div className="grid grid-cols-5 gap-1 sm:gap-2 flex-1 relative z-10">
                 {reels.map((reel, colIdx) => {
                   const isReelStopped = stoppingReels[colIdx];
@@ -488,28 +492,53 @@ export default function MonteCarloSlotGame({
                   return (
                     <div 
                       key={colIdx} 
-                      className={`flex flex-col gap-1 bg-[#120822] border rounded-lg p-1 transition-all duration-300 ${
+                      className={`flex flex-col gap-1 bg-[#120822] border rounded-lg p-1 relative overflow-hidden transition-all duration-300 ${
                         isSpinningThis 
-                          ? 'blur-[1px] scale-[0.98] border-purple-500/40' 
-                          : 'blur-none scale-100 border-amber-500/30'
+                          ? 'border-purple-500/60 shadow-[0_0_15px_rgba(168,85,247,0.3)]' 
+                          : 'border-amber-500/30'
                       }`}
                     >
-                      {reel.map((symId, rowIdx) => {
-                        const sym = getSymbol(symId);
-                        return (
-                          <div 
-                            key={rowIdx} 
-                            className="h-12 sm:h-14 md:h-16 bg-[#1c0f33] border border-amber-500/20 rounded-md flex flex-col items-center justify-center p-0.5 relative overflow-hidden group shadow"
-                          >
-                            <span className="text-2xl sm:text-3xl filter drop-shadow transition-transform group-hover:scale-105">
-                              {sym.icon}
-                            </span>
-                            <span className="text-[8px] font-bold text-amber-200/80 font-mono leading-none mt-0.5">
-                              {sym.name}
-                            </span>
-                          </div>
-                        );
-                      })}
+                      {/* Dönen Şerit (Gerçek Mekanik Slot Hareketi) */}
+                      {isSpinningThis ? (
+                        <div className="animate-slot-spinning flex flex-col gap-1">
+                          {/* Sürekli dönen sembol akış şeridi */}
+                          {['strawberry', 'seven', 'pineapple', 'wild', 'diamond', 'watermelon', 'gold', 'grapes', 'seven', 'strawberry', 'pineapple', 'diamond'].map((symId, idx) => {
+                            const sym = getSymbol(symId);
+                            return (
+                              <div 
+                                key={idx} 
+                                className="h-12 sm:h-14 md:h-16 bg-[#1c0f33] border border-purple-500/20 rounded-md flex flex-col items-center justify-center p-0.5 relative shadow filter blur-[0.8px] scale-[0.98]"
+                              >
+                                <span className="text-2xl sm:text-3xl filter drop-shadow">
+                                  {sym.icon}
+                                </span>
+                                <span className="text-[7px] font-bold text-purple-300/70 font-mono leading-none mt-0.5">
+                                  {sym.name}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <div className={`flex flex-col gap-1 ${isSpinning ? 'animate-slot-stop' : ''}`}>
+                          {reel.map((symId, rowIdx) => {
+                            const sym = getSymbol(symId);
+                            return (
+                              <div 
+                                key={rowIdx} 
+                                className="h-12 sm:h-14 md:h-16 bg-[#1c0f33] border border-amber-500/20 rounded-md flex flex-col items-center justify-center p-0.5 relative overflow-hidden group shadow transition-transform hover:scale-105"
+                              >
+                                <span className="text-2xl sm:text-3xl filter drop-shadow transition-transform group-hover:scale-110">
+                                  {sym.icon}
+                                </span>
+                                <span className="text-[8px] font-bold text-amber-200/80 font-mono leading-none mt-0.5">
+                                  {sym.name}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   );
                 })}
