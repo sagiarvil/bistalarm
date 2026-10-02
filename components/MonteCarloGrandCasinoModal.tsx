@@ -52,7 +52,7 @@ export default function MonteCarloGrandCasinoModal({
   const [selectedChip, setSelectedChip] = useState<number>(25);
   const [screenShake, setScreenShake] = useState<boolean>(false);
   const [activeFeedIdx, setActiveFeedIdx] = useState<number>(0);
-  const [racetrackOpen, setRacetrackOpen] = useState<boolean>(true);
+  const [racetrackOpen, setRacetrackOpen] = useState<boolean>(false);
   const [grandWinBanner, setGrandWinBanner] = useState<{ isOpen: boolean; amount: number; title: string } | null>(null);
 
   // Canlı VIP Ticker Döngüsü (Her 4 saniyede bir Monaco salonlarından akış)
@@ -176,7 +176,7 @@ export default function MonteCarloGrandCasinoModal({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wheelAngleRef = useRef(0);
   const ballAngleRef = useRef(0);
-  const ballRadiusRef = useRef(95);
+  const ballRadiusRef = useRef(65);
 
   // Canvas Üzerinde 60FPS Gerçekçi Monte Carlo Rulet Çarkı Çizimi
   useEffect(() => {
@@ -249,23 +249,23 @@ export default function MonteCarloGrandCasinoModal({
         ctx.rotate(startA + sliceAngle / 2);
         ctx.textAlign = 'right';
         ctx.fillStyle = '#fef08a';
-        ctx.font = 'bold 9px monospace';
-        ctx.fillText(num.toString(), radius - 22, 3);
+        ctx.font = 'bold 7px monospace';
+        ctx.fillText(num.toString(), radius - 15, 2.5);
         ctx.restore();
       }
 
       // 3. Merkez Pirinç Taret (Brass French Turret)
-      const turretGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, radius - 60);
+      const turretGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, radius - 38);
       turretGrad.addColorStop(0, '#fef08a');
       turretGrad.addColorStop(0.4, '#ca8a04');
       turretGrad.addColorStop(0.8, '#854d0e');
       turretGrad.addColorStop(1, '#422006');
       ctx.fillStyle = turretGrad;
       ctx.beginPath();
-      ctx.arc(0, 0, radius - 60, 0, Math.PI * 2);
+      ctx.arc(0, 0, Math.max(10, radius - 38), 0, Math.PI * 2);
       ctx.fill();
       ctx.strokeStyle = '#fef08a';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1.5;
       ctx.stroke();
 
       // 4 Kollu Monte Carlo Taret Başlığı
@@ -274,7 +274,7 @@ export default function MonteCarloGrandCasinoModal({
         ctx.rotate((Math.PI / 2) * arm);
         ctx.fillStyle = '#fef08a';
         ctx.beginPath();
-        ctx.arc(radius - 75, 0, 5, 0, Math.PI * 2);
+        ctx.arc(Math.max(6, radius - 46), 0, 3, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
       }
@@ -287,20 +287,20 @@ export default function MonteCarloGrandCasinoModal({
       const bx = Math.cos(ballAngleRef.current) * ballRadiusRef.current;
       const by = Math.sin(ballAngleRef.current) * ballRadiusRef.current;
 
-      const ballGrad = ctx.createRadialGradient(bx - 1.5, by - 1.5, 1, bx, by, 4.5);
+      const ballGrad = ctx.createRadialGradient(bx - 1, by - 1, 0.8, bx, by, 3.2);
       ballGrad.addColorStop(0, '#ffffff');
       ballGrad.addColorStop(0.6, '#fef3c7');
       ballGrad.addColorStop(1, '#d97706');
 
       ctx.fillStyle = ballGrad;
       ctx.beginPath();
-      ctx.arc(bx, by, 4.5, 0, Math.PI * 2);
+      ctx.arc(bx, by, 3.2, 0, Math.PI * 2);
       ctx.fill();
 
       // Topun Altına Gerçekçi Gölge
       ctx.fillStyle = 'rgba(0,0,0,0.45)';
       ctx.beginPath();
-      ctx.arc(bx + 2, by + 2, 3.5, 0, Math.PI * 2);
+      ctx.arc(bx + 1.5, by + 1.5, 2.5, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
 
@@ -347,7 +347,7 @@ export default function MonteCarloGrandCasinoModal({
     // Fiziksel Animasyon Değişkenleri
     let wheelSpeed = 0.07;
     let ballSpeed = -0.19;
-    let currentRadius = 95;
+    let currentRadius = 65;
     ballRadiusRef.current = currentRadius;
 
     let elapsed = 0;
@@ -361,8 +361,8 @@ export default function MonteCarloGrandCasinoModal({
       ballSpeed *= 0.992;
 
       // Top hız kaybettikçe dış çeperden ceplere doğru iner
-      if (elapsed > 1800 && currentRadius > 62) {
-        currentRadius -= 0.6;
+      if (elapsed > 1800 && currentRadius > 42) {
+        currentRadius -= 0.4;
         ballRadiusRef.current = currentRadius;
         if (Math.random() < 0.28) playBallBounceSound();
       }
@@ -696,45 +696,45 @@ export default function MonteCarloGrandCasinoModal({
         {/* 1. SEKME: MONTE CARLO AVRUPA RULETİ (CANVAS ÇARK & FİLDİŞİ TOP) */}
         {/* ================================================================== */}
         {activeTab === 'ROULETTE' && (
-          <div className="p-2 sm:p-3 space-y-2 bg-[#051c0f]">
+          <div className="p-1.5 sm:p-2 space-y-1.5 bg-[#051c0f]">
             
             {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
-            <div className="bg-gradient-to-r from-yellow-950/60 via-amber-950/40 to-yellow-950/60 border border-[#d4af37]/40 rounded-lg p-1.5 px-2.5 flex items-center justify-between gap-2 text-[11px] font-serif">
+            <div className="bg-gradient-to-r from-yellow-950/60 via-amber-950/40 to-yellow-950/60 border border-[#d4af37]/40 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5 text-[10px] font-serif">
               <div className="flex items-center gap-1.5">
-                <span className="px-1.5 py-0.2 rounded bg-yellow-500 text-black font-black text-[9px] uppercase font-mono">1. ADIM</span>
+                <span className="px-1 py-0.2 rounded bg-yellow-500 text-black font-black text-[8px] uppercase font-mono">1. ADIM</span>
                 <span className="text-gray-300 font-bold truncate">Fiş Seç ($5 - $1000)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="px-1.5 py-0.2 rounded bg-emerald-500 text-black font-black text-[9px] uppercase font-mono animate-pulse">2. ADIM</span>
+                <span className="px-1 py-0.2 rounded bg-emerald-500 text-black font-black text-[8px] uppercase font-mono animate-pulse">2. ADIM</span>
                 <span className="text-emerald-300 font-bold truncate">Numaraya / Renge Tıkla & ÇEVİR!</span>
               </div>
-              <span className="text-yellow-300 font-bold bg-yellow-500/10 px-2 py-0.2 rounded border border-yellow-500/30 text-[10px] hidden md:inline">
+              <span className="text-yellow-300 font-bold bg-yellow-500/10 px-1.5 py-0.2 rounded border border-yellow-500/30 text-[9px] hidden md:inline">
                 🔥 Sıcak: 17 Siyah (36x), 7 Kırmızı, 0 Yeşil
               </span>
             </div>
 
-            {/* Canlı Çark ve Krupiye Sahnesi (Kompakt 3 Sütun) */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3 items-center bg-[#072415] border border-[#d4af37]/40 rounded-xl p-2 sm:p-2.5 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+            {/* Canlı Çark, Krupiye Sahnesi & Fiş Seçici (Ultra-Kompakt Tek Ekran) */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-1.5 sm:gap-2 items-center bg-[#072415] border border-[#d4af37]/40 rounded-xl p-1.5 sm:p-2 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
               
-              {/* Sol: 60FPS Fiziksel Rulet Çarkı */}
+              {/* Sol: 60FPS Fiziksel Rulet Çarkı (105x105) */}
               <div className="md:col-span-3 flex flex-col items-center justify-center">
                 <canvas 
                   ref={canvasRef} 
-                  width={150} 
-                  height={150} 
-                  className="rounded-full shadow-[0_0_15px_rgba(212,175,55,0.4)] border border-[#d4af37]"
+                  width={105} 
+                  height={105} 
+                  className="rounded-full shadow-[0_0_12px_rgba(212,175,55,0.4)] border border-[#d4af37]"
                 />
               </div>
 
-              {/* Orta: Krupiye Anonsu & Kazanan Numara */}
-              <div className="md:col-span-5 text-center space-y-1.5">
-                <div className="inline-block px-3 py-1 rounded-full bg-black/60 border border-[#d4af37]/40 text-[11px] font-serif text-yellow-300 tracking-wider">
+              {/* Orta: Krupiye Anonsu & Kazanan Numara & Son Numaralar */}
+              <div className="md:col-span-5 text-center space-y-1">
+                <div className="inline-block px-2.5 py-0.5 rounded-full bg-black/60 border border-[#d4af37]/40 text-[10px] font-serif text-yellow-300 tracking-wider">
                   🗣️ {krupiyeCallout}
                 </div>
 
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center gap-2">
                   {rouletteLastResult ? (
-                    <div className={`w-14 h-14 rounded-xl flex flex-col items-center justify-center text-2xl font-black border shadow-xl animate-bounce ${
+                    <div className={`w-10 h-10 rounded-lg flex flex-col items-center justify-center text-lg font-black border shadow-lg animate-bounce ${
                       rouletteLastResult.color === 'green'
                         ? 'bg-emerald-700 border-emerald-400 text-white shadow-emerald-500/50'
                         : rouletteLastResult.color === 'red'
@@ -742,30 +742,30 @@ export default function MonteCarloGrandCasinoModal({
                         : 'bg-zinc-950 border-zinc-600 text-white shadow-zinc-500/50'
                     }`}>
                       <span className="leading-none">{rouletteLastResult.winningNumber}</span>
-                      <span className="text-[8px] uppercase font-mono tracking-wider">{rouletteLastResult.color}</span>
+                      <span className="text-[7px] uppercase font-mono tracking-wider">{rouletteLastResult.color}</span>
                     </div>
                   ) : (
-                    <div className="w-14 h-14 rounded-xl bg-[#03140a] border border-[#d4af37]/30 flex items-center justify-center text-amber-400/50 text-2xl font-serif">
+                    <div className="w-10 h-10 rounded-lg bg-[#03140a] border border-[#d4af37]/30 flex items-center justify-center text-amber-400/50 text-xl font-serif">
                       ⚜️
+                    </div>
+                  )}
+
+                  {rouletteLastResult && (
+                    <div className={`text-[11px] font-bold font-mono ${rouletteLastResult.netWin > 0 ? 'text-emerald-400' : 'text-gray-400'}`}>
+                      {rouletteLastResult.netWin > 0 
+                        ? `🎉 +$${rouletteLastResult.totalPayout.toFixed(2)}` 
+                        : 'Kasa kazandı.'}
                     </div>
                   )}
                 </div>
 
-                {rouletteLastResult && (
-                  <div className={`text-xs font-bold font-mono ${rouletteLastResult.netWin > 0 ? 'text-emerald-400' : 'text-gray-400'}`}>
-                    {rouletteLastResult.netWin > 0 
-                      ? `🎉 +$${rouletteLastResult.totalPayout.toFixed(2)}` 
-                      : 'Kasa kazandı.'}
-                  </div>
-                )}
-
                 {/* Son Çıkan Numaralar */}
-                <div className="flex items-center justify-center gap-1 flex-wrap">
-                  <span className="text-[9px] text-gray-400 font-mono uppercase mr-1">Son:</span>
-                  {recentRouletteNumbers.slice(0, 7).map((num, i) => (
+                <div className="flex items-center justify-center gap-1">
+                  <span className="text-[8px] text-gray-400 font-mono uppercase">Son:</span>
+                  {recentRouletteNumbers.slice(0, 6).map((num, i) => (
                     <span 
                       key={i} 
-                      className={`w-5 h-5 rounded flex items-center justify-center text-[9px] font-mono font-bold ${
+                      className={`w-4 h-4 rounded flex items-center justify-center text-[8px] font-mono font-bold ${
                         num === 0 ? 'bg-emerald-600 text-white' : RED_NUMBERS.includes(num) ? 'bg-rose-600 text-white' : 'bg-zinc-900 text-white border border-zinc-700'
                       }`}
                     >
@@ -775,60 +775,58 @@ export default function MonteCarloGrandCasinoModal({
                 </div>
               </div>
 
-              {/* Sağ: Bahis Özeti & Çevir Butonu */}
-              <div className="md:col-span-4 flex flex-col justify-center gap-1.5 bg-[#03140a] p-2.5 rounded-lg border border-[#d4af37]/30">
-                <div className="flex justify-between text-[11px] font-mono">
-                  <span className="text-gray-400">Toplam Bahis:</span>
-                  <span className="font-bold text-yellow-300">
-                    ${rouletteBets.reduce((a, b) => a + b.amount, 0)}
-                  </span>
-                </div>
-                <div className="flex justify-between text-[11px] font-mono">
-                  <span className="text-gray-400">Pozisyon:</span>
-                  <span className="text-gray-200">{rouletteBets.length} Bahis</span>
+              {/* Sağ: Fiş Seçici, Bahis Özeti & Çevir Butonu */}
+              <div className="md:col-span-4 flex flex-col justify-center gap-1 bg-[#03140a] p-1.5 rounded-lg border border-[#d4af37]/30">
+                {/* Entegre Fiş Seçici */}
+                <div className="flex items-center justify-between gap-1 pb-1 border-b border-[#d4af37]/20">
+                  <span className="text-[9px] font-serif text-yellow-300 font-bold">FİŞ:</span>
+                  <div className="flex items-center gap-1">
+                    {[5, 25, 100, 500, 1000].map(val => (
+                      <button
+                        key={val}
+                        onClick={() => { playChipSound(); setSelectedChip(val); }}
+                        className={`w-6 h-6 rounded-full font-mono font-black text-[9px] border transition transform flex items-center justify-center ${
+                          selectedChip === val 
+                            ? 'border-yellow-200 scale-110 ring-1 ring-yellow-400 shadow-[0_0_8px_rgba(254,240,138,0.7)]' 
+                            : 'border-zinc-700 opacity-70 hover:opacity-100'
+                        } ${
+                          val === 5 ? 'bg-gradient-to-tr from-red-900 to-rose-700 text-white' :
+                          val === 25 ? 'bg-gradient-to-tr from-emerald-900 to-green-700 text-white' :
+                          val === 100 ? 'bg-gradient-to-tr from-zinc-950 to-zinc-800 text-yellow-300 border-yellow-500' :
+                          val === 500 ? 'bg-gradient-to-tr from-purple-950 to-indigo-800 text-white' : 'bg-gradient-to-tr from-amber-600 to-yellow-300 text-black font-black'
+                        }`}
+                      >
+                        ${val >= 1000 ? '1k' : val}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="flex gap-1.5 pt-1">
+                <div className="flex justify-between text-[10px] font-mono">
+                  <span className="text-gray-400">Bahis:</span>
+                  <span className="font-bold text-yellow-300">
+                    ${rouletteBets.reduce((a, b) => a + b.amount, 0)} ({rouletteBets.length})
+                  </span>
+                </div>
+
+                <div className="flex gap-1 pt-0.5">
                   <button
                     onClick={clearRouletteBets}
                     disabled={isSpinningRoulette || rouletteBets.length === 0}
-                    className="flex-1 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 text-[11px] font-bold text-gray-300 disabled:opacity-40"
+                    className="flex-1 py-1 rounded-md bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 text-[10px] font-bold text-gray-300 disabled:opacity-40"
                   >
                     Temizle
                   </button>
                   <button
                     onClick={handleSpinRoulette}
                     disabled={isSpinningRoulette || rouletteBets.length === 0}
-                    className="flex-2 py-1.5 px-3 rounded-lg bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-600 hover:from-yellow-400 hover:to-amber-400 text-black font-black text-xs uppercase tracking-wider shadow-md shadow-amber-500/40 disabled:opacity-40 font-serif"
+                    className="flex-2 py-1 px-2.5 rounded-md bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-600 hover:from-yellow-400 hover:to-amber-400 text-black font-black text-[11px] uppercase tracking-wider shadow shadow-amber-500/40 disabled:opacity-40 font-serif"
                   >
-                    {isSpinningRoulette ? 'ÇEVRİLİYOR...' : 'ÇEVİR (SPIN)'}
+                    {isSpinningRoulette ? 'ÇEVRİLİYOR...' : 'ÇEVİR'}
                   </button>
                 </div>
               </div>
 
-            </div>
-
-            {/* Ağır Kil Fişler (Monaco Heavy Clay Chips) - Kompakt Tek Satır */}
-            <div className="flex items-center justify-center gap-2 flex-wrap bg-[#051a0f] p-1.5 rounded-lg border border-[#d4af37]/30">
-              <span className="text-[11px] font-serif text-yellow-300 tracking-wider">FİŞ SEÇİN:</span>
-              {[5, 25, 100, 500, 1000].map(val => (
-                <button
-                  key={val}
-                  onClick={() => { playChipSound(); setSelectedChip(val); }}
-                  className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full font-mono font-black text-[10px] sm:text-xs border transition transform hover:scale-105 flex items-center justify-center ${
-                    selectedChip === val 
-                      ? 'border-yellow-200 scale-105 ring-2 ring-yellow-400 shadow-[0_0_12px_rgba(254,240,138,0.7)]' 
-                      : 'border-zinc-700 opacity-80'
-                  } ${
-                    val === 5 ? 'bg-gradient-to-tr from-red-900 to-rose-700 text-white' :
-                    val === 25 ? 'bg-gradient-to-tr from-emerald-900 to-green-700 text-white' :
-                    val === 100 ? 'bg-gradient-to-tr from-zinc-950 to-zinc-800 text-yellow-300 border-yellow-500' :
-                    val === 500 ? 'bg-gradient-to-tr from-purple-950 to-indigo-800 text-white' : 'bg-gradient-to-tr from-amber-600 to-yellow-300 text-black font-black'
-                  }`}
-                >
-                  ${val}
-                </button>
-              ))}
             </div>
 
 
@@ -895,81 +893,81 @@ export default function MonteCarloGrandCasinoModal({
               )}
             </div>
 
-            {/* Fransız Çuha Rulet Masası (French Layout - Kompakt ve Ekrana Tam Oturan Dinamik Boyut) */}
-            <div className="bg-[#09351e] border-2 sm:border-3 border-[#d4af37]/60 rounded-xl p-2 sm:p-3 shadow-xl space-y-2">
+            {/* Fransız Çuha Rulet Masası (Kompakt Tek Ekran Boyutu) */}
+            <div className="bg-[#09351e] border border-[#d4af37]/60 rounded-xl p-1.5 sm:p-2 shadow-xl space-y-1">
               
               {/* Dış Bahisler (Kırmızı, Siyah, Çift, Tek) */}
-              <div className="grid grid-cols-6 gap-1.5 text-[10px] sm:text-xs font-bold font-serif">
+              <div className="grid grid-cols-6 gap-1 text-[9px] sm:text-[10px] font-bold font-serif">
                 <button 
                   onClick={() => addRouletteBet('LOW')}
-                  className="py-2 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
+                  className="py-1 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded text-amber-200 transition"
                 >
                   MANQUE (1-18)
                 </button>
                 <button 
                   onClick={() => addRouletteBet('EVEN')}
-                  className="py-2 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
+                  className="py-1 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded text-amber-200 transition"
                 >
                   PAIR (ÇİFT)
                 </button>
                 <button 
                   onClick={() => addRouletteBet('RED')}
-                  className="py-2 bg-gradient-to-r from-rose-800 to-red-700 hover:from-rose-700 hover:to-red-600 border border-rose-400 rounded-lg text-white shadow transition"
+                  className="py-1 bg-gradient-to-r from-rose-800 to-red-700 hover:from-rose-700 hover:to-red-600 border border-rose-400 rounded text-white shadow transition"
                 >
                   ROUGE (KIRMIZI)
                 </button>
                 <button 
                   onClick={() => addRouletteBet('BLACK')}
-                  className="py-2 bg-gradient-to-r from-zinc-950 to-zinc-900 hover:from-zinc-900 hover:to-zinc-800 border border-zinc-600 rounded-lg text-white shadow transition"
+                  className="py-1 bg-gradient-to-r from-zinc-950 to-zinc-900 hover:from-zinc-900 hover:to-zinc-800 border border-zinc-600 rounded text-white shadow transition"
                 >
                   NOIR (SİYAH)
                 </button>
                 <button 
                   onClick={() => addRouletteBet('ODD')}
-                  className="py-2 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
+                  className="py-1 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded text-amber-200 transition"
                 >
                   IMPAIR (TEK)
                 </button>
                 <button 
                   onClick={() => addRouletteBet('HIGH')}
-                  className="py-2 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
+                  className="py-1 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded text-amber-200 transition"
                 >
                   PASSE (19-36)
                 </button>
               </div>
 
               {/* Düzineler (Douzaines) */}
-              <div className="grid grid-cols-3 gap-1.5 text-[10px] sm:text-xs font-bold font-serif">
+              <div className="grid grid-cols-3 gap-1 text-[9px] sm:text-[10px] font-bold font-serif">
                 <button 
                   onClick={() => addRouletteBet('DOZEN_1')}
-                  className="py-1.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-yellow-300 transition"
+                  className="py-0.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded text-yellow-300 transition"
                 >
                   1ère 12 (1 - 12) [2:1]
                 </button>
                 <button 
                   onClick={() => addRouletteBet('DOZEN_2')}
-                  className="py-1.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-yellow-300 transition"
+                  className="py-0.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded text-yellow-300 transition"
                 >
                   2ème 12 (13 - 24) [2:1]
                 </button>
                 <button 
                   onClick={() => addRouletteBet('DOZEN_3')}
-                  className="py-1.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-yellow-300 transition"
+                  className="py-0.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded text-yellow-300 transition"
                 >
                   3ème 12 (25 - 36) [2:1]
                 </button>
               </div>
 
               {/* 0 ve 1-36 Rakam Izgarası */}
-              <div className="flex gap-1.5">
+              <div className="flex gap-1">
                 <button
                   onClick={() => addRouletteBet('STRAIGHT', 0)}
-                  className="w-10 sm:w-12 rounded-lg bg-gradient-to-b from-emerald-700 to-emerald-900 hover:from-emerald-600 hover:to-emerald-800 border-2 border-emerald-400 font-bold text-base sm:text-lg flex items-center justify-center shadow"
+                  className="w-8 sm:w-10 rounded bg-gradient-to-b from-emerald-700 to-emerald-900 hover:from-emerald-600 hover:to-emerald-800 border border-emerald-400 font-bold text-sm sm:text-base flex items-center justify-center shadow"
                 >
                   0
                 </button>
 
-                <div className="grid grid-cols-12 gap-1 flex-1 font-mono text-[10px] sm:text-xs font-bold">
+                <div className="grid grid-cols-12 gap-0.5 flex-1 font-mono text-[9px] sm:text-[10px] font-bold">
                   {Array.from({ length: 36 }, (_, i) => i + 1).map(num => {
                     const isRed = RED_NUMBERS.includes(num);
                     const betOnThis = rouletteBets.find(b => b.type === 'STRAIGHT' && b.target === num);
@@ -978,7 +976,7 @@ export default function MonteCarloGrandCasinoModal({
                       <button
                         key={num}
                         onClick={() => addRouletteBet('STRAIGHT', num)}
-                        className={`h-7 sm:h-8 rounded border flex flex-col items-center justify-center transition relative ${
+                        className={`h-5 sm:h-6 rounded border flex flex-col items-center justify-center transition relative ${
                           isRed 
                             ? 'bg-gradient-to-b from-rose-800 to-rose-950 hover:from-rose-700 border-rose-500 text-white' 
                             : 'bg-gradient-to-b from-zinc-900 to-black hover:from-zinc-800 border-zinc-700 text-white'
@@ -986,7 +984,7 @@ export default function MonteCarloGrandCasinoModal({
                       >
                         <span>{num}</span>
                         {betOnThis && (
-                          <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-yellow-400 text-black text-[8px] font-black flex items-center justify-center shadow">
+                          <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-yellow-400 text-black text-[7px] font-black flex items-center justify-center shadow">
                             •
                           </span>
                         )}
