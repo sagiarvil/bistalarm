@@ -78,50 +78,34 @@ export default function GlobalFXPortal({
               </div>
             </div>
 
-            {/* Masaüstü Menü */}
-            <div className="hidden lg:flex items-center gap-6 text-xs font-semibold text-gray-300">
+            {/* Masaüstü Menü (Exness & IC Markets Hiyerarşisi) */}
+            <div className="hidden xl:flex items-center gap-6 text-xs font-semibold text-gray-300">
               <a href="#markets" className="hover:text-white transition">Piyasalar</a>
               <a href="#accounts" className="hover:text-white transition">Hesap Türleri</a>
               <button onClick={onOpenNextGen} className="flex items-center gap-1 text-purple-400 hover:text-purple-300 transition">
-                <span>🚀</span> Yeni Nesil Kazanç
+                <span>🚀</span> Prop Fonu ($100K)
               </button>
               {onOpenGrandCasino && (
-                <button onClick={onOpenGrandCasino} className="flex items-center gap-1 text-amber-300 hover:text-amber-100 font-serif font-black tracking-wide transition">
-                  <span>🇲🇨</span> Monte Carlo Salonu
+                <button onClick={onOpenGrandCasino} className="flex items-center gap-1.5 text-amber-300 hover:text-amber-100 font-serif font-black tracking-wide transition px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+                  <span>🇲🇨</span> Monte Carlo VIP
                 </button>
               )}
-              {onOpenTacticsGuide && (
-                <button onClick={onOpenTacticsGuide} className="flex items-center gap-1 text-yellow-400 hover:text-yellow-200 font-bold transition">
-                  <span>⚡</span> VIP Taktikler
-                </button>
-              )}
-              <a href="#technology" className="hover:text-white transition">Altyapı (0.01ms)</a>
-              <a href="#security" className="hover:text-white transition">Fon Güvenliği</a>
+              <a href="#technology" className="hover:text-white transition">Teknoloji & Güvenlik</a>
             </div>
           </div>
 
-          {/* Sağ Eylem Butonları (Kırılma ve Taşma Olmayan Kurumsal Yerleşim) */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-            {onOpenGrandCasino && (
-              <button
-                onClick={onOpenGrandCasino}
-                className="bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 hover:opacity-95 text-black font-black text-xs px-3 py-2 rounded-lg transition shadow-[0_0_15px_rgba(245,158,11,0.4)] border border-amber-300 flex items-center gap-1.5 active:scale-95 font-serif shrink-0"
-              >
-                <span>🇲🇨</span>
-                <span>Monte Carlo VIP</span>
-              </button>
-            )}
-
+          {/* Sağ Eylem Butonları (Kesinlikle Kırılmayan & Taşmayan ECN Mimarisi) */}
+          <div className="flex items-center gap-2.5 shrink-0">
             <button
               onClick={onOpenDeposit}
-              className="bg-[#1b2332] hover:bg-[#253043] border border-[#2d3a52] text-white text-xs font-semibold px-3 py-2 rounded-lg transition shrink-0"
+              className="bg-[#151c28] hover:bg-[#1f293b] border border-[#26354a] text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition whitespace-nowrap active:scale-95"
             >
               Para Yatır
             </button>
 
             <button
               onClick={() => onOpenTerminal()}
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-xs px-3.5 py-2 rounded-lg transition shadow-[0_0_15px_rgba(41,121,255,0.35)] flex items-center gap-1.5 active:scale-95 shrink-0"
+              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-extrabold text-xs px-4 py-2 rounded-lg transition shadow-[0_0_15px_rgba(41,121,255,0.35)] flex items-center gap-1.5 active:scale-95 whitespace-nowrap"
             >
               <span>💻</span>
               <span>Canlı WebTrader</span>
@@ -129,7 +113,7 @@ export default function GlobalFXPortal({
 
             <Link
               href="/admin"
-              className="bg-[#141a24] hover:bg-[#1e2635] border border-blue-500/30 text-blue-400 text-xs px-2.5 py-2 rounded-lg transition hidden md:flex items-center gap-1 shrink-0"
+              className="bg-[#10151f] hover:bg-[#182030] border border-blue-500/30 text-blue-400 text-xs px-2.5 py-2 rounded-lg transition hidden md:flex items-center gap-1 shrink-0 font-mono"
             >
               <span>⚙️</span> Dealer
             </Link>
@@ -188,7 +172,8 @@ export default function GlobalFXPortal({
             0.0 Pip&apos;ten başlayan ham spreadler, 1:2000 kademeli dinamik kaldıraç, 0 saniye anında para çekme ve hafta sonu kesintisiz 7/24 sentetik endeksler.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
+          {/* 2 Ana ECN & VIP CTA Butonu */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-3">
             <button
               onClick={() => onOpenTerminal()}
               className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-extrabold text-sm rounded-xl transition shadow-[0_0_30px_rgba(41,121,255,0.4)] flex items-center justify-center gap-2 active:scale-95"
@@ -204,10 +189,13 @@ export default function GlobalFXPortal({
                 <span>🇲🇨</span> Casino de Monte-Carlo VIP
               </button>
             )}
+          </div>
 
+          {/* İkincil Hızlı Seçenekler & Rozetler */}
+          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
             <button
               onClick={onOpenNextGen}
-              className="w-full sm:w-auto px-6 py-3.5 bg-[#121721] hover:bg-[#1a2232] border border-[#263348] text-white font-bold text-sm rounded-xl transition flex items-center justify-center gap-2"
+              className="px-4 py-2 bg-[#101622] hover:bg-[#182030] border border-[#222d42] text-gray-300 hover:text-white font-semibold text-xs rounded-lg transition flex items-center gap-1.5 shadow-sm active:scale-95 font-mono"
             >
               <span>🏆</span> $100,000 Prop Fon Sınavı
             </button>
@@ -215,11 +203,15 @@ export default function GlobalFXPortal({
             {onOpenTacticsGuide && (
               <button
                 onClick={onOpenTacticsGuide}
-                className="w-full sm:w-auto px-5 py-3.5 bg-gradient-to-r from-amber-950/60 to-yellow-950/60 hover:from-amber-900/80 hover:to-yellow-900/80 border border-yellow-500/50 text-yellow-300 font-bold text-sm rounded-xl transition flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(234,179,8,0.2)] active:scale-95"
+                className="px-4 py-2 bg-gradient-to-r from-amber-950/40 to-yellow-950/40 hover:from-amber-900/60 hover:to-yellow-900/60 border border-yellow-500/40 text-yellow-300 font-semibold text-xs rounded-lg transition flex items-center gap-1.5 shadow-sm active:scale-95 font-mono"
               >
-                <span>⚡</span> VIP Taktikler & Rehber
+                <span>⚡</span> VIP Taktik Manifestosu
               </button>
             )}
+
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-[#0b0e14] border border-[#192232] rounded-lg text-[11px] font-mono text-emerald-400">
+              <span>✓</span> 0.0 Ham Spread • LD4 Equinix
+            </div>
           </div>
 
           {/* Canlı Mini Piyasa & Hızlı Al/Sat Önizleme Konsolu (Exness / TradingView Standardı) */}
