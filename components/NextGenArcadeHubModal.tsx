@@ -321,6 +321,26 @@ export default function NextGenArcadeHubModal({
           {/* 1. OYUN: ROKET CRASH (AVIATOR STİLİ) */}
           {activeTab === 'CRASH_ROCKET' && (
             <div className="space-y-4">
+              
+              {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
+              <div className="bg-gradient-to-r from-rose-950/60 via-orange-950/50 to-rose-950/60 border border-rose-500/30 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-orange-500 text-black font-black text-[10px] uppercase">1. ADIM</span>
+                  <span className="text-gray-300 font-bold">Bahsi Seç (${bet})</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-rose-500 text-white font-black text-[10px] uppercase animate-pulse">2. ADIM</span>
+                  <span className="text-rose-300 font-bold">Roketi Fırlat</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-emerald-500 text-black font-black text-[10px] uppercase">3. ADIM</span>
+                  <span className="text-emerald-300 font-bold">Patlamadan Nakite Çevir!</span>
+                </div>
+                <span className="text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30 hidden sm:inline">
+                  ⚡ 88.88x Tepe Çarpanı
+                </span>
+              </div>
+
               <div className="relative h-64 sm:h-72 bg-[#060810] border-2 border-rose-500/40 rounded-2xl overflow-hidden flex flex-col items-center justify-center p-6 shadow-inner">
                 {/* Uzay Izgarası */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293d15_1px,transparent_1px),linear-gradient(to_bottom,#1f293d15_1px,transparent_1px)] bg-[size:24px_24px]"></div>
@@ -390,6 +410,22 @@ export default function NextGenArcadeHubModal({
           {/* 2. OYUN: CRYPTO MINES (MAYIN TARLASI) */}
           {activeTab === 'CRYPTO_MINES' && (
             <div className="space-y-4">
+              
+              {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
+              <div className="bg-gradient-to-r from-cyan-950/60 via-blue-950/50 to-cyan-950/60 border border-cyan-500/30 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-cyan-500 text-black font-black text-[10px] uppercase">1. ADIM</span>
+                  <span className="text-gray-300 font-bold">Kutulara Tıkla & Elmasları Aç</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-emerald-500 text-black font-black text-[10px] uppercase animate-pulse">2. ADIM</span>
+                  <span className="text-emerald-300 font-bold">Çarpan Yükselirken Nakite Çevir!</span>
+                </div>
+                <span className="text-yellow-400 font-bold bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/30">
+                  💎 God Mode: Tüm Kutular Elmas!
+                </span>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                 
                 {/* 5x5 Mayın Izgarası */}
@@ -471,6 +507,19 @@ export default function NextGenArcadeHubModal({
           {/* 3. OYUN: PLINKO PIN DROP */}
           {activeTab === 'PLINKO_PIN' && (
             <div className="space-y-4">
+              
+              {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
+              <div className="bg-gradient-to-r from-yellow-950/60 via-amber-950/50 to-yellow-950/60 border border-yellow-500/30 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-amber-500 text-black font-black text-[10px] uppercase">1. ADIM</span>
+                  <span className="text-gray-300 font-bold">Bahsini Seç & Topu Bırak</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-yellow-500 text-black font-black text-[10px] uppercase animate-pulse">HEDEF</span>
+                  <span className="text-yellow-300 font-bold">Kenarlardaki 1000x ve 130x Altın Yuvaları!</span>
+                </div>
+              </div>
+
               <div className="relative h-72 sm:h-80 bg-[#060810] border-2 border-amber-500/40 rounded-2xl overflow-hidden flex flex-col items-center justify-between p-4 shadow-inner">
                 
                 {/* Düşen Top */}

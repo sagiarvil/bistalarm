@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { UserAccount, SYMBOL_SPECS } from '@/lib/tradingEngine';
 import { AuthUser } from '@/lib/authStore';
 import LiveTickerTape from './LiveTickerTape';
+import LiveWinnersTicker from './LiveWinnersTicker';
 
 interface GlobalFXPortalProps {
   account: UserAccount;
@@ -147,6 +148,11 @@ export default function GlobalFXPortal({
         currentPrices={currentPrices} 
         onSelectSymbol={(sym) => onOpenTerminal(sym)} 
       />
+
+      {/* ========================================================================= */}
+      {/* 2.1 CANLI KAZANANLAR BANDI (LIVE WINNERS TICKER - ADRENALİN & FOMO AKIŞI) */}
+      {/* ========================================================================= */}
+      <LiveWinnersTicker />
 
       {/* ========================================================================= */}
       {/* 3. HERO SECTION (DÜNYA STANDARDI BAŞLIK VE ÇAĞRI) */}

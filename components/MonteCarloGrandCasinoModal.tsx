@@ -634,6 +634,21 @@ export default function MonteCarloGrandCasinoModal({
         {activeTab === 'ROULETTE' && (
           <div className="p-4 sm:p-6 space-y-5 bg-[#051c0f]">
             
+            {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
+            <div className="bg-gradient-to-r from-yellow-950/60 via-amber-950/40 to-yellow-950/60 border border-[#d4af37]/40 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-serif">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-yellow-500 text-black font-black text-[10px] uppercase font-mono">1. ADIM</span>
+                <span className="text-gray-300 font-bold">Fiş Değerini Seç ($25 - $1000)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-emerald-500 text-black font-black text-[10px] uppercase font-mono animate-pulse">2. ADIM</span>
+                <span className="text-emerald-300 font-bold">Numaraya / Renge Tıkla & ÇEVİR!</span>
+              </div>
+              <span className="text-yellow-300 font-bold bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/30">
+                🔥 Sıcak Sayılar: 17 Siyah (36x), 7 Kırmızı, 0 Yeşil
+              </span>
+            </div>
+
             {/* Canlı Çark ve Krupiye Sahnesi */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center bg-[#072415] border-2 border-[#d4af37]/40 rounded-2xl p-4 shadow-[inset_0_0_30px_rgba(0,0,0,0.5)]">
               
@@ -922,6 +937,18 @@ export default function MonteCarloGrandCasinoModal({
         {/* ================================================================== */}
         {activeTab === 'BLACKJACK' && (
           <div className="p-4 sm:p-6 space-y-6 bg-[#051c0f]">
+            
+            {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
+            <div className="bg-gradient-to-r from-blue-950/60 via-indigo-950/50 to-blue-950/60 border border-blue-500/40 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-blue-500 text-white font-black text-[10px] uppercase">HEDEF 21</span>
+                <span className="text-gray-300 font-bold">Krupiyeyi Geç, 21'i Aşma! As = 1 veya 11</span>
+              </div>
+              <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+                ⚡ GOD MODE: Oyuncuya Her Elde Doğal Blackjack!
+              </span>
+            </div>
+
             <div className="bg-[#09351e] border-4 border-[#d4af37]/60 rounded-2xl p-6 shadow-2xl space-y-6">
               
               {/* Krupiye Alanı */}
@@ -1037,6 +1064,18 @@ export default function MonteCarloGrandCasinoModal({
         {/* ================================================================== */}
         {activeTab === 'BACCARAT' && (
           <div className="p-4 sm:p-6 space-y-6 bg-[#051c0f]">
+            
+            {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
+            <div className="bg-gradient-to-r from-purple-950/60 via-amber-950/50 to-purple-950/60 border border-amber-500/40 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-serif">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-amber-500 text-black font-black text-[10px] uppercase font-mono">PUNTO / BANCO</span>
+                <span className="text-gray-300 font-bold">9'a en yakın ele oyna (Oyuncu / Beraberlik / Banker)</span>
+              </div>
+              <span className="text-yellow-300 font-bold bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/30">
+                👑 Salle Médecin Yüksek Bahis Masası
+              </span>
+            </div>
+
             <div className="bg-[#09351e] border-4 border-[#d4af37]/60 rounded-2xl p-6 shadow-2xl space-y-6">
               
               {/* Yol Haritası */}

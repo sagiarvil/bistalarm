@@ -386,6 +386,26 @@ export default function MonteCarloSlotGame({
             </div>
           </div>
 
+          {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ & HEYECAN AKIŞI */}
+          <div className="bg-gradient-to-r from-purple-950/60 via-amber-950/40 to-purple-950/60 border border-amber-500/30 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 rounded bg-amber-500 text-black font-black text-[10px] uppercase tracking-wide">
+                1. ADIM
+              </span>
+              <span className="text-gray-300 font-bold">Bahsini Seç (${bet})</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 rounded bg-emerald-500 text-black font-black text-[10px] uppercase tracking-wide animate-pulse">
+                2. ADIM
+              </span>
+              <span className="text-emerald-300 font-bold">Kolu Çek veya ÇEVİR'e Bas!</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-yellow-300 font-bold bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/30">
+              <span className="animate-spin">⚡</span>
+              <span>1000x Mega Win Garantili!</span>
+            </div>
+          </div>
+
           {/* 5x3 Makaralar (Reels Grid) */}
           <div className={`relative bg-[#07030e] border-4 rounded-2xl p-3 shadow-inner overflow-hidden transition-all duration-300 ${
             isTensionSpin 
