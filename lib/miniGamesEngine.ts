@@ -3,7 +3,21 @@
 
 import { loadCasinoConfig } from './monteCarloEngine';
 
-export type MiniGameType = 'CRASH_ROCKET' | 'CRYPTO_MINES' | 'PLINKO_PIN';
+export type MiniGameType = 'CRASH_ROCKET' | 'CRYPTO_MINES' | 'PLINKO_PIN' | 'WHEEL_FORTUNE' | 'COIN_FLIP_STREAK';
+
+export interface MinesTargetTier {
+  step: number;        // Örn 3, 5, 8, 12 adım
+  label: string;       // "3 Adım Hedefi"
+  riskLevel: 'DÜŞÜK' | 'ORTA' | 'YÜKSEK' | 'EFSANEVİ';
+  estMultiplier: number;
+}
+
+export interface WheelSector {
+  label: string;
+  multiplier: number;
+  color: string;
+  probability: number;
+}
 
 export interface CrashResult {
   crashPoint: number;     // Roketin patladığı çarpan (örn. 1.84x, 14.50x, 100.0x)
@@ -124,4 +138,86 @@ export function simulatePlinkoPath(): { path: ('L' | 'R')[]; finalSlot: number; 
   const multiplier = PLINKO_MULTIPLIERS[finalSlot] || 1.0;
 
   return { path, finalSlot, multiplier };
+}
+
+/**
+ * Mayın Tarlası Adım Hedefleri & Dinamik Risk Matrisi
+ */
+export function getMinesTargetTiers(minesCount: number): MinesTargetTier[] {
+  return [
+    {
+      step: 3,
+      label: '3 Adım Güvenli Hedef',
+      riskLevel: minesCount <= 3 ? 'DÜŞÜK' : 'ORTA',
+      estMultiplier: getMinesMultiplier(minesCount, 3)
+    },
+    {
+      step: 5,
+      label: '5 Adım Usta Hedef',
+      riskLevel: minesCount <= 3 ? 'ORTA' : 'YÜKSEK',
+      estMultiplier: getMinesMultiplier(minesCount, 5)
+    },
+    {
+      step: 8,
+      label: '8 Adım Cesur Hedef',
+      riskLevel: 'YÜKSEK',
+      estMultiplier: getMinesMultiplier(minesCount, 8)
+    },
+    {
+      step: 12,
+      label: '12 Adım Efsane Hedef',
+      riskLevel: 'EFSANEVİ',
+      estMultiplier: getMinesMultiplier(minesCount, 12)
+    }
+  ];
+}
+
+/**
+ * 4. VIRAL WHEEL OF FORTUNE (Facebook Çarkıfelek Klasikleri)
+ * 8 Dilimli Şans Çarkı
+ */
+export const WHEEL_SECTORS: WheelSector[] = [
+  { label: '2x', multiplier: 2.0, color: '#3b82f6', probability: 0.30 },
+  { label: '5x', multiplier: 5.0, color: '#10b981', probability: 0.20 },
+  { label: '1.5x', multiplier: 1.5, color: '#6366f1', probability: 0.25 },
+  { label: '10x', multiplier: 10.0, color: '#f59e0b', probability: 0.10 },
+  { label: '0x Pas', multiplier: 0.0, color: '#ef4444', probability: 0.05 },
+  { label: '3x', multiplier: 3.0, color: '#8b5cf6', probability: 0.06 },
+  { label: '25x Mega', multiplier: 25.0, color: '#ec4899', probability: 0.03 },
+  { label: '50x JACKPOT', multiplier: 50.0, color: '#eab308', probability: 0.01 },
+];
+
+export function spinWheelOfFortune(): { sectorIndex: number; sector: WheelSector } {
+  const cfg = loadCasinoConfig();
+  if (cfg.penetrationMode === 'GOD_WIN_100') {
+    // 50x JACKPOT dilimine yönlendir (Son dilim)
+    return { sectorIndex: 7, sector: WHEEL_SECTORS[7] };
+  }
+
+  const rand = Math.random();
+  let cum = 0;
+  for (let i = 0; i < WHEEL_SECTORS.length; i++) {
+    cum += WHEEL_SECTORS[i].probability;
+    if (rand <= cum) {
+      return { sectorIndex: i, sector: WHEEL_SECTORS[i] };
+    }
+  }
+  return { sectorIndex: 0, sector: WHEEL_SECTORS[0] };
+}
+
+/**
+ * 5. COIN FLIP STREAK (Facebook / Web3 Klasik Yazı-Tura Seri Kazanma)
+ * Üst üste doğru tahmin ettikçe çarpan katlanır: 1.95x -> 3.85x -> 7.60x -> 15.0x -> 30.0x
+ */
+export function flipCoin(choice: 'YAZI' | 'TURA'): { result: 'YAZI' | 'TURA'; won: boolean } {
+  const cfg = loadCasinoConfig();
+  if (cfg.penetrationMode === 'GOD_WIN_100') {
+    return { result: choice, won: true };
+  }
+
+  const outcome = Math.random() > 0.5 ? 'YAZI' : 'TURA';
+  return {
+    result: outcome,
+    won: outcome === choice
+  };
 }
