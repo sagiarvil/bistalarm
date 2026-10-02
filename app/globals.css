@@ -124,10 +124,21 @@ body {
   -webkit-backface-visibility: hidden !important;
 }
 
-/* Dokunmatik veya fare ile üzerine gelindiğinde duraklatma */
+/* Dokunmatik veya fare dahil hiçbir engelleyicinin bandı durdurmasına izin verilmez */
+.ticker-track .ticker-marquee,
 .ticker-track:hover .ticker-marquee,
+.animate-marquee,
 .animate-marquee:hover {
-  animation-play-state: paused;
+  animation-play-state: running !important;
+}
+
+/* Scrollbar Gizleme ve Sıfır Titreme */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Mobil Cihazlarda Akıcı Hız Ayarı */
@@ -145,8 +156,11 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .ticker-marquee {
     animation: ticker-scroll 26s linear infinite !important;
+    animation-play-state: running !important;
   }
   .animate-marquee {
     animation: ticker-marquee-legacy 28s linear infinite !important;
+    animation-play-state: running !important;
   }
 }
+

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { SYMBOL_SPECS } from '@/lib/tradingEngine';
 
 interface LiveTickerTapeProps {
@@ -26,6 +26,40 @@ export default function LiveTickerTape({
   currentPrices,
   onSelectSymbol
 }: LiveTickerTapeProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Kurşun geçirmez 60 FPS donanım kaydırma motoru (Tüm tarayıcı & cihaz kısıtlamalarını bypass eder)
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    let animId: number;
+    let lastTime = performance.now();
+    const PIXELS_PER_SECOND = 42; // Stabil ve okunabilir akış hızı
+
+    const loop = (now: number) => {
+      const delta = Math.min((now - lastTime) / 1000, 0.1); // Sekme değişimlerinde sıçramayı önler
+      lastTime = now;
+
+      if (el) {
+        el.scrollLeft += PIXELS_PER_SECOND * delta;
+        // Listenin ilk yarısı bittiğinde sıfır gecikmeyle başa sar
+        const half = el.scrollWidth / 2;
+        if (half > 0 && el.scrollLeft >= half) {
+          el.scrollLeft -= half;
+        }
+      }
+
+      animId = requestAnimationFrame(loop);
+    };
+
+    animId = requestAnimationFrame(loop);
+
+    return () => {
+      cancelAnimationFrame(animId);
+    };
+  }, []);
+
   const renderItem = (sym: string, keyPrefix: string, idx: number) => {
     const sp = SYMBOL_SPECS[sym] || { basePrice: 100, digits: 2, spread: 0.1 };
     const p = currentPrices[sym] || { bid: sp.basePrice, ask: sp.basePrice + sp.spread };
@@ -36,7 +70,7 @@ export default function LiveTickerTape({
       <div 
         key={`${keyPrefix}-${sym}-${idx}`} 
         onClick={() => onSelectSymbol && onSelectSymbol(sym)}
-        className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition font-mono text-xs shrink-0 select-none py-1"
+        className="inline-flex items-center gap-2 cursor-pointer hover:opacity-80 transition font-mono text-xs shrink-0 select-none py-1 px-3 border-r border-[#182030]/60"
         title={`${sym} Canlı Fiyat - Tıkla ve İşlem Yap`}
       >
         <span className="font-bold text-gray-200">{sym}</span>
@@ -52,14 +86,23 @@ export default function LiveTickerTape({
 
   return (
     <div className="bg-[#080b12] border-b border-[#182030] py-1.5 overflow-hidden select-none relative w-full z-40">
-      <div className="ticker-track flex items-center">
+      {/* Sol ve Sağ Gradyan Gölgeler (Yumuşak Geçiş) */}
+      <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-[#080b12] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-[#080b12] to-transparent z-10 pointer-events-none" />
+
+      {/* Kaydırma Taşıyıcısı (RAF Donanım İvmeli Kesintisiz Akış) */}
+      <div 
+        ref={containerRef} 
+        className="flex items-center overflow-x-hidden no-scrollbar whitespace-nowrap w-full"
+        style={{ scrollBehavior: 'auto', WebkitOverflowScrolling: 'touch' }}
+      >
         {/* 1. Şerit */}
-        <div className="ticker-marquee flex items-center">
+        <div className="flex items-center shrink-0">
           {DEFAULT_MARQUEE_SYMBOLS.map((sym, idx) => renderItem(sym, 'track1', idx))}
         </div>
 
         {/* 2. Şerit (Sonsuz Döngü Kesintisiz Çift Bellek) */}
-        <div className="ticker-marquee flex items-center" aria-hidden="true">
+        <div className="flex items-center shrink-0" aria-hidden="true">
           {DEFAULT_MARQUEE_SYMBOLS.map((sym, idx) => renderItem(sym, 'track2', idx))}
         </div>
       </div>

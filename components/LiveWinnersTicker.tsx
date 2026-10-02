@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 export interface WinnerItem {
+
   id: string;
   user: string;
   avatar: string;
@@ -27,6 +28,38 @@ const INITIAL_WINNERS: WinnerItem[] = [
 
 export default function LiveWinnersTicker() {
   const [winners, setWinners] = useState<WinnerItem[]>(INITIAL_WINNERS);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Kurşun geçirmez 60 FPS donanım kaydırma motoru (Tüm tarayıcı & cihaz kısıtlamalarını bypass eder)
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    let animId: number;
+    let lastTime = performance.now();
+    const SPEED = 48; // Canlı kazananlar akış hızı (piksel/saniye)
+
+    const loop = (now: number) => {
+      const delta = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      if (el) {
+        el.scrollLeft += SPEED * delta;
+        const half = el.scrollWidth / 2;
+        if (half > 0 && el.scrollLeft >= half) {
+          el.scrollLeft -= half;
+        }
+      }
+
+      animId = requestAnimationFrame(loop);
+    };
+
+    animId = requestAnimationFrame(loop);
+
+    return () => {
+      cancelAnimationFrame(animId);
+    };
+  }, []);
 
   // Canlı kazanç akışı simülatörü (Her 5.5 saniyede bir yeni Caesars VIP kazanan düşer)
   useEffect(() => {
@@ -86,19 +119,22 @@ export default function LiveWinnersTicker() {
           </div>
         </div>
 
-        {/* Kayan Şerit (Double Marquee GPU Hızlandırmalı - 60FPS) */}
-        <div className="ticker-track flex items-center overflow-hidden flex-1 relative">
-          
+        {/* Kayan Şerit (RAF Donanım İvmeli Kesintisiz Akış - Her Cihazda 60FPS) */}
+        <div 
+          ref={scrollRef}
+          className="flex items-center overflow-x-hidden no-scrollbar whitespace-nowrap flex-1 relative"
+          style={{ scrollBehavior: 'auto', WebkitOverflowScrolling: 'touch' }}
+        >
           {/* Sol & Sağ Solma Maskeleri */}
           <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#1a0e06] to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#1a0e06] to-transparent z-10 pointer-events-none" />
 
           {/* 1. Şerit */}
-          <div className="ticker-marquee flex items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-4 sm:gap-6 shrink-0 pr-4 sm:pr-6">
             {winners.map((item) => (
               <div 
                 key={`win1-${item.id}`}
-                className="flex items-center gap-3 bg-gradient-to-r from-[#201007]/90 via-[#361c0c]/90 to-[#201007]/90 border border-[#d4af37]/50 hover:border-yellow-400 px-3.5 py-1.5 rounded-2xl text-xs font-mono shrink-0 transition-transform duration-200 hover:scale-105 shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
+                className="flex items-center gap-3 bg-gradient-to-r from-[#201007]/90 via-[#361c0c]/90 to-[#201007]/90 border border-[#d4af37]/50 hover:border-yellow-400 px-3.5 py-1.5 rounded-2xl text-xs font-mono shrink-0 transition-transform duration-200 hover:scale-105 shadow-[0_2px_12px_rgba(0,0,0,0.6)] select-none"
               >
                 <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-yellow-400 border border-yellow-200 flex items-center justify-center text-sm shadow">
                   {item.avatar}
@@ -135,11 +171,11 @@ export default function LiveWinnersTicker() {
           </div>
 
           {/* 2. Şerit (Sonsuz Kesintisiz Marquee Döngüsü) */}
-          <div className="ticker-marquee flex items-center gap-4 sm:gap-6" aria-hidden="true">
+          <div className="flex items-center gap-4 sm:gap-6 shrink-0 pr-4 sm:pr-6" aria-hidden="true">
             {winners.map((item) => (
               <div 
                 key={`win2-${item.id}`}
-                className="flex items-center gap-3 bg-gradient-to-r from-[#201007]/90 via-[#361c0c]/90 to-[#201007]/90 border border-[#d4af37]/50 hover:border-yellow-400 px-3.5 py-1.5 rounded-2xl text-xs font-mono shrink-0 transition-transform duration-200 hover:scale-105 shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
+                className="flex items-center gap-3 bg-gradient-to-r from-[#201007]/90 via-[#361c0c]/90 to-[#201007]/90 border border-[#d4af37]/50 hover:border-yellow-400 px-3.5 py-1.5 rounded-2xl text-xs font-mono shrink-0 transition-transform duration-200 hover:scale-105 shadow-[0_2px_12px_rgba(0,0,0,0.6)] select-none"
               >
                 <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-yellow-400 border border-yellow-200 flex items-center justify-center text-sm shadow">
                   {item.avatar}
@@ -176,6 +212,7 @@ export default function LiveWinnersTicker() {
           </div>
 
         </div>
+
 
       </div>
     </div>
