@@ -97,13 +97,38 @@ export default function MonteCarloSlotGame({
         osc.start(now);
         osc.stop(now + 0.4);
       } else if (type === 'jackpot') {
+        // Caesars Palace & Monte Carlo Grand Win Trompet Fanfarı
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(440, now);
-        osc.frequency.exponentialRampToValueAtTime(880, now + 0.3);
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.linearRampToValueAtTime(0.01, now + 0.8);
+        osc.frequency.setValueAtTime(523.25, now); // C5
+        osc.frequency.setValueAtTime(659.25, now + 0.15); // E5
+        osc.frequency.setValueAtTime(783.99, now + 0.30); // G5
+        osc.frequency.setValueAtTime(1046.50, now + 0.45); // C6
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 1.2);
         osc.start(now);
-        osc.stop(now + 0.8);
+        osc.stop(now + 1.2);
+
+        // Altın Sikke / Madeni Para Şıkırtısı (Cascading Gold Coins)
+        const coinFreqs = [1500, 1800, 2200, 2700, 3100, 1900, 2400, 2800];
+        for (let i = 0; i < 14; i++) {
+          setTimeout(() => {
+            try {
+              if (!audioCtxRef.current) return;
+              const cCtx = audioCtxRef.current;
+              const cNow = cCtx.currentTime;
+              const cOsc = cCtx.createOscillator();
+              const cGain = cCtx.createGain();
+              cOsc.type = 'triangle';
+              cOsc.frequency.setValueAtTime(coinFreqs[Math.floor(Math.random() * coinFreqs.length)], cNow);
+              cGain.gain.setValueAtTime(0.12, cNow);
+              cGain.gain.exponentialRampToValueAtTime(0.001, cNow + 0.05);
+              cOsc.connect(cGain);
+              cGain.connect(cCtx.destination);
+              cOsc.start(cNow);
+              cOsc.stop(cNow + 0.05);
+            } catch (err) {}
+          }, i * 45);
+        }
       }
     } catch (e) {}
   };

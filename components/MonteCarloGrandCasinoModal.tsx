@@ -51,6 +51,7 @@ export default function MonteCarloGrandCasinoModal({
   const [screenShake, setScreenShake] = useState<boolean>(false);
   const [activeFeedIdx, setActiveFeedIdx] = useState<number>(0);
   const [racetrackOpen, setRacetrackOpen] = useState<boolean>(true);
+  const [grandWinBanner, setGrandWinBanner] = useState<{ isOpen: boolean; amount: number; title: string } | null>(null);
 
   // Canlı VIP Ticker Döngüsü (Her 4 saniyede bir Monaco salonlarından akış)
   useEffect(() => {
@@ -110,12 +111,55 @@ export default function MonteCarloGrandCasinoModal({
     setTimeout(() => playTone(450, 'sine', 0.04, 0.03), 30);
   };
 
+  // Altın Sikke / Fiş Yağmuru Sesi (Gold Coin Cascade - Caesars Palace & Monte Carlo)
+  const playCoinCascadeSound = () => {
+    const tones = [1200, 1600, 2000, 2400, 2800, 3200, 1800, 2200, 2600, 3000];
+    for (let i = 0; i < 16; i++) {
+      setTimeout(() => {
+        const freq = tones[Math.floor(Math.random() * tones.length)];
+        playTone(freq, 'triangle', 0.04, 0.12);
+      }, i * 45);
+    }
+  };
+
+  // Monte Carlo & Caesars Palace İmparatorluk Zafer Orkestrası (Fanfare + Pirinç Tını)
+  const triggerGrandWinCelebration = (amount: number, title = 'BÜYÜK ZAFER!') => {
+    setGrandWinBanner({ isOpen: true, amount, title });
+    setScreenShake(true);
+    setTimeout(() => setScreenShake(false), 900);
+
+    // 1. Aşama: Zafer Akoru (Trompet / Pirinç Tınısı C-Majör)
+    playTone(523.25, 'sawtooth', 0.25, 0.25); // C5
+    playTone(659.25, 'triangle', 0.25, 0.2);  // E5
+    playTone(783.99, 'sine', 0.25, 0.2);      // G5
+
+    setTimeout(() => {
+      playTone(659.25, 'sawtooth', 0.25, 0.25);
+      playTone(783.99, 'triangle', 0.25, 0.2);
+      playTone(1046.50, 'sine', 0.25, 0.25);  // C6
+    }, 180);
+
+    setTimeout(() => {
+      playTone(783.99, 'sawtooth', 0.35, 0.3);
+      playTone(1046.50, 'triangle', 0.35, 0.3);
+      playTone(1318.51, 'sine', 0.45, 0.3);   // E6
+    }, 380);
+
+    // 2. Aşama: Şampanya Patlaması & Altın Sikke Yağmuru
+    setTimeout(() => {
+      playTone(150, 'sawtooth', 0.15, 0.4); // Derin bas patlama
+      playCoinCascadeSound();
+    }, 600);
+
+    // 4.5 saniye sonra kapat
+    setTimeout(() => {
+      setGrandWinBanner(null);
+    }, 4500);
+  };
+
   // Monte Carlo Kraliyet Zafer Fanfarı
-  const playWinFanfare = () => {
-    playTone(523.25, 'triangle', 0.18, 0.2); // C5
-    setTimeout(() => playTone(659.25, 'triangle', 0.18, 0.2), 120); // E5
-    setTimeout(() => playTone(783.99, 'triangle', 0.25, 0.2), 240); // G5
-    setTimeout(() => playTone(1046.50, 'triangle', 0.5, 0.25), 380); // C6
+  const playWinFanfare = (amount?: number, title?: string) => {
+    triggerGrandWinCelebration(amount || 500, title || 'MONACO KRALİYET KAZANCI!');
   };
 
   // --------------------------------------------------------------------------
@@ -332,7 +376,7 @@ export default function MonteCarloGrandCasinoModal({
 
         if (result.totalPayout > 0) {
           onUpdateBalance(userBalance - totalBet + result.totalPayout);
-          playWinFanfare();
+          triggerGrandWinCelebration(result.totalPayout, 'MONTE CARLO RULET ZAFERİ!');
         }
       }
     }, 30);
@@ -383,9 +427,10 @@ export default function MonteCarloGrandCasinoModal({
         setBjMessage('🤝 Egalité (Push)! Her iki tarafta da Doğal Blackjack.');
         onUpdateBalance(userBalance);
       } else {
+        const win = (bjBet * 2.5);
         setBjMessage('🔥 BLACKJACK NATUREL! 3:2 Oranında Kazandınız!');
-        onUpdateBalance(userBalance - bjBet + (bjBet * 2.5));
-        playWinFanfare();
+        onUpdateBalance(userBalance - bjBet + win);
+        triggerGrandWinCelebration(win, 'DOĞAL BLACKJACK 21!');
       }
       setBjGameStage('ROUND_OVER');
     } else {
@@ -433,13 +478,15 @@ export default function MonteCarloGrandCasinoModal({
     const dVal = calculateHandValue(dealer);
 
     if (dVal.isBust) {
+      const win = (bjBet * 2);
       setBjMessage('🎉 La Banque a brûlé (Krupiye battı)! Kazandınız (1:1).');
-      onUpdateBalance(userBalance + (bjBet * 2));
-      playWinFanfare();
+      onUpdateBalance(userBalance + win);
+      triggerGrandWinCelebration(win, 'KRUPİYE BATTI - ZAFER SİZİN!');
     } else if (pVal.total > dVal.total) {
+      const win = (bjBet * 2);
       setBjMessage(`🎉 Victoire! Eliniz: ${pVal.total} vs Kasa: ${dVal.total}`);
-      onUpdateBalance(userBalance + (bjBet * 2));
-      playWinFanfare();
+      onUpdateBalance(userBalance + win);
+      triggerGrandWinCelebration(win, `BLACKJACK ZAFERİ (${pVal.total})!`);
     } else if (dVal.total > pVal.total) {
       setBjMessage(`❌ La Banque gagne! Kasa: ${dVal.total} vs Eliniz: ${pVal.total}`);
     } else {
@@ -481,7 +528,7 @@ export default function MonteCarloGrandCasinoModal({
       if (res.winner === bacBetSide) {
         const win = bacBetAmount * res.payoutMultiplier;
         onUpdateBalance(userBalance - bacBetAmount + win);
-        playWinFanfare();
+        triggerGrandWinCelebration(win, `BACCARAT ${res.winner} KAZANDI!`);
       }
     }, 1400);
   };
@@ -496,6 +543,59 @@ export default function MonteCarloGrandCasinoModal({
         screenShake ? 'scale-[1.01] translate-y-[-2px] ring-4 ring-yellow-400' : ''
       }`}>
         
+        {/* ========================================================================= */}
+        {/* CAESARS PALACE & MONTE CARLO GRAND WIN OVERLAY (PREMIUM KAZANMA EFEKTİ) */}
+        {/* ========================================================================= */}
+        {grandWinBanner && (
+          <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center bg-black/75 backdrop-blur-sm animate-fadeIn">
+            {/* Altın Parıltı Hüzmesi */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-500/25 via-amber-600/10 to-transparent animate-pulse" />
+            
+            {/* Düşen Altın Sikkeler / Konfeti Efekti */}
+            <div className="absolute inset-0 overflow-hidden">
+              {Array.from({ length: 24 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute text-2xl sm:text-3xl animate-bounce select-none"
+                  style={{
+                    left: `${(i * 4.2) + 2}%`,
+                    top: `${(i % 5) * 18}%`,
+                    animationDuration: `${0.6 + (i % 4) * 0.25}s`,
+                    animationDelay: `${(i % 6) * 0.1}s`
+                  }}
+                >
+                  {i % 3 === 0 ? '🪙' : i % 3 === 1 ? '✨' : '👑'}
+                </div>
+              ))}
+            </div>
+
+            {/* Zafer Kartı */}
+            <div className="relative bg-gradient-to-b from-[#3a1b07] via-[#5c2b0c] to-[#200c02] border-4 border-[#ffd700] rounded-3xl p-6 sm:p-10 text-center shadow-[0_0_90px_rgba(255,215,0,0.8)] max-w-lg mx-4 transform scale-105 transition-all">
+              <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-amber-400 via-yellow-200 to-amber-600 border-4 border-white shadow-[0_0_30px_rgba(255,215,0,1)] flex items-center justify-center text-4xl mb-3 animate-pulse">
+                🏆
+              </div>
+
+              <span className="text-xs sm:text-sm font-mono tracking-widest text-amber-300 uppercase font-black block">
+                ⚜️ SALLE GARNIER HIGH ROLLER ⚜️
+              </span>
+
+              <h2 className="text-2xl sm:text-4xl font-black font-serif text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 tracking-wider my-2 drop-shadow-[0_2px_12px_rgba(255,215,0,0.5)]">
+                {grandWinBanner.title}
+              </h2>
+
+              <div className="my-4 py-3 px-6 bg-black/60 rounded-2xl border-2 border-yellow-400/80 inline-block shadow-inner">
+                <span className="text-3xl sm:text-5xl font-black font-mono text-emerald-400 tracking-tight drop-shadow-[0_0_20px_rgba(52,211,153,0.8)]">
+                  +${grandWinBanner.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                </span>
+              </div>
+
+              <p className="text-xs sm:text-sm text-amber-200/90 font-serif italic mt-1">
+                Monaco Kraliyet Kasasından Bakiyenize Anında Aktarıldı!
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Lüks Maun Ağacı ve Altın Barok Başlık */}
         <div className="relative bg-gradient-to-r from-[#2a1408] via-[#4a240c] to-[#2a1408] border-b-2 border-[#d4af37] p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-3">

@@ -59,6 +59,21 @@ export default function NextGenArcadeHubModal({
     } catch (e) {}
   };
 
+  // Caesars & Monte Carlo Tarzı Görkemli Zafer Fanfarı & Para Yağmuru
+  const playArcadeGrandFanfare = () => {
+    playSound(523.25, 'triangle', 0.25); // C5
+    setTimeout(() => playSound(659.25, 'triangle', 0.25), 140); // E5
+    setTimeout(() => playSound(783.99, 'triangle', 0.25), 280); // G5
+    setTimeout(() => playSound(1046.50, 'sawtooth', 0.4), 420); // C6
+
+    const coinPitches = [1600, 2000, 2500, 3000, 1800, 2200];
+    for (let i = 0; i < 12; i++) {
+      setTimeout(() => {
+        playSound(coinPitches[Math.floor(Math.random() * coinPitches.length)], 'sine', 0.05);
+      }, 550 + i * 40);
+    }
+  };
+
   // =========================================================================
   // 1. ROCKET CRASH STATE & LOGIC
   // =========================================================================
@@ -109,7 +124,7 @@ export default function NextGenArcadeHubModal({
     onUpdateBalance(account.balance + winAmount);
     setCashoutWin(winAmount);
     setCrashState('CASHED_OUT');
-    playSound(600, 'sine', 0.3);
+    playArcadeGrandFanfare();
   };
 
   // =========================================================================
@@ -172,7 +187,7 @@ export default function NextGenArcadeHubModal({
           onUpdateBalance(account.balance + win);
           setMinesWinAmount(win);
           setMinesActive(false);
-          playSound(880, 'sine', 0.4);
+          playArcadeGrandFanfare();
         }, 300);
       }
     }
@@ -185,7 +200,7 @@ export default function NextGenArcadeHubModal({
     onUpdateBalance(account.balance + win);
     setMinesWinAmount(win);
     setMinesActive(false);
-    playSound(750, 'sine', 0.4);
+    playArcadeGrandFanfare();
   };
 
   // =========================================================================
@@ -268,7 +283,7 @@ export default function NextGenArcadeHubModal({
       if (win > 0) {
         onUpdateBalance(account.balance + win);
         setWheelWinAmount(win);
-        playSound(700, 'sine', 0.4);
+        playArcadeGrandFanfare();
       } else {
         playSound(150, 'sawtooth', 0.4);
       }
@@ -327,7 +342,7 @@ export default function NextGenArcadeHubModal({
     onUpdateBalance(account.balance + win);
     setCoinGameActive(false);
     setCoinStreak(0);
-    playSound(900, 'sine', 0.4);
+    playArcadeGrandFanfare();
   };
 
   // Modal kapandığında interval'leri temizle
