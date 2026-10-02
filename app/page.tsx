@@ -357,7 +357,7 @@ export default function Home() {
   }, [account]);
 
   return (
-    <div className="w-full h-full bg-[#06080d] relative text-[#c9d1d9] font-sans">
+    <div className="w-full min-h-screen bg-[#06080d] relative text-[#c9d1d9] font-sans">
       
       {/* ÜST GEÇİŞ ÇUBUĞU (YALNIZCA TERMINALDE GÖRÜNÜR - PORTALDAKİ MÜKERRER BAŞLIKLARI ENGELLER) */}
       {mainView === 'terminal' && (
