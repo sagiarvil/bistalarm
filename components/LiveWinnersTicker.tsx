@@ -2,45 +2,23 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-export interface WinnerItem {
+import { 
+  WinnerItem, 
+  WINNERS_SCENARIOS_500, 
+  MASKED_TURKISH_NAMES_500, 
+  CASINO_GAMES_POOL, 
+  AVATARS_POOL 
+} from '@/lib/winnersDataset';
 
-  id: string;
-  user: string;
-  avatar: string;
-  game: string;
-  icon: string;
-  amount: number;
-  multiplier: string;
-  timeAgo: string;
-  badge: 'MEGA' | 'EPIC' | 'JACKPOT' | 'CAESARS VIP' | 'ROYAL';
-}
-
-const INITIAL_WINNERS: WinnerItem[] = [
-  { id: 'w1', user: 'baris***', avatar: '👑', game: 'Çilek & Ananas VIP 777', icon: '🍓', amount: 14850, multiplier: '742x', timeAgo: 'Az önce', badge: 'JACKPOT' },
-  { id: 'w2', user: 'ahmet_vip', avatar: '🦅', game: 'Rocket Crash (Aviator)', icon: '🚀', amount: 8940, multiplier: '44.7x', timeAgo: '12 sn önce', badge: 'EPIC' },
-  { id: 'w3', user: 'monaco_king', avatar: '⚜️', game: 'Monte Carlo Avrupa Ruleti', icon: '🎡', amount: 35000, multiplier: '36x', timeAgo: '28 sn önce', badge: 'ROYAL' },
-  { id: 'w4', user: 'selim_fx', avatar: '🦁', game: 'Elmas Mayın (Mines 8 Adım)', icon: '💎', amount: 6200, multiplier: '31x', timeAgo: '41 sn önce', badge: 'CAESARS VIP' },
-  { id: 'w5', user: 'crypto_trader', avatar: '⚡', game: 'Plinko 1000x Altın Yuva', icon: '🟡', amount: 20000, multiplier: '1000x', timeAgo: '1 dk önce', badge: 'JACKPOT' },
-  { id: 'w6', user: 'caner_99', avatar: '🐯', game: 'Monaco VIP Blackjack 21', icon: '♠️', amount: 12500, multiplier: '2.5x', timeAgo: '1 dk önce', badge: 'EPIC' },
-  { id: 'w7', user: 'deniz_bist', avatar: '💎', game: 'Çilek & Ananas VIP 777', icon: '🍍', amount: 19400, multiplier: '970x', timeAgo: '2 dk önce', badge: 'JACKPOT' },
-  { id: 'w8', user: 'bora_monaco', avatar: '👑', game: 'Baccarat Punto Banco', icon: '🏛️', amount: 18000, multiplier: '2x', timeAgo: '2 dk önce', badge: 'CAESARS VIP' },
-  { id: 'w9', user: 'serdar_pro', avatar: '🔥', game: 'Rocket Crash Aviator', icon: '🚀', amount: 11200, multiplier: '56x', timeAgo: '2 dk önce', badge: 'EPIC' },
-  { id: 'w10', user: 'volkan_77', avatar: '⚡', game: 'Monte Carlo Ruleti', icon: '🎡', amount: 28800, multiplier: '36x', timeAgo: '3 dk önce', badge: 'ROYAL' },
-  { id: 'w11', user: 'cem_trader', avatar: '🦁', game: 'Elmas Mayın 5 Adım', icon: '💎', amount: 5400, multiplier: '27x', timeAgo: '3 dk önce', badge: 'CAESARS VIP' },
-  { id: 'w12', user: 'tolga_vip', avatar: '🦅', game: 'Plinko Altın Yuva', icon: '🟡', amount: 16500, multiplier: '500x', timeAgo: '4 dk önce', badge: 'JACKPOT' },
-  { id: 'w13', user: 'kaan_fx', avatar: '⚜️', game: 'VIP Blackjack 21', icon: '♠️', amount: 9800, multiplier: '2.5x', timeAgo: '4 dk önce', badge: 'EPIC' },
-  { id: 'w14', user: 'onur_cesar', avatar: '👑', game: 'Çilek VIP 777 Slot', icon: '🍓', amount: 22100, multiplier: '884x', timeAgo: '5 dk önce', badge: 'JACKPOT' },
-  { id: 'w15', user: 'sinan_bist', avatar: '🐯', game: 'Viral Şans Çarkı', icon: '🎡', amount: 7500, multiplier: '50x', timeAgo: '5 dk önce', badge: 'MEGA' },
-  { id: 'w16', user: 'hakan_gold', avatar: '💎', game: 'Baccarat Punto Banco', icon: '🏛️', amount: 14000, multiplier: '2x', timeAgo: '6 dk önce', badge: 'CAESARS VIP' },
-  { id: 'w17', user: 'murat_monaco', avatar: '🔥', game: 'Rocket Crash Aviator', icon: '🚀', amount: 13400, multiplier: '67x', timeAgo: '6 dk önce', badge: 'EPIC' },
-  { id: 'w18', user: 'levent_vip', avatar: '⚡', game: 'Monte Carlo Rulet', icon: '🎡', amount: 31500, multiplier: '36x', timeAgo: '7 dk önce', badge: 'ROYAL' },
-  { id: 'w19', user: 'eren_pro', avatar: '🦁', game: 'Elmas Mayın 7 Adım', icon: '💎', amount: 8900, multiplier: '44x', timeAgo: '7 dk önce', badge: 'CAESARS VIP' },
-  { id: 'w20', user: 'berk_fx', avatar: '🦅', game: 'Plinko 1000x', icon: '🟡', amount: 25000, multiplier: '1000x', timeAgo: '8 dk önce', badge: 'JACKPOT' },
-];
+export type { WinnerItem };
 
 export default function LiveWinnersTicker() {
-  const [winners, setWinners] = useState<WinnerItem[]>(INITIAL_WINNERS);
+  // İlk 28 senaryoyu karma olarak başlat
+  const [winners, setWinners] = useState<WinnerItem[]>(() => {
+    return WINNERS_SCENARIOS_500.slice(0, 28);
+  });
   const scrollRef = useRef<HTMLDivElement>(null);
+  const scenarioIndexRef = useRef<number>(28);
 
   // Kurşun geçirmez donanım ivmeli kaydırma motoru
   useEffect(() => {
@@ -73,39 +51,39 @@ export default function LiveWinnersTicker() {
     };
   }, []);
 
-  // Canlı kazanç akışı simülatörü (Her 4 saniyede bir yeni Caesars VIP kazanan listeye akar)
+  // 500 Farklı Senaryo & Maskeli Türk İsimleri (ah***, sam***, meh***) Karma Dinamik Akış Simülatörü
   useEffect(() => {
-    const randomUsers = ['arda_fx', 'kemal_vip', 'mert_tr', 'emre_monaco', 'burak_pro', 'yasin_gold', 'tarik_77', 'serdar_cesar', 'okan_vegas', 'ali_bist', 'koray_fx', 'zafer_king'];
-    const randomGames = [
-      { game: 'Çilek VIP 777 Slot', icon: '🍓', minMult: 150, maxMult: 1000, badge: 'JACKPOT' as const },
-      { game: 'Rocket Crash Aviator', icon: '🚀', minMult: 20, maxMult: 90, badge: 'EPIC' as const },
-      { game: 'Salle Garnier Rulet', icon: '🎡', minMult: 18, maxMult: 36, badge: 'ROYAL' as const },
-      { game: 'Elmas Mayın Tarlası', icon: '💎', minMult: 15, maxMult: 75, badge: 'CAESARS VIP' as const },
-      { game: 'Monaco Blackjack 21', icon: '♠️', minMult: 2, maxMult: 5, badge: 'EPIC' as const },
-      { game: 'Viral Şans Çarkı (50x)', icon: '🎡', minMult: 10, maxMult: 50, badge: 'MEGA' as const }
-    ];
+    const times = ['Az önce', '2 sn önce', '5 sn önce', '9 sn önce', '14 sn önce'];
 
     const timer = setInterval(() => {
-      const g = randomGames[Math.floor(Math.random() * randomGames.length)];
-      const u = randomUsers[Math.floor(Math.random() * randomUsers.length)];
-      const mult = Math.floor(g.minMult + Math.random() * (g.maxMult - g.minMult));
-      const bet = [25, 50, 100, 250][Math.floor(Math.random() * 4)];
+      // 500 senaryo havuzundan sıradaki veya rastgele birini al
+      const poolIndex = scenarioIndexRef.current % WINNERS_SCENARIOS_500.length;
+      scenarioIndexRef.current += 1;
+
+      // Dinamik rastgele isim seç (500 maskelenmiş Türk ismi havuzundan: ah***, sam***, meh***, ali_***)
+      const randomUser = MASKED_TURKISH_NAMES_500[Math.floor(Math.random() * MASKED_TURKISH_NAMES_500.length)];
+      const randomGame = CASINO_GAMES_POOL[Math.floor(Math.random() * CASINO_GAMES_POOL.length)];
+      const randomAvatar = AVATARS_POOL[Math.floor(Math.random() * AVATARS_POOL.length)];
+      const randomTime = times[Math.floor(Math.random() * times.length)];
+
+      const mult = Math.floor(randomGame.minM + Math.random() * (randomGame.maxM - randomGame.minM));
+      const bet = [20, 25, 50, 75, 100, 150, 200, 250, 500][Math.floor(Math.random() * 9)];
       const wonAmount = bet * mult;
 
       const newWinner: WinnerItem = {
-        id: `w-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
-        user: `${u.substring(0, 4)}***`,
-        avatar: ['👑', '🦁', '⚡', '🦅', '🔥', '⚜️', '💎', '🐯'][Math.floor(Math.random() * 8)],
-        game: g.game,
-        icon: g.icon,
+        id: `w-${Date.now()}-${poolIndex}-${Math.random().toString(36).substring(2, 5)}`,
+        user: randomUser,
+        avatar: randomAvatar,
+        game: randomGame.game,
+        icon: randomGame.icon,
         amount: wonAmount,
         multiplier: `${mult}x`,
-        timeAgo: 'Az önce',
-        badge: g.badge
+        timeAgo: randomTime,
+        badge: randomGame.badge as any
       };
 
-      setWinners(prev => [newWinner, ...prev.slice(0, 23)]);
-    }, 4000);
+      setWinners(prev => [newWinner, ...prev.slice(0, 27)]);
+    }, 3500);
 
     return () => clearInterval(timer);
   }, []);
