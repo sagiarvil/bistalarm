@@ -29,6 +29,8 @@ interface MonteCarloGrandCasinoModalProps {
   onClose: () => void;
   userBalance: number;
   onUpdateBalance: (newBalance: number) => void;
+  onOpenSlots?: () => void;
+  onOpenArcade?: () => void;
 }
 
 type CasinoTab = 'ROULETTE' | 'BLACKJACK' | 'BACCARAT';
@@ -37,7 +39,9 @@ export default function MonteCarloGrandCasinoModal({
   isOpen,
   onClose,
   userBalance,
-  onUpdateBalance
+  onUpdateBalance,
+  onOpenSlots,
+  onOpenArcade
 }: MonteCarloGrandCasinoModalProps) {
   const [activeTab, setActiveTab] = useState<CasinoTab>('ROULETTE');
   const [selectedChip, setSelectedChip] = useState<number>(25);
@@ -572,6 +576,24 @@ export default function MonteCarloGrandCasinoModal({
           >
             <span className="text-base">👑</span> Baccarat Punto Banco
           </button>
+
+          {onOpenSlots && (
+            <button
+              onClick={() => { onClose(); onOpenSlots(); }}
+              className="px-5 py-3 rounded-t-xl font-bold transition flex items-center gap-1.5 whitespace-nowrap text-amber-400 hover:text-amber-200 hover:bg-amber-500/10 ml-auto border border-amber-500/30"
+            >
+              <span>🍓</span> Vegas VIP Slots
+            </button>
+          )}
+
+          {onOpenArcade && (
+            <button
+              onClick={() => { onClose(); onOpenArcade(); }}
+              className="px-5 py-3 rounded-t-xl font-bold transition flex items-center gap-1.5 whitespace-nowrap text-cyan-400 hover:text-cyan-200 hover:bg-cyan-500/10 border border-cyan-500/30"
+            >
+              <span>🎮</span> Nova Arcade
+            </button>
+          )}
         </div>
 
         {/* ================================================================== */}

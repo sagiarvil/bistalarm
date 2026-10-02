@@ -349,45 +349,27 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* Yeni Nesil Mobil Mini Oyunlar Butonu */}
-          <button
-            onClick={() => setIsArcadeHubOpen(true)}
-            className="bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:opacity-90 text-white font-extrabold text-[11px] px-2.5 sm:px-3 py-1 rounded transition shadow-[0_0_15px_rgba(99,102,241,0.4)] flex items-center gap-1.5"
-          >
-            <span>🎮</span>
-            <span className="hidden sm:inline">Nova</span> Arcade (Crash & Mines)
-          </button>
-
-          {/* Monte Carlo Çilek & Ananas Slot Butonu */}
-          <button
-            onClick={() => setIsCasinoSlotOpen(true)}
-            className="bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:opacity-90 text-black font-black text-[11px] px-2.5 sm:px-3 py-1 rounded transition shadow-[0_0_15px_rgba(245,158,11,0.4)] flex items-center gap-1.5 animate-pulse"
-          >
-            <span>🍓</span>
-            <span className="hidden sm:inline">Çilek & Ananas</span> Slots
-          </button>
-
-          <button
-            onClick={() => setIsNextGenOpen(true)}
-            className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white text-[11px] font-bold px-2.5 py-1 rounded transition shadow flex items-center gap-1"
-          >
-            <span>🚀</span>
-            <span className="hidden sm:inline">Yeni Nesil</span> Kazanç
-          </button>
+        <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3 font-mono text-[11px] bg-[#121722] px-3 py-1 rounded border border-[#1e2637]">
+            <span className="text-gray-400">Bakiye:</span>
+            <span className="font-bold text-emerald-400">${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+            <span className="text-gray-600">|</span>
+            <span className="text-gray-400">Serbest:</span>
+            <span className="font-bold text-cyan-400">${account.freeMargin.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+          </div>
 
           <button 
             onClick={() => setActiveModal('deposit')}
-            className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-2 sm:px-2.5 py-1 rounded transition text-[11px]"
+            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1 rounded transition text-[11px] shadow flex items-center gap-1"
           >
-            Yatır
+            <span>+</span> Para Yatır
           </button>
 
           <Link
             href="/admin"
-            className="bg-[#1c2433] hover:bg-[#253043] border border-blue-500/30 text-blue-400 px-2 py-1 rounded text-[11px] transition hidden sm:inline"
+            className="bg-[#18202d] hover:bg-[#222c3d] border border-blue-500/30 text-blue-400 px-2.5 py-1 rounded text-[11px] transition hidden sm:flex items-center gap-1 font-mono font-medium"
           >
-            Dealer
+            <span>⚙️</span> Dealer
           </Link>
         </div>
       </div>
@@ -595,6 +577,8 @@ export default function Home() {
         onClose={() => setIsGrandCasinoOpen(false)}
         userBalance={account.balance}
         onUpdateBalance={handleUpdateCasinoBalance}
+        onOpenSlots={() => setIsCasinoSlotOpen(true)}
+        onOpenArcade={() => setIsArcadeHubOpen(true)}
       />
 
     </div>

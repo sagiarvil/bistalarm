@@ -85,17 +85,7 @@ export default function GlobalFXPortal({
               </button>
               {onOpenGrandCasino && (
                 <button onClick={onOpenGrandCasino} className="flex items-center gap-1 text-amber-300 hover:text-amber-100 font-serif font-black tracking-wide transition">
-                  <span>🇲🇨</span> Monte Carlo Grand Casino
-                </button>
-              )}
-              {onOpenArcadeHub && (
-                <button onClick={onOpenArcadeHub} className="flex items-center gap-1 text-cyan-400 hover:text-cyan-300 font-bold transition">
-                  <span>🎮</span> Nova Arcade (Crash/Mines)
-                </button>
-              )}
-              {onOpenCasinoSlot && (
-                <button onClick={onOpenCasinoSlot} className="flex items-center gap-1 text-amber-400 hover:text-amber-300 font-bold transition">
-                  <span>🍓</span> Çilek & Ananas VIP Slots
+                  <span>🇲🇨</span> Monte Carlo Salonu
                 </button>
               )}
               <a href="#technology" className="hover:text-white transition">Altyapı (0.01ms)</a>
@@ -103,56 +93,36 @@ export default function GlobalFXPortal({
             </div>
           </div>
 
-          {/* Sağ Eylem Butonları */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Sağ Eylem Butonları (Kırılma ve Taşma Olmayan Kurumsal Yerleşim) */}
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             {onOpenGrandCasino && (
               <button
                 onClick={onOpenGrandCasino}
-                className="bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 hover:opacity-95 text-black font-black text-xs px-3 sm:px-4 py-2 rounded-lg transition shadow-[0_0_20px_rgba(245,158,11,0.5)] border border-amber-300 flex items-center gap-1.5 active:scale-95 font-serif"
+                className="bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 hover:opacity-95 text-black font-black text-xs px-3 py-2 rounded-lg transition shadow-[0_0_15px_rgba(245,158,11,0.4)] border border-amber-300 flex items-center gap-1.5 active:scale-95 font-serif shrink-0"
               >
                 <span>🇲🇨</span>
-                <span className="hidden sm:inline">Grand</span> Casino
+                <span>Monte Carlo VIP</span>
               </button>
             )}
-
-            {onOpenArcadeHub && (
-              <button
-                onClick={onOpenArcadeHub}
-                className="bg-gradient-to-r from-cyan-600 to-indigo-600 hover:opacity-90 text-white font-bold text-xs px-3 py-2 rounded-lg transition shadow flex items-center gap-1.5 active:scale-95"
-              >
-                <span>🎮</span>
-                <span className="hidden sm:inline">Nova</span> Arcade
-              </button>
-            )}
-
-            {onOpenCasinoSlot && (
-              <button
-                onClick={onOpenCasinoSlot}
-                className="bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:opacity-90 text-black font-black text-xs px-3 py-2 rounded-lg transition shadow-[0_0_15px_rgba(245,158,11,0.4)] flex items-center gap-1.5 active:scale-95"
-              >
-                <span>🍓</span>
-                <span className="hidden sm:inline">Vegas</span> Slots
-              </button>
-            )}
-
-            <button
-              onClick={() => onOpenTerminal()}
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-xs px-3 sm:px-4 py-2 rounded-lg transition shadow-[0_0_20px_rgba(41,121,255,0.35)] flex items-center gap-1.5 active:scale-95"
-            >
-              <span>💻</span>
-              <span className="hidden sm:inline">Canlı</span> WebTrader
-            </button>
 
             <button
               onClick={onOpenDeposit}
-              className="bg-[#1b2332] hover:bg-[#253043] border border-[#2d3a52] text-white text-xs font-semibold px-3 py-2 rounded-lg transition"
+              className="bg-[#1b2332] hover:bg-[#253043] border border-[#2d3a52] text-white text-xs font-semibold px-3 py-2 rounded-lg transition shrink-0"
             >
               Para Yatır
             </button>
 
+            <button
+              onClick={() => onOpenTerminal()}
+              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-xs px-3.5 py-2 rounded-lg transition shadow-[0_0_15px_rgba(41,121,255,0.35)] flex items-center gap-1.5 active:scale-95 shrink-0"
+            >
+              <span>💻</span>
+              <span>Canlı WebTrader</span>
+            </button>
+
             <Link
               href="/admin"
-              className="bg-[#141a24] hover:bg-[#1e2635] border border-blue-500/30 text-blue-400 text-xs px-2.5 py-2 rounded-lg transition hidden md:flex items-center gap-1"
+              className="bg-[#141a24] hover:bg-[#1e2635] border border-blue-500/30 text-blue-400 text-xs px-2.5 py-2 rounded-lg transition hidden md:flex items-center gap-1 shrink-0"
             >
               <span>⚙️</span> Dealer
             </Link>
@@ -214,26 +184,17 @@ export default function GlobalFXPortal({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
             <button
               onClick={() => onOpenTerminal()}
-              className="w-full sm:w-auto px-7 py-3.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-extrabold text-sm rounded-xl transition shadow-[0_0_30px_rgba(41,121,255,0.4)] flex items-center justify-center gap-2 active:scale-95"
+              className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-extrabold text-sm rounded-xl transition shadow-[0_0_30px_rgba(41,121,255,0.4)] flex items-center justify-center gap-2 active:scale-95"
             >
               <span>🚀</span> WebTrader&apos;ı Hemen Başlat
             </button>
 
-            {onOpenArcadeHub && (
+            {onOpenGrandCasino && (
               <button
-                onClick={onOpenArcadeHub}
-                className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:opacity-90 text-white font-extrabold text-sm rounded-xl transition shadow-[0_0_25px_rgba(99,102,241,0.5)] flex items-center justify-center gap-2 active:scale-95"
+                onClick={onOpenGrandCasino}
+                className="w-full sm:w-auto px-7 py-3.5 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 hover:opacity-95 text-black font-black text-sm rounded-xl transition shadow-[0_0_25px_rgba(245,158,11,0.4)] border border-amber-300 flex items-center justify-center gap-2 active:scale-95 font-serif"
               >
-                <span>🎮</span> Nova Arcade (Crash/Mines)
-              </button>
-            )}
-
-            {onOpenCasinoSlot && (
-              <button
-                onClick={onOpenCasinoSlot}
-                className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:opacity-90 text-black font-black text-sm rounded-xl transition shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center justify-center gap-2 active:scale-95"
-              >
-                <span>🍓</span> Çilek & Ananas Slots
+                <span>🇲🇨</span> Casino de Monte-Carlo VIP
               </button>
             )}
 
@@ -241,7 +202,7 @@ export default function GlobalFXPortal({
               onClick={onOpenNextGen}
               className="w-full sm:w-auto px-6 py-3.5 bg-[#121721] hover:bg-[#1a2232] border border-[#263348] text-white font-bold text-sm rounded-xl transition flex items-center justify-center gap-2"
             >
-              <span>🏆</span> $100,000 Prop Sınavı
+              <span>🏆</span> $100,000 Prop Fon Sınavı
             </button>
           </div>
 
