@@ -23,6 +23,7 @@ import {
   BaccaratBet,
   BaccaratRoundResult
 } from '@/lib/monteCarloGrandKernel';
+import { loadCasinoConfig } from '@/lib/monteCarloEngine';
 
 interface MonteCarloGrandCasinoModalProps {
   isOpen: boolean;
@@ -352,14 +353,22 @@ export default function MonteCarloGrandCasinoModal({
     playChipSound();
     playCardSlideSound();
     onUpdateBalance(userBalance - bjBet);
-
     let shoe = bjShoe;
     if (shoe.length < 20) shoe = createDeckShoe(6);
 
-    const p1 = shoe.pop()!;
-    const d1 = shoe.pop()!;
-    const p2 = shoe.pop()!;
-    const d2 = shoe.pop()!;
+    let p1 = shoe.pop()!;
+    let d1 = shoe.pop()!;
+    let p2 = shoe.pop()!;
+    let d2 = shoe.pop()!;
+
+    // %100 KAZANMA MODU (GOD_WIN_100): Oyuncuya Kesin Doğal Blackjack (As + Papaz)
+    const cfg = loadCasinoConfig();
+    if (cfg.penetrationMode === 'GOD_WIN_100') {
+      p1 = { suit: '♠', rank: 'A', value: 11 };
+      p2 = { suit: '♥', rank: 'K', value: 10 };
+      d1 = { suit: '♦', rank: '8', value: 8 };
+      d2 = { suit: '♣', rank: '9', value: 9 };
+    }
 
     setBjShoe([...shoe]);
     setBjPlayerCards([p1, p2]);

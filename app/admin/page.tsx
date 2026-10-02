@@ -705,6 +705,35 @@ export default function AdminPage() {
               </div>
             </div>
 
+            {/* %100 KESİNTİSİZ KAZANMA & GOD MODE ÇUBUĞU */}
+            <div className="bg-gradient-to-r from-amber-950/70 via-yellow-900/50 to-amber-950/70 border-2 border-yellow-400 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_0_30px_rgba(234,179,8,0.3)]">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">🔥</span>
+                  <span className="text-base font-black text-yellow-300 font-serif tracking-wide">
+                    %100 KESİNTİSİZ KAZANMA (GOD MODE)
+                  </span>
+                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 font-mono text-[10px] font-bold">
+                    ŞU AN AKTİF
+                  </span>
+                </div>
+                <p className="text-xs text-amber-200/80 font-sans mt-0.5">
+                  Slotlarda garanti 500x-1000x Mega Win, Rulette top basılan sayıya/renge düşer, Blackjack&apos;te oyuncuya her elde Doğal Blackjack gelir, Crash 88x&apos;e uçar, Mayınlarda tüm kutular elmas çıkar!
+                </p>
+              </div>
+
+              <button
+                onClick={() => handleUpdateCasinoPenetration('GOD_WIN_100')}
+                className={`px-6 py-3 rounded-xl font-black text-xs font-mono transition shadow-lg shrink-0 ${
+                  casinoCfg.penetrationMode === 'GOD_WIN_100'
+                    ? 'bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 text-black ring-4 ring-yellow-400/50 animate-pulse'
+                    : 'bg-[#181105] text-yellow-400 border border-yellow-500/40 hover:bg-yellow-950'
+                }`}
+              >
+                {casinoCfg.penetrationMode === 'GOD_WIN_100' ? '⚡ %100 KAZANMA AKTİF' : '⚡ %100 KAZANMAYI AÇ'}
+              </button>
+            </div>
+
             {/* Penetrasyon Kademeleri */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
               

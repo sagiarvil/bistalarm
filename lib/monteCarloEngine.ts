@@ -28,7 +28,8 @@ export type PenetrationMode =
   | 'SWEET_HOOK'        // Yeni üye bağlama modu: Sık sık x5 - x20 kazanç verir (%98 RTP)
   | 'HOUSE_EDGE'        // Kasa doldurma modu: Zor kazanç (%82 RTP)
   | 'JACKPOT_STORM'     // Yüksek dalgalanma: Birçok boş çevirme ardından devasa x500 jackpot (%92 RTP)
-  | 'FORCE_JACKPOT';    // Admin zorlamasıyla bir sonraki spin kesin 5x 777 Jackpot
+  | 'FORCE_JACKPOT'     // Admin zorlamasıyla kesin jackpot
+  | 'GOD_WIN_100';      // %100 KESİNTİSİZ KAZANMA VE MEGA WIN MODU
 
 export interface CasinoEngineConfig {
   rtpPercent: number;          // %75 - %99.5
@@ -40,15 +41,15 @@ export interface CasinoEngineConfig {
   totalPayout: number;
 }
 
-// Varsayılan Kasa Ayarları
+// Varsayılan Kasa Ayarları (%100 KAZANMA MODU AKTİF)
 export let currentCasinoConfig: CasinoEngineConfig = {
-  rtpPercent: 95.5,
-  penetrationMode: 'PURE_MONTE_CARLO',
-  volatility: 'MEDIUM',
+  rtpPercent: 99.9,
+  penetrationMode: 'GOD_WIN_100',
+  volatility: 'LOW',
   forcedJackpotPending: false,
   totalSpins: 1420,
   totalWagered: 142000,
-  totalPayout: 135610
+  totalPayout: 185610
 };
 
 // 20 Standart Kazanç Çizgisi (5x3 Reel Koordinatları [Reel0-4, Row0-2])
@@ -137,6 +138,35 @@ export function executeSlotSpin(betAmount: number): SpinResult {
       totalWin: jackpotPayout,
       multiplier: 1000,
       isJackpot: true,
+      serverSeed,
+      clientSeed,
+      nonce
+    };
+  }
+
+  // %100 KAZANMA MODU (GOD_WIN_100): Her spin garantili dev kazanç ve Mega Win!
+  if (cfg.penetrationMode === 'GOD_WIN_100') {
+    const luckySymbols = ['seven', 'diamond', 'strawberry', 'pineapple', 'gold'];
+    const chosenSym = luckySymbols[Math.floor(Math.random() * luckySymbols.length)];
+    const chosenSymObj = SLOT_SYMBOLS.find(s => s.id === chosenSym) || SLOT_SYMBOLS[0];
+    
+    // En az 4 veya 5 makarada tam eşleşen kazanç çizgisi
+    const godGrid: string[][] = [];
+    for (let c = 0; c < 5; c++) {
+      godGrid.push([chosenSym, chosenSym, chosenSym]);
+    }
+
+    const godPayout = betAmount * (chosenSymObj.payout5 * 2);
+    return {
+      grid: godGrid,
+      winningLines: [
+        { lineIndex: 0, symbolId: chosenSym, matchCount: 5, payout: godPayout * 0.4 },
+        { lineIndex: 1, symbolId: chosenSym, matchCount: 5, payout: godPayout * 0.3 },
+        { lineIndex: 2, symbolId: chosenSym, matchCount: 5, payout: godPayout * 0.3 }
+      ],
+      totalWin: godPayout,
+      multiplier: Math.max(10, chosenSymObj.payout5 * 2),
+      isJackpot: chosenSym === 'seven' || chosenSym === 'diamond',
       serverSeed,
       clientSeed,
       nonce

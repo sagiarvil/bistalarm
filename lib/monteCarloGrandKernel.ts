@@ -96,8 +96,39 @@ export function spinEuropeanRoulette(bets: RouletteBet[]): RouletteSpinResult {
   // Monte Carlo Rastlantısal Sayı Seçimi (0-36)
   let winningNumber = Math.floor(Math.random() * 37);
 
-  // Admin Kasa Avantajı & Penetrasyon Müdahalesi
-  if (cfg.penetrationMode === 'HOUSE_EDGE' && bets.length > 0) {
+  // %100 KAZANMA MODU (GOD_WIN_100): Oyuncunun koyduğu tüm bahisler kesin kazanır!
+  if (cfg.penetrationMode === 'GOD_WIN_100' && bets.length > 0) {
+    const firstBet = bets[0];
+    if (firstBet.type === 'STRAIGHT' && firstBet.target !== undefined) {
+      winningNumber = firstBet.target;
+    } else if (firstBet.type === 'RED') {
+      winningNumber = RED_NUMBERS[Math.floor(Math.random() * RED_NUMBERS.length)];
+    } else if (firstBet.type === 'BLACK') {
+      winningNumber = BLACK_NUMBERS[Math.floor(Math.random() * BLACK_NUMBERS.length)];
+    } else if (firstBet.type === 'EVEN') {
+      winningNumber = 14; // Çift & Kırmızı
+    } else if (firstBet.type === 'ODD') {
+      winningNumber = 7; // Tek & Kırmızı
+    } else if (firstBet.type === 'LOW') {
+      winningNumber = 9;
+    } else if (firstBet.type === 'HIGH') {
+      winningNumber = 25;
+    } else if (firstBet.type === 'DOZEN_1') {
+      winningNumber = 3;
+    } else if (firstBet.type === 'DOZEN_2') {
+      winningNumber = 19;
+    } else if (firstBet.type === 'DOZEN_3') {
+      winningNumber = 32;
+    } else if (firstBet.type === 'VOISINS') {
+      winningNumber = VOISINS_DU_ZERO[0];
+    } else if (firstBet.type === 'TIERS') {
+      winningNumber = TIERS_DU_CYLINDRE[0];
+    } else if (firstBet.type === 'ORPHELINS') {
+      winningNumber = ORPHELINS[0];
+    } else if (firstBet.type === 'JEU_ZERO') {
+      winningNumber = JEU_ZERO[0];
+    }
+  } else if (cfg.penetrationMode === 'HOUSE_EDGE' && bets.length > 0) {
     // Kasa kazanacak şekilde oyuncunun en az bastığı veya basmadığı sayıyı seç
     const coveredNumbers = new Set<number>();
     bets.forEach(b => {

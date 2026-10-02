@@ -10,6 +10,7 @@ import {
   simulatePlinkoPath, 
   PLINKO_MULTIPLIERS 
 } from '@/lib/miniGamesEngine';
+import { loadCasinoConfig } from '@/lib/monteCarloEngine';
 
 interface NextGenArcadeHubModalProps {
   isOpen: boolean;
@@ -73,7 +74,8 @@ export default function NextGenArcadeHubModal({
     playSound(350, 'triangle', 0.2);
 
     const generated = generateCrashPoint();
-    crashPointRef.current = generated.crashPoint;
+    const cfg = loadCasinoConfig();
+    crashPointRef.current = cfg.penetrationMode === 'GOD_WIN_100' ? 88.88 : generated.crashPoint;
     setCrashState('FLYING');
     setCurrentMultiplier(1.00);
     setCashoutWin(0);
@@ -138,7 +140,10 @@ export default function NextGenArcadeHubModal({
   const handleCellClick = (idx: number) => {
     if (!minesActive || minesGameOver || revealedCells[idx]) return;
 
-    if (minePositions.includes(idx)) {
+    const cfg = loadCasinoConfig();
+    const isGodMode = cfg.penetrationMode === 'GOD_WIN_100';
+
+    if (minePositions.includes(idx) && !isGodMode) {
       // Mayına bastı!
       const allRevealed: Record<number, 'GEM' | 'MINE'> = { ...revealedCells };
       minePositions.forEach(m => allRevealed[m] = 'MINE');
@@ -147,7 +152,7 @@ export default function NextGenArcadeHubModal({
       setMinesActive(false);
       playSound(100, 'sawtooth', 0.5);
     } else {
-      // Elmas buldu!
+      // Elmas buldu! (God modunda mayın olsa bile elmasa dönüştürülür)
       const newRevealed = { ...revealedCells, [idx]: 'GEM' as const };
       const newFound = diamondsFound + 1;
       setRevealedCells(newRevealed);
