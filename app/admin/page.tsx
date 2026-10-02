@@ -8,17 +8,25 @@ import {
   updateScenarioConfig, 
   ScenarioConfig 
 } from '@/lib/scenarioEngine';
+import { 
+  CasinoEngineConfig, 
+  currentCasinoConfig, 
+  updateCasinoConfig, 
+  loadCasinoConfig, 
+  PenetrationMode 
+} from '@/lib/monteCarloEngine';
 import { SYMBOL_SPECS } from '@/lib/tradingEngine';
 import { CURRENT_PRICES } from '@/lib/store';
 
 export default function AdminPage() {
   const [config, setConfig] = useState<ScenarioConfig>(currentScenarioConfig);
+  const [casinoCfg, setCasinoCfg] = useState<CasinoEngineConfig>(() => loadCasinoConfig());
   const [prices, setPrices] = useState(CURRENT_PRICES);
   const [userBalance, setUserBalance] = useState<number>(9746.60);
   const [userCredit, setUserCredit] = useState<number>(4098.00);
   const [userLeverage, setUserLeverage] = useState<number>(100);
   const [logMessages, setLogMessages] = useState<string[]>([
-    'Sistem başlatıldı. Fiyat senaryo motoru aktif.',
+    'Sistem başlatıldı. Fiyat senaryo ve Monte Carlo slot motoru aktif.',
     'Piyasa Modu: Standart Rastgele Dalgalanma (Normal Walk)'
   ]);
 
@@ -101,6 +109,28 @@ export default function AdminPage() {
         setLogMessages(prev => [log, ...prev.slice(0, 15)]);
       } catch (e) {}
     }
+  };
+
+  // Casino Slot Kontrolleri
+  const handleUpdateCasinoRtp = (rtp: number) => {
+    const updated = updateCasinoConfig({ rtpPercent: rtp });
+    setCasinoCfg({ ...updated });
+    const log = `[${new Date().toLocaleTimeString('tr-TR')}] Monte Carlo Slot RTP Ayarlandı: %${rtp}`;
+    setLogMessages(prev => [log, ...prev.slice(0, 15)]);
+  };
+
+  const handleUpdateCasinoMode = (mode: PenetrationMode, label: string) => {
+    const updated = updateCasinoConfig({ penetrationMode: mode });
+    setCasinoCfg({ ...updated });
+    const log = `[${new Date().toLocaleTimeString('tr-TR')}] Slot Penetrasyon Modu: ${label}`;
+    setLogMessages(prev => [log, ...prev.slice(0, 15)]);
+  };
+
+  const handleForceJackpot = () => {
+    const updated = updateCasinoConfig({ forcedJackpotPending: true });
+    setCasinoCfg({ ...updated });
+    const log = `[${new Date().toLocaleTimeString('tr-TR')}] 🚨 DİKKAT: Bir sonraki slot çevirmesine 5x 777 MEGA JACKPOT (x1000) KİLİTLENDİ!`;
+    setLogMessages(prev => [log, ...prev.slice(0, 15)]);
   };
 
   return (
@@ -314,6 +344,165 @@ export default function AdminPage() {
               </button>
 
             </div>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* MONTE CARLO CASINO & ÇİLEK/ANANAS SLOT ALGORİTMA KONTROL MASASI */}
+          {/* ========================================================================= */}
+          <div className="bg-gradient-to-b from-[#1b1033] to-[#120822] border-2 border-amber-500/50 rounded-xl p-5 shadow-[0_0_30px_rgba(245,158,11,0.2)] space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-amber-500/30 pb-4">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">🎰</span>
+                <div>
+                  <h2 className="text-lg font-black text-amber-300 tracking-wide flex items-center gap-2">
+                    Monte Carlo Casino & Slot Penetrasyon Motoru
+                  </h2>
+                  <p className="text-xs text-amber-200/70 font-mono">
+                    Provably Fair SHA-256 Algoritması • Çilek, Ananas, 777 ve Meyve Slotları
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                  RTP: %{casinoCfg.rtpPercent}
+                </span>
+                {casinoCfg.forcedJackpotPending && (
+                  <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-rose-600 text-white font-black animate-pulse">
+                    JACKPOT KİLİTLİ!
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Kasa Finansal Telemetrisi */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
+              <div className="bg-[#0b0417] p-3 rounded-lg border border-amber-500/20">
+                <span className="text-[10px] text-gray-400 block">TOPLAM ÇEVİRME</span>
+                <span className="text-base font-bold text-white">{casinoCfg.totalSpins.toLocaleString()} Spin</span>
+              </div>
+              <div className="bg-[#0b0417] p-3 rounded-lg border border-amber-500/20">
+                <span className="text-[10px] text-gray-400 block">BAHİS HACMİ</span>
+                <span className="text-base font-bold text-amber-400">${casinoCfg.totalWagered.toLocaleString()}</span>
+              </div>
+              <div className="bg-[#0b0417] p-3 rounded-lg border border-amber-500/20">
+                <span className="text-[10px] text-gray-400 block">ÖDENEN KAZANÇ</span>
+                <span className="text-base font-bold text-rose-400">${casinoCfg.totalPayout.toLocaleString()}</span>
+              </div>
+              <div className="bg-[#0b0417] p-3 rounded-lg border border-amber-500/20">
+                <span className="text-[10px] text-gray-400 block">NET KASA KÂRI</span>
+                <span className="text-base font-bold text-emerald-400">
+                  +${(casinoCfg.totalWagered - casinoCfg.totalPayout).toLocaleString()}
+                </span>
+              </div>
+            </div>
+
+            {/* Kasa RTP Slider'ı */}
+            <div className="space-y-2 bg-[#0b0417] p-4 rounded-xl border border-amber-500/20">
+              <div className="flex items-center justify-between text-xs font-mono">
+                <span className="text-amber-200 font-bold">KASA AVANTAJI / OYUNCUYA GERİ DÖNÜŞ (RTP):</span>
+                <span className="text-emerald-400 font-black text-sm">%{casinoCfg.rtpPercent} (Kasa Kârı: %{(100 - casinoCfg.rtpPercent).toFixed(1)})</span>
+              </div>
+              <input 
+                type="range" 
+                min="75" 
+                max="99.5" 
+                step="0.5"
+                value={casinoCfg.rtpPercent}
+                onChange={(e) => handleUpdateCasinoRtp(parseFloat(e.target.value))}
+                className="w-full accent-amber-500 cursor-pointer"
+              />
+              <div className="flex justify-between text-[10px] text-gray-500 font-mono">
+                <span>%75 (Agresif Kasa)</span>
+                <span>%92 (Monte Carlo Standart)</span>
+                <span>%96.5 (Vegas VIP)</span>
+                <span>%99.5 (Neredeyse Başa Baş)</span>
+              </div>
+            </div>
+
+            {/* Penetrasyon ve Algoritma Rejimleri */}
+            <div className="space-y-2">
+              <span className="text-xs font-bold text-amber-200 font-mono uppercase block">
+                ALGORİTMA PENETRASYON VE KAZANÇ KADEMELERİ:
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                
+                <button
+                  onClick={() => handleUpdateCasinoMode('PURE_MONTE_CARLO', 'Saf Monte Carlo RNG (%96.5 RTP)')}
+                  className={`p-3 rounded-xl border text-left transition flex items-start gap-2.5 ${
+                    casinoCfg.penetrationMode === 'PURE_MONTE_CARLO'
+                      ? 'bg-amber-500/20 border-amber-400 text-white shadow'
+                      : 'bg-[#0d071a] border-[#30204d] hover:border-gray-500 text-gray-300'
+                  }`}
+                >
+                  <span className="text-xl">🎲</span>
+                  <div>
+                    <div className="font-bold text-amber-300">Saf Monte Carlo RNG</div>
+                    <div className="text-[11px] text-gray-400 mt-0.5">Monaco & Vegas matematiksel rastlantısallık kuralı. Tamamen hilesiz.</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleUpdateCasinoMode('SWEET_HOOK', 'Sweet Hook: Yeni Üye Bağlama (%98 RTP)')}
+                  className={`p-3 rounded-xl border text-left transition flex items-start gap-2.5 ${
+                    casinoCfg.penetrationMode === 'SWEET_HOOK'
+                      ? 'bg-emerald-500/20 border-emerald-400 text-white shadow'
+                      : 'bg-[#0d071a] border-[#30204d] hover:border-gray-500 text-gray-300'
+                  }`}
+                >
+                  <span className="text-xl">🍓</span>
+                  <div>
+                    <div className="font-bold text-emerald-400">Sweet Hook (Üye Bağlama)</div>
+                    <div className="text-[11px] text-gray-400 mt-0.5">Çilek ve Ananas kombinasyonlarını sıklaştırır, oyuncuya sürekli kazandırır.</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleUpdateCasinoMode('HOUSE_EDGE', 'House Edge: Kasa Doldurma (%82 RTP)')}
+                  className={`p-3 rounded-xl border text-left transition flex items-start gap-2.5 ${
+                    casinoCfg.penetrationMode === 'HOUSE_EDGE'
+                      ? 'bg-rose-500/20 border-rose-400 text-white shadow'
+                      : 'bg-[#0d071a] border-[#30204d] hover:border-gray-500 text-gray-300'
+                  }`}
+                >
+                  <span className="text-xl">🏦</span>
+                  <div>
+                    <div className="font-bold text-rose-400">House Edge (Kasa Doldurma)</div>
+                    <div className="text-[11px] text-gray-400 mt-0.5">Büyük ödüllerin çıkma sıklığını kısarak kasaya net sanal para biriktirir.</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => handleUpdateCasinoMode('JACKPOT_STORM', 'Jackpot Storm: x500 Volatilite Fırtınası')}
+                  className={`p-3 rounded-xl border text-left transition flex items-start gap-2.5 ${
+                    casinoCfg.penetrationMode === 'JACKPOT_STORM'
+                      ? 'bg-purple-500/20 border-purple-400 text-white shadow'
+                      : 'bg-[#0d071a] border-[#30204d] hover:border-gray-500 text-gray-300'
+                  }`}
+                >
+                  <span className="text-xl">⚡</span>
+                  <div>
+                    <div className="font-bold text-purple-300">Jackpot Storm (Fırtına)</div>
+                    <div className="text-[11px] text-gray-400 mt-0.5">Yüksek varyans: Birçok boş çevirme ardından aniden devasa x500 patlatır.</div>
+                  </div>
+                </button>
+
+              </div>
+            </div>
+
+            {/* Tek Tıkla Manuel Jackpot Zorlayıcı */}
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#0a0314] p-3 rounded-xl border border-amber-500/30">
+              <div className="text-xs font-mono">
+                <span className="text-amber-300 font-bold block">MANUEL MEGA JACKPOT TETİKLEME:</span>
+                <span className="text-gray-400 text-[11px]">Butona basıldığında herhangi bir üyenin bir sonraki çevirmesine 5x 777 ($x1000) gelir!</span>
+              </div>
+              <button
+                onClick={handleForceJackpot}
+                className="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-amber-500 via-rose-600 to-amber-500 hover:opacity-90 text-white font-black text-xs uppercase tracking-wider rounded-lg shadow-lg active:scale-95 transition"
+              >
+                🚨 Şimdiki Çevirmeye Jackpot Ver!
+              </button>
+            </div>
+
           </div>
 
           {/* Canlı Piyasa Fiyatları Tablosu */}

@@ -11,6 +11,7 @@ interface GlobalFXPortalProps {
   onOpenDeposit: () => void;
   onOpenWithdraw: () => void;
   onOpenNextGen: () => void;
+  onOpenCasinoSlot?: () => void;
 }
 
 export default function GlobalFXPortal({
@@ -19,7 +20,8 @@ export default function GlobalFXPortal({
   onOpenTerminal,
   onOpenDeposit,
   onOpenWithdraw,
-  onOpenNextGen
+  onOpenNextGen,
+  onOpenCasinoSlot
 }: GlobalFXPortalProps) {
   const [marketTab, setMarketTab] = useState<'POPULAR' | 'FOREX' | 'INDICES' | 'METALS' | 'CRYPTO' | 'SYNTHETIC'>('POPULAR');
 
@@ -77,6 +79,11 @@ export default function GlobalFXPortal({
               <button onClick={onOpenNextGen} className="flex items-center gap-1 text-purple-400 hover:text-purple-300 transition">
                 <span>🚀</span> Yeni Nesil Kazanç
               </button>
+              {onOpenCasinoSlot && (
+                <button onClick={onOpenCasinoSlot} className="flex items-center gap-1 text-amber-400 hover:text-amber-300 font-bold transition">
+                  <span>🍓</span> Çilek & Ananas VIP Slots
+                </button>
+              )}
               <a href="#technology" className="hover:text-white transition">Altyapı (0.01ms)</a>
               <a href="#security" className="hover:text-white transition">Fon Güvenliği</a>
             </div>
@@ -84,6 +91,16 @@ export default function GlobalFXPortal({
 
           {/* Sağ Eylem Butonları */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {onOpenCasinoSlot && (
+              <button
+                onClick={onOpenCasinoSlot}
+                className="bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:opacity-90 text-black font-black text-xs px-3 py-2 rounded-lg transition shadow-[0_0_15px_rgba(245,158,11,0.4)] flex items-center gap-1.5 active:scale-95"
+              >
+                <span>🍓</span>
+                <span className="hidden sm:inline">Vegas</span> Slots
+              </button>
+            )}
+
             <button
               onClick={() => onOpenTerminal()}
               className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-xs px-3 sm:px-4 py-2 rounded-lg transition shadow-[0_0_20px_rgba(41,121,255,0.35)] flex items-center gap-1.5 active:scale-95"
@@ -163,16 +180,25 @@ export default function GlobalFXPortal({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
             <button
               onClick={() => onOpenTerminal()}
-              className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-extrabold text-sm rounded-xl transition shadow-[0_0_30px_rgba(41,121,255,0.4)] flex items-center justify-center gap-2 active:scale-95"
+              className="w-full sm:w-auto px-7 py-3.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-extrabold text-sm rounded-xl transition shadow-[0_0_30px_rgba(41,121,255,0.4)] flex items-center justify-center gap-2 active:scale-95"
             >
               <span>🚀</span> WebTrader&apos;ı Hemen Başlat
             </button>
+
+            {onOpenCasinoSlot && (
+              <button
+                onClick={onOpenCasinoSlot}
+                className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:opacity-90 text-black font-black text-sm rounded-xl transition shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center justify-center gap-2 active:scale-95 animate-pulse"
+              >
+                <span>🍓</span> Çilek & Ananas VIP Slots
+              </button>
+            )}
 
             <button
               onClick={onOpenNextGen}
               className="w-full sm:w-auto px-6 py-3.5 bg-[#121721] hover:bg-[#1a2232] border border-[#263348] text-white font-bold text-sm rounded-xl transition flex items-center justify-center gap-2"
             >
-              <span>🏆</span> $100,000 Prop Fon Sınavı
+              <span>🏆</span> $100,000 Prop Sınavı
             </button>
           </div>
 

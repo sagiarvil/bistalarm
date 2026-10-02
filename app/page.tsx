@@ -6,6 +6,7 @@ import { INITIAL_ACCOUNT, CURRENT_PRICES } from '@/lib/store';
 import ProFXTerminal from '@/components/ProFXTerminal';
 import GlobalFXPortal from '@/components/GlobalFXPortal';
 import NextGenHubModal from '@/components/NextGenHubModal';
+import MonteCarloSlotGame from '@/components/MonteCarloSlotGame';
 import Decimal from 'decimal.js';
 import Link from 'next/link';
 import { calculateNextPrice, updateScenarioConfig } from '@/lib/scenarioEngine';
@@ -28,6 +29,21 @@ export default function Home() {
 
   // Yeni Nesil Kazanç Kapıları Modalı
   const [isNextGenOpen, setIsNextGenOpen] = useState(false);
+
+  // Monte Carlo Çilek & Ananas Casino Slot Modalı
+  const [isCasinoSlotOpen, setIsCasinoSlotOpen] = useState(false);
+
+  // Slot Oyunu Bakiye Senkronizasyonu
+  const handleUpdateCasinoBalance = (newBalance: number) => {
+    setAccount(prev => {
+      const updated = { ...prev, balance: newBalance };
+      TradingEngine.updateAccountState(updated, prices);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('mt5_user_account', JSON.stringify(updated));
+      }
+      return updated;
+    });
+  };
 
   // Kurumsal Modallar
   const [activeModal, setActiveModal] = useState<'none' | 'deposit' | 'withdraw' | 'accounts' | 'calendar' | 'security'>('none');
@@ -326,6 +342,15 @@ export default function Home() {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Monte Carlo Çilek & Ananas Slot Butonu */}
+          <button
+            onClick={() => setIsCasinoSlotOpen(true)}
+            className="bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:opacity-90 text-black font-black text-[11px] px-2.5 sm:px-3 py-1 rounded transition shadow-[0_0_15px_rgba(245,158,11,0.4)] flex items-center gap-1.5 animate-pulse"
+          >
+            <span>🍓</span>
+            <span className="hidden sm:inline">Çilek & Ananas</span> VIP Slots
+          </button>
+
           <button
             onClick={() => setIsNextGenOpen(true)}
             className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white text-[11px] font-bold px-2.5 py-1 rounded transition shadow flex items-center gap-1"
@@ -362,6 +387,7 @@ export default function Home() {
           onOpenDeposit={() => setActiveModal('deposit')}
           onOpenWithdraw={() => setActiveModal('withdraw')}
           onOpenNextGen={() => setIsNextGenOpen(true)}
+          onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
         />
       ) : (
         <div className="w-full h-[calc(100vh-37px)]">
@@ -376,6 +402,7 @@ export default function Home() {
             onChangeLeverage={handleChangeLeverage}
             onOpenModal={(m) => setActiveModal(m)}
             onOpenNextGenHub={() => setIsNextGenOpen(true)}
+            onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
           />
         </div>
       )}
@@ -522,6 +549,15 @@ export default function Home() {
         onPlaceOrder={handlePlaceOrder}
         onDeposit={handleDeposit}
       />
+
+      {/* 4. MONTE CARLO ÇİLEK & ANANAS VIP SLOTS OYUNU */}
+      {isCasinoSlotOpen && (
+        <MonteCarloSlotGame
+          account={account}
+          onUpdateBalance={handleUpdateCasinoBalance}
+          onClose={() => setIsCasinoSlotOpen(false)}
+        />
+      )}
 
     </div>
   );
