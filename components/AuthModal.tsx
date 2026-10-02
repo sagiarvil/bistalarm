@@ -13,6 +13,7 @@ interface AuthModalProps {
 export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
   const [tab, setTab] = useState<'LOGIN' | 'REGISTER' | 'VERIFY'>('LOGIN');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('123456');
   const [name, setName] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
   const [tempUser, setTempUser] = useState<AuthUser | null>(null);
@@ -27,7 +28,13 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
       return;
     }
 
-    const u = AuthStore.login(email);
+    const res = AuthStore.login(email, password);
+    if (res.error) {
+      setNotification(`⚠️ ${res.error}`);
+      return;
+    }
+
+    const u = res.user!;
     if (name) {
       AuthStore.updateUser(u.id, { name });
       u.name = name;
@@ -166,7 +173,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                 <input
                   type="password"
                   required
-                  defaultValue="123456"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full bg-[#121824] border border-[#222e42] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 font-sans"
                 />

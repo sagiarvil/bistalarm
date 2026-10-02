@@ -5,6 +5,7 @@ export interface AuthUser {
   id: string;
   email: string;
   name: string;
+  password?: string;
   avatar?: string;
   role: 'user' | 'admin';
   createdAt: string;
@@ -33,6 +34,7 @@ const DEFAULT_USERS: AuthUser[] = [
     id: 'usr-admin-1',
     email: 'admin@exbina.com',
     name: 'Exbina Master Dealer',
+    password: 'admin',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop',
     role: 'admin',
     createdAt: '2026-01-01 10:00:00',
@@ -47,6 +49,7 @@ const DEFAULT_USERS: AuthUser[] = [
     id: 'usr-demo-1',
     email: 'trader@exbina.com',
     name: 'Barış B. (VIP Trader)',
+    password: '123',
     avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop',
     role: 'user',
     createdAt: '2026-03-15 14:20:00',
@@ -156,31 +159,78 @@ export class AuthStore {
     }
   }
 
-  static login(email: string): AuthUser {
+  static login(email: string, password?: string): { user?: AuthUser; error?: string } {
     const users = this.getUsers();
     let user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-    if (!user) {
-      // Hızlı otomatik hesap oluşturma (Kullanıcı dostu, zorlamayan üyelik)
-      const name = email.split('@')[0];
-      const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
-      user = {
-        id: `usr-${Date.now()}`,
-        email,
-        name: capitalized,
-        role: email.includes('admin') ? 'admin' : 'user',
-        createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
-        accountNumber: Math.floor(9480000 + Math.random() * 9000),
-        balance: 10000.00,
-        credit: 1000.00,
-        leverage: 1000,
-        status: 'active',
-        verified: true
-      };
-      users.push(user);
-      this.saveUsers(users);
+    if (user) {
+      // Eğer kullanıcıya bir şifre atanmışsa ve girilen şifre uyuşmuyorsa
+      if (user.password && password && user.password !== password) {
+        return { error: 'Girdiğiniz şifre hatalıdır. Lütfen kontrol ediniz.' };
+      }
+      this.setCurrentUser(user);
+      return { user };
     }
+
+    // Yeni kullanıcı hızlı oluşturma
+    const name = email.split('@')[0];
+    const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+    user = {
+      id: `usr-${Date.now()}`,
+      email,
+      name: capitalized,
+      password: password || '123456',
+      role: email.includes('admin') ? 'admin' : 'user',
+      createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
+      accountNumber: Math.floor(9480000 + Math.random() * 9000),
+      balance: 10000.00,
+      credit: 1000.00,
+      leverage: 1000,
+      status: 'active',
+      verified: true
+    };
+    users.push(user);
+    this.saveUsers(users);
     this.setCurrentUser(user);
-    return user;
+    return { user };
+  }
+
+  static createUser(userData: {
+    email: string;
+    name: string;
+    password?: string;
+    balance?: number;
+    leverage?: number;
+    role?: 'user' | 'admin';
+  }): AuthUser {
+    const users = this.getUsers();
+    const existing = users.find(u => u.email.toLowerCase() === userData.email.toLowerCase());
+    if (existing) {
+      // Güncelle
+      if (userData.password) existing.password = userData.password;
+      if (userData.name) existing.name = userData.name;
+      if (userData.balance !== undefined) existing.balance = userData.balance;
+      if (userData.leverage !== undefined) existing.leverage = userData.leverage;
+      this.saveUsers(users);
+      return existing;
+    }
+
+    const newUser: AuthUser = {
+      id: `usr-${Date.now()}`,
+      email: userData.email,
+      name: userData.name || userData.email.split('@')[0],
+      password: userData.password || '123456',
+      role: userData.role || 'user',
+      createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
+      accountNumber: Math.floor(9480000 + Math.random() * 9000),
+      balance: userData.balance ?? 10000.00,
+      credit: 1000.00,
+      leverage: userData.leverage ?? 500,
+      status: 'active',
+      verified: true
+    };
+    users.unshift(newUser);
+    this.saveUsers(users);
+    return newUser;
   }
 
   static loginWithGoogle(): AuthUser {

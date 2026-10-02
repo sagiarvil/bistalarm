@@ -105,6 +105,47 @@ export default function AdminPage() {
     showNotify(`Kaldıraç 1:${leverage} yapıldı.`);
   };
 
+  const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false);
+  const [newUserEmail, setNewUserEmail] = useState<string>('');
+  const [newUserName, setNewUserName] = useState<string>('');
+  const [newUserPassword, setNewUserPassword] = useState<string>('123456');
+  const [newUserBalance, setNewUserBalance] = useState<number>(10000);
+  const [newUserLeverage, setNewUserLeverage] = useState<number>(500);
+
+  const handleCreateNewUser = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newUserEmail || !newUserEmail.includes('@')) {
+      showNotify('Geçerli bir e-posta adresi giriniz.');
+      return;
+    }
+
+    const created = AuthStore.createUser({
+      email: newUserEmail,
+      name: newUserName || newUserEmail.split('@')[0],
+      password: newUserPassword || '123456',
+      balance: newUserBalance,
+      leverage: newUserLeverage,
+      role: 'user'
+    });
+
+    reloadData();
+    setSelectedUser(created);
+    setShowAddUserModal(false);
+    setNewUserEmail('');
+    setNewUserName('');
+    setNewUserPassword('123456');
+    addLog(`Yeni Kullanıcı Eklendi: #${created.accountNumber} • ${created.email} (Şifre: ${created.password})`);
+    showNotify(`Kullanıcı ${created.email} başarıyla oluşturuldu! Şifre: ${created.password}`);
+  };
+
+  const handleUpdateUserPassword = (newPass: string) => {
+    if (!selectedUser || !newPass) return;
+    AuthStore.updateUser(selectedUser.id, { password: newPass });
+    reloadData();
+    addLog(`Kullanıcı (#${selectedUser.accountNumber}) Şifresi Güncellendi: ${newPass}`);
+    showNotify(`Şifre güncellendi: ${newPass}`);
+  };
+
   const handleToggleUserStatus = () => {
     if (!selectedUser) return;
     const newStatus = selectedUser.status === 'active' ? 'suspended' : 'active';
@@ -310,12 +351,21 @@ export default function AdminPage() {
                     <span>👥</span> Kayıtlı Kullanıcılar & ECN Hesapları
                   </h2>
                   <p className="text-[11px] text-gray-400 font-mono">
-                    Yönetmek istediğiniz kullanıcının üzerine tıklayınız.
+                    Yönetmek veya şifre güncellemek için kullanıcının üzerine tıklayınız.
                   </p>
                 </div>
-                <span className="text-xs font-mono font-bold text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-lg border border-blue-500/20">
-                  {users.length} Üye Aktif
-                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowAddUserModal(true)}
+                    className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-xs font-bold font-mono rounded-xl transition shadow flex items-center gap-1.5 active:scale-95"
+                  >
+                    <span>➕</span>
+                    <span>Kullanıcı Ekle</span>
+                  </button>
+                  <span className="text-xs font-mono font-bold text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-lg border border-blue-500/20">
+                    {users.length} Üye
+                  </span>
+                </div>
               </div>
 
               <div className="overflow-x-auto">
@@ -323,7 +373,7 @@ export default function AdminPage() {
                   <thead>
                     <tr className="text-gray-400 border-b border-[#182130]">
                       <th className="py-2.5 px-3">Hesap No</th>
-                      <th className="py-2.5 px-3">Kullanıcı</th>
+                      <th className="py-2.5 px-3">Kullanıcı & Şifre</th>
                       <th className="py-2.5 px-3 text-right">Bakiye</th>
                       <th className="py-2.5 px-3 text-center">Kaldıraç</th>
                       <th className="py-2.5 px-3 text-center">Durum</th>
@@ -343,7 +393,12 @@ export default function AdminPage() {
                           <td className="py-3 px-3 text-blue-400 font-bold">#{u.accountNumber}</td>
                           <td className="py-3 px-3">
                             <span className="block text-white font-sans">{u.name}</span>
-                            <span className="text-[10px] text-gray-400">{u.email}</span>
+                            <div className="flex items-center gap-1.5 mt-0.5">
+                              <span className="text-[10px] text-gray-400">{u.email}</span>
+                              <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20 font-mono">
+                                🔑 {u.password || '123456'}
+                              </span>
+                            </div>
                           </td>
                           <td className="py-3 px-3 text-right font-bold text-emerald-400">
                             ${u.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
@@ -384,6 +439,38 @@ export default function AdminPage() {
                     >
                       {selectedUser.status === 'active' ? 'Hesabı Dondur' : 'Hesabı Aç'}
                     </button>
+                  </div>
+
+                  {/* ŞİFRE YÖNETİMİ & DOĞRUDAN ERİŞİM BİLGİSİ */}
+                  <div className="bg-[#121824] p-3.5 rounded-xl border border-amber-500/30 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-amber-300 font-mono flex items-center gap-1.5">
+                        <span>🔑</span> Kullanıcı Giriş Şifresi:
+                      </span>
+                      <span className="text-xs font-mono font-black text-white bg-amber-500/20 px-2 py-0.5 rounded border border-amber-400/30">
+                        {selectedUser.password || '123456'}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 pt-1">
+                      <input
+                        type="text"
+                        placeholder="Yeni şifre belirle (Örn: bursa16)"
+                        id="user-password-input"
+                        className="flex-1 bg-[#090d15] border border-[#222e42] rounded-xl px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-amber-400"
+                      />
+                      <button
+                        onClick={() => {
+                          const inp = document.getElementById('user-password-input') as HTMLInputElement;
+                          if (inp && inp.value) {
+                            handleUpdateUserPassword(inp.value);
+                            inp.value = '';
+                          }
+                        }}
+                        className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-black text-xs rounded-xl font-mono transition"
+                      >
+                        Şifreyi Değiştir
+                      </button>
+                    </div>
                   </div>
 
                   {/* Bakiye Bilgileri */}
@@ -998,6 +1085,114 @@ export default function AdminPage() {
         )}
 
       </main>
+
+      {/* ========================================================================= */}
+      {/* 4. YENİ KULLANICI EKLEME MODALI (ÖZEL ŞİFRE & E-POSTA BELİRLEME) */}
+      {/* ========================================================================= */}
+      {showAddUserModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn select-none">
+          <div className="relative w-full max-w-md bg-[#0d121c] border-2 border-blue-500/40 rounded-3xl shadow-[0_0_50px_rgba(41,121,255,0.3)] overflow-hidden flex flex-col text-white">
+            
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#1b2434] bg-[#090d15]">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">👤</span>
+                <div>
+                  <h3 className="text-sm font-bold text-white font-sans">Yeni Kullanıcı Hesabı Ekle</h3>
+                  <p className="text-[10px] text-gray-400 font-mono">E-posta ve özel giriş şifresi belirleyin</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowAddUserModal(false)}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center font-bold text-sm transition"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateNewUser} className="p-6 space-y-4 font-mono text-xs">
+              <div className="space-y-1">
+                <label className="text-gray-400 block font-bold">Kullanıcı E-Posta Adresi (Zorunlu):</label>
+                <input
+                  type="email"
+                  required
+                  value={newUserEmail}
+                  onChange={(e) => setNewUserEmail(e.target.value)}
+                  placeholder="musteri@firma.com"
+                  className="w-full bg-[#121824] border border-[#222e42] rounded-xl px-3.5 py-2.5 text-white font-sans focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-gray-400 block font-bold">Ad Soyad / Unvan:</label>
+                <input
+                  type="text"
+                  value={newUserName}
+                  onChange={(e) => setNewUserName(e.target.value)}
+                  placeholder="Örn: Mehmet Can"
+                  className="w-full bg-[#121824] border border-[#222e42] rounded-xl px-3.5 py-2.5 text-white font-sans focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex justify-between items-center">
+                  <label className="text-amber-300 block font-bold">Özel Giriş Şifresi:</label>
+                  <span className="text-[10px] text-gray-400">Kullanıcı bu şifreyle girecek</span>
+                </div>
+                <input
+                  type="text"
+                  required
+                  value={newUserPassword}
+                  onChange={(e) => setNewUserPassword(e.target.value)}
+                  placeholder="Örn: bursa16"
+                  className="w-full bg-[#121824] border border-amber-500/50 rounded-xl px-3.5 py-2.5 text-amber-300 font-mono font-bold focus:outline-none focus:border-amber-400"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-gray-400 block font-bold">Başlangıç Bakiyesi ($):</label>
+                  <input
+                    type="number"
+                    value={newUserBalance}
+                    onChange={(e) => setNewUserBalance(Number(e.target.value))}
+                    className="w-full bg-[#121824] border border-[#222e42] rounded-xl px-3 py-2 text-emerald-400 font-mono font-bold focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-gray-400 block font-bold">Kaldıraç Oranı:</label>
+                  <select
+                    value={newUserLeverage}
+                    onChange={(e) => setNewUserLeverage(Number(e.target.value))}
+                    className="w-full bg-[#121824] border border-[#222e42] rounded-xl px-3 py-2 text-cyan-400 font-mono font-bold focus:outline-none focus:border-blue-500"
+                  >
+                    <option value={100}>1:100</option>
+                    <option value={200}>1:200</option>
+                    <option value={500}>1:500</option>
+                    <option value={1000}>1:1000</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-2 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddUserModal(false)}
+                  className="flex-1 py-3 bg-[#161d2b] hover:bg-[#202a3d] text-gray-300 font-bold rounded-xl transition"
+                >
+                  Vazgeç
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-black rounded-xl transition shadow-lg active:scale-95"
+                >
+                  ✅ Kullanıcıyı Oluştur
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      )}
 
     </div>
   );
