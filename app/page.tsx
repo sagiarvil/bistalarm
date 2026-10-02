@@ -614,6 +614,10 @@ export default function Home() {
           account={account}
           onUpdateBalance={handleUpdateCasinoBalance}
           onClose={() => setIsCasinoSlotOpen(false)}
+          onBackToMonteCarlo={() => {
+            setIsCasinoSlotOpen(false);
+            setIsGrandCasinoOpen(true);
+          }}
           onOpenTacticsGuide={() => {
             setIsCasinoSlotOpen(false);
             setIsTacticsGuideOpen(true);
@@ -625,6 +629,10 @@ export default function Home() {
       <NextGenArcadeHubModal
         isOpen={isArcadeHubOpen}
         onClose={() => setIsArcadeHubOpen(false)}
+        onBackToMonteCarlo={() => {
+          setIsArcadeHubOpen(false);
+          setIsGrandCasinoOpen(true);
+        }}
         account={account}
         onUpdateBalance={handleUpdateCasinoBalance}
         onOpenSlotGame={() => setIsCasinoSlotOpen(true)}

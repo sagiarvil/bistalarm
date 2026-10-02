@@ -17,6 +17,7 @@ interface MonteCarloSlotGameProps {
   account: UserAccount;
   onUpdateBalance: (newBalance: number) => void;
   onClose: () => void;
+  onBackToMonteCarlo?: () => void;
   onOpenTacticsGuide?: () => void;
 }
 
@@ -24,6 +25,7 @@ export default function MonteCarloSlotGame({
   account,
   onUpdateBalance,
   onClose,
+  onBackToMonteCarlo,
   onOpenTacticsGuide
 }: MonteCarloSlotGameProps) {
   const [bet, setBet] = useState<number>(20);
@@ -342,9 +344,16 @@ export default function MonteCarloSlotGame({
         <div className="flex items-center justify-between px-3 sm:px-4 py-2 bg-gradient-to-r from-amber-600/20 via-purple-600/20 to-amber-600/20 border-b border-amber-500/30 shrink-0">
           <div className="flex items-center gap-2 sm:gap-3">
             <button
-              onClick={() => { setAutoSpin(false); onClose(); }}
+              onClick={() => {
+                setAutoSpin(false);
+                if (onBackToMonteCarlo) {
+                  onBackToMonteCarlo();
+                } else {
+                  onClose();
+                }
+              }}
               className="px-2.5 py-1 rounded-lg bg-amber-950/60 hover:bg-amber-900 border border-amber-500/40 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1 transition shadow"
-              title="Slot Oyunundan Çıkış Yap"
+              title="Monte Carlo Salonuna Geri Dön"
             >
               <span>←</span>
               <span>Geri Dön</span>

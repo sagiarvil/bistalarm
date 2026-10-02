@@ -21,6 +21,7 @@ import GrandWinCelebration from '@/components/GrandWinCelebration';
 interface NextGenArcadeHubModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onBackToMonteCarlo?: () => void;
   account: UserAccount;
   onUpdateBalance: (newBalance: number) => void;
   onOpenSlotGame?: () => void;
@@ -29,6 +30,7 @@ interface NextGenArcadeHubModalProps {
 export default function NextGenArcadeHubModal({
   isOpen,
   onClose,
+  onBackToMonteCarlo,
   account,
   onUpdateBalance,
   onOpenSlotGame
@@ -394,9 +396,15 @@ export default function NextGenArcadeHubModal({
         <div className="flex flex-col sm:flex-row items-center justify-between px-3 sm:px-5 py-3 bg-[#070913]/90 border-b border-indigo-500/30 gap-3 shrink-0">
           <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-start">
             <button
-              onClick={onClose}
+              onClick={() => {
+                if (onBackToMonteCarlo) {
+                  onBackToMonteCarlo();
+                } else {
+                  onClose();
+                }
+              }}
               className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-indigo-950/60 hover:bg-indigo-900 border border-indigo-500/40 text-indigo-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition shadow"
-              title="Arcade Salonundan Çıkış Yap"
+              title="Monte Carlo Salonuna Geri Dön"
             >
               <span>←</span>
               <span>Geri Dön</span>
