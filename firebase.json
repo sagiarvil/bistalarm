@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "bistalarm-fa870",
     "public": "out",
     "ignore": [
       "firebase.json",
