@@ -415,8 +415,8 @@ export default function GlobalFXPortal({
       {/* ========================================================================= */}
       {/* 5. HESAP TÜRLERİ MATRİSİ (EXNESS & IC MARKETS STANDARDI) */}
       {/* ========================================================================= */}
-      <section id="accounts" className="py-16 px-4 lg:px-8 max-w-7xl mx-auto space-y-8 scroll-mt-20">
-        <div className="text-center space-y-2">
+      <section id="accounts" className="py-8 sm:py-10 px-4 lg:px-8 max-w-7xl mx-auto space-y-6 scroll-mt-14">
+        <div className="text-center space-y-1.5">
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-wide">
             Her Strateji İçin Optimize Edilmiş Hesap Tipleri
           </h2>
@@ -428,12 +428,12 @@ export default function GlobalFXPortal({
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           
           {/* ECN Raw Spread */}
-          <div className="bg-[#0c1017] border border-[#1b2332] rounded-2xl p-5 space-y-4 flex flex-col justify-between hover:border-blue-500/50 transition">
-            <div className="space-y-3">
+          <div className="bg-[#0c1017] border border-[#1b2332] rounded-2xl p-4 sm:p-5 space-y-3 flex flex-col justify-between hover:border-blue-500/50 transition">
+            <div className="space-y-2.5">
               <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest block">ALGO & SCALP</span>
               <h3 className="text-lg font-bold text-white">ECN Raw Spread</h3>
               <div className="text-2xl font-black text-white font-mono">0.0 <span className="text-xs font-normal text-gray-400">pip&apos;ten</span></div>
-              <ul className="text-xs text-gray-300 space-y-2 font-mono border-t border-[#182030] pt-3">
+              <ul className="text-xs text-gray-300 space-y-1.5 font-mono border-t border-[#182030] pt-2.5">
                 <li>✓ Komisyon: $3.00 / Lot</li>
                 <li>✓ Kaldıraç: 1:500</li>
                 <li>✓ Stop Out: %50</li>
@@ -446,13 +446,13 @@ export default function GlobalFXPortal({
           </div>
 
           {/* Pro Standart */}
-          <div className="bg-[#0c1017] border-2 border-blue-500 rounded-2xl p-5 space-y-4 flex flex-col justify-between relative shadow-[0_0_25px_rgba(41,121,255,0.2)]">
+          <div className="bg-[#0c1017] border-2 border-blue-500 rounded-2xl p-4 sm:p-5 space-y-3 flex flex-col justify-between relative shadow-[0_0_25px_rgba(41,121,255,0.2)]">
             <span className="absolute -top-3 right-4 bg-blue-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">EN POPÜLER</span>
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block">SIFIR KOMİSYON</span>
               <h3 className="text-lg font-bold text-white">Pro Standart</h3>
               <div className="text-2xl font-black text-white font-mono">0.7 <span className="text-xs font-normal text-gray-400">pip&apos;ten</span></div>
-              <ul className="text-xs text-gray-300 space-y-2 font-mono border-t border-[#182030] pt-3">
+              <ul className="text-xs text-gray-300 space-y-1.5 font-mono border-t border-[#182030] pt-2.5">
                 <li>✓ Sıfır Komisyon ($0)</li>
                 <li>✓ Kaldıraç: 1:1000</li>
                 <li>✓ Anında Para Yatırma</li>
@@ -465,12 +465,12 @@ export default function GlobalFXPortal({
           </div>
 
           {/* 1:2000 Flash Scalp */}
-          <div className="bg-[#0c1017] border border-[#1b2332] rounded-2xl p-5 space-y-4 flex flex-col justify-between hover:border-purple-500/50 transition">
-            <div className="space-y-3">
+          <div className="bg-[#0c1017] border border-[#1b2332] rounded-2xl p-4 sm:p-5 space-y-3 flex flex-col justify-between hover:border-purple-500/50 transition">
+            <div className="space-y-2.5">
               <span className="text-[10px] font-bold text-purple-400 uppercase tracking-widest block">MİKRO SERMAYE</span>
               <h3 className="text-lg font-bold text-white">1:2000 Flash Scalp</h3>
               <div className="text-2xl font-black text-purple-400 font-mono">1:2000 <span className="text-xs font-normal text-gray-400">Kaldıraç</span></div>
-              <ul className="text-xs text-gray-300 space-y-2 font-mono border-t border-[#182030] pt-3">
+              <ul className="text-xs text-gray-300 space-y-1.5 font-mono border-t border-[#182030] pt-2.5">
                 <li>✓ $5 ile Büyük Pozisyon</li>
                 <li>✓ Kademeli Teminat Koruması</li>
                 <li>✓ Hızlı Scalp Robotları</li>
@@ -483,12 +483,12 @@ export default function GlobalFXPortal({
           </div>
 
           {/* Prop Challenge */}
-          <div className="bg-[#0c1017] border border-[#1b2332] rounded-2xl p-5 space-y-4 flex flex-col justify-between hover:border-yellow-500/50 transition">
-            <div className="space-y-3">
+          <div className="bg-[#0c1017] border border-[#1b2332] rounded-2xl p-4 sm:p-5 space-y-3 flex flex-col justify-between hover:border-yellow-500/50 transition">
+            <div className="space-y-2.5">
               <span className="text-[10px] font-bold text-yellow-400 uppercase tracking-widest block">FON YÖNETİMİ</span>
               <h3 className="text-lg font-bold text-white">$100K Prop Fon</h3>
               <div className="text-2xl font-black text-yellow-400 font-mono">%80 <span className="text-xs font-normal text-gray-400">Kâr Payı</span></div>
-              <ul className="text-xs text-gray-300 space-y-2 font-mono border-t border-[#182030] pt-3">
+              <ul className="text-xs text-gray-300 space-y-1.5 font-mono border-t border-[#182030] pt-2.5">
                 <li>✓ Kendi Paranı Riske Atma</li>
                 <li>✓ %10 Hedef Kâr</li>
                 <li>✓ Max %5 Günlük Kayıp</li>
