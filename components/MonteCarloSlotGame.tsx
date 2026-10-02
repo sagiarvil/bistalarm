@@ -139,11 +139,45 @@ export default function MonteCarloSlotGame({
   const [stoppingReels, setStoppingReels] = useState<boolean[]>([false, false, false, false, false]);
   const [isTensionSpin, setIsTensionSpin] = useState<boolean>(false);
 
+  // Auto-Spin Referansları (Stale Closure ve Kilitlenmeyi Önler)
+  const autoSpinRef = useRef<boolean>(false);
+  const spinTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const stepTimerRefs = useRef<NodeJS.Timeout[]>([]);
+
+  // Temizleme fonksiyonu
+  const clearAllSlotTimers = () => {
+    if (spinTimerRef.current) clearTimeout(spinTimerRef.current);
+    stepTimerRefs.current.forEach(t => clearTimeout(t));
+    stepTimerRefs.current = [];
+  };
+
+  useEffect(() => {
+    return () => clearAllSlotTimers();
+  }, []);
+
+  const handleToggleAutoSpin = () => {
+    if (autoSpinRef.current) {
+      // ANINDA DURDUR
+      autoSpinRef.current = false;
+      setAutoSpin(false);
+      clearAllSlotTimers();
+    } else {
+      // BAŞLAT
+      autoSpinRef.current = true;
+      setAutoSpin(true);
+      if (!isSpinning) {
+        handleSpin();
+      }
+    }
+  };
+
   const handleSpin = () => {
     if (isSpinning) return;
     if (account.balance < bet) {
       alert(`Yetersiz Bakiye! Bahis: $${bet}, Mevcut Bakiye: $${account.balance.toFixed(2)}`);
+      autoSpinRef.current = false;
       setAutoSpin(false);
+      clearAllSlotTimers();
       return;
     }
 
@@ -154,24 +188,26 @@ export default function MonteCarloSlotGame({
     setShowMegaWin(false);
     playSound('spin');
 
-    setTimeout(() => setLeverPulling(false), 300);
+    const leverTimer = setTimeout(() => setLeverPulling(false), 300);
+    stepTimerRefs.current.push(leverTimer);
 
     const balanceAfterBet = account.balance - bet;
     onUpdateBalance(balanceAfterBet);
 
     const result: SpinResult = executeSlotSpin(bet);
 
-    // İlk 2 Makara Duruşu
-    setTimeout(() => {
+    // 1. Makara Duruşu
+    const t1 = setTimeout(() => {
       setStoppingReels(prev => [true, false, false, false, false]);
       playSound('click');
-    }, 450);
+    }, 400);
+    stepTimerRefs.current.push(t1);
 
-    setTimeout(() => {
+    // 2. Makara Duruşu & Gerilim Kontrolü
+    const t2 = setTimeout(() => {
       setStoppingReels(prev => [true, true, false, false, false]);
       playSound('click');
 
-      // Nöropatik Anticipation Kontrolü: 1. ve 2. makarada yüksek sembol varsa kalp atışı başlar!
       const highSymbols = ['seven', 'wild', 'strawberry', 'diamond'];
       const r1Match = result.grid[0].some(s => highSymbols.includes(s));
       const r2Match = result.grid[1].some(s => highSymbols.includes(s));
@@ -179,29 +215,36 @@ export default function MonteCarloSlotGame({
       if (r1Match && r2Match) {
         setIsTensionSpin(true);
         playHeartbeat();
-        setTimeout(playHeartbeat, 500);
+        const hbTimer = setTimeout(playHeartbeat, 500);
+        stepTimerRefs.current.push(hbTimer);
       }
-    }, 750);
+    }, 700);
+    stepTimerRefs.current.push(t2);
 
-    // Kalan 3., 4. ve 5. makaralar (Gerilim hissiyle uzatılmış duruş)
-    setTimeout(() => {
+    // 3. Makara Duruşu
+    const t3 = setTimeout(() => {
       setStoppingReels(prev => [true, true, true, false, false]);
       playSound('click');
-    }, 1150);
+    }, 1050);
+    stepTimerRefs.current.push(t3);
 
-    setTimeout(() => {
+    // 4. Makara Duruşu
+    const t4 = setTimeout(() => {
       setStoppingReels(prev => [true, true, true, true, false]);
       playSound('click');
-    }, 1450);
+    }, 1350);
+    stepTimerRefs.current.push(t4);
 
-    setTimeout(() => {
+    // 5. Makara Duruşu
+    const t5 = setTimeout(() => {
       setStoppingReels([true, true, true, true, true]);
       playSound('click');
       setIsTensionSpin(false);
-    }, 1800);
+    }, 1650);
+    stepTimerRefs.current.push(t5);
 
     // Final Sonuç ve Kazanç Bildirimi
-    setTimeout(() => {
+    const tFinal = setTimeout(() => {
       setReels(result.grid);
       setIsSpinning(false);
       setLastWin(result.totalWin);
@@ -212,9 +255,10 @@ export default function MonteCarloSlotGame({
         nonce: result.nonce
       });
 
+      let nextBalance = balanceAfterBet;
       if (result.totalWin > 0) {
-        const finalBalance = balanceAfterBet + result.totalWin;
-        onUpdateBalance(finalBalance);
+        nextBalance = balanceAfterBet + result.totalWin;
+        onUpdateBalance(nextBalance);
 
         if (result.isJackpot || result.multiplier >= 15) {
           setShowMegaWin(true);
@@ -224,12 +268,21 @@ export default function MonteCarloSlotGame({
         }
       }
 
-      if (autoSpin && balanceAfterBet >= bet) {
-        setTimeout(handleSpin, 1600);
-      } else if (autoSpin) {
-        setAutoSpin(false);
+      // Güvenli Auto-spin Döngüsü
+      if (autoSpinRef.current) {
+        if (nextBalance >= bet) {
+          spinTimerRef.current = setTimeout(() => {
+            if (autoSpinRef.current) {
+              handleSpin();
+            }
+          }, 1200);
+        } else {
+          autoSpinRef.current = false;
+          setAutoSpin(false);
+        }
       }
-    }, 2000);
+    }, 1800);
+    stepTimerRefs.current.push(tFinal);
   };
 
   const getSymbol = (id: string): SlotSymbol => {
@@ -441,15 +494,14 @@ export default function MonteCarloSlotGame({
             <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
               
               <button
-                disabled={isSpinning}
-                onClick={() => setAutoSpin(!autoSpin)}
-                className={`px-4 py-3 rounded-xl font-extrabold text-xs transition border flex items-center gap-1.5 ${
+                onClick={handleToggleAutoSpin}
+                className={`px-5 py-3 rounded-xl font-extrabold text-xs transition border flex items-center gap-1.5 shadow-md active:scale-95 ${
                   autoSpin 
-                    ? 'bg-rose-600 text-white border-rose-500 animate-pulse' 
+                    ? 'bg-rose-600 hover:bg-rose-700 text-white border-rose-400 ring-2 ring-rose-400/50 animate-pulse' 
                     : 'bg-[#1b0f30] text-purple-300 border-purple-500/40 hover:bg-[#251542]'
                 }`}
               >
-                <span>🔄</span> {autoSpin ? 'Durdur' : 'Auto-Spin'}
+                <span>🔄</span> {autoSpin ? 'DURDUR' : 'Auto-Spin'}
               </button>
 
               <button
