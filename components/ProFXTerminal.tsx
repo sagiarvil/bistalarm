@@ -57,7 +57,7 @@ export default function ProFXTerminal({
 }: ProFXTerminalProps) {
   // Seçili Sembol & Kategori
   const [selectedSymbol, setSelectedSymbol] = useState<string>('NASDAQ.j');
-  const [symbolCategory, setSymbolCategory] = useState<'ALL' | 'Forex' | 'Indices' | 'Commodities' | 'Crypto'>('ALL');
+  const [symbolCategory, setSymbolCategory] = useState<'ALL' | 'Forex' | 'Indices' | 'Commodities' | 'Crypto' | 'Synthetic'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [favorites, setFavorites] = useState<string[]>(['NASDAQ.j', 'XAUUSDX', 'DAX.j']);
   const [onlyFavorites, setOnlyFavorites] = useState(false);
@@ -528,13 +528,13 @@ export default function ProFXTerminal({
 
             <div className="flex items-center justify-between text-xs font-semibold">
               <div className="flex items-center gap-1 overflow-x-auto pb-0.5">
-                {(['ALL', 'Forex', 'Indices', 'Commodities', 'Crypto'] as const).map(cat => (
+                {(['ALL', 'Forex', 'Indices', 'Commodities', 'Crypto', 'Synthetic'] as const).map(cat => (
                   <button
                     key={cat}
                     onClick={() => { setOnlyFavorites(false); setSymbolCategory(cat); }}
-                    className={`px-2 py-1 rounded transition text-[11px] ${!onlyFavorites && symbolCategory === cat ? 'bg-blue-600 text-white font-bold' : 'text-gray-400 hover:bg-[#161c28]'}`}
+                    className={`px-2 py-1 rounded transition text-[11px] whitespace-nowrap ${!onlyFavorites && symbolCategory === cat ? 'bg-blue-600 text-white font-bold' : 'text-gray-400 hover:bg-[#161c28]'}`}
                   >
-                    {cat === 'ALL' ? 'TÜMÜ' : cat === 'Commodities' ? 'EMTİA' : cat.toUpperCase()}
+                    {cat === 'ALL' ? 'TÜMÜ' : cat === 'Commodities' ? 'EMTİA' : cat === 'Synthetic' ? 'SENTETİK' : cat === 'Indices' ? 'ENDEKS' : cat.toUpperCase()}
                   </button>
                 ))}
               </div>

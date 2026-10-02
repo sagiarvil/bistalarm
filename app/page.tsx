@@ -62,9 +62,9 @@ export default function Home() {
           const spec = SYMBOL_SPECS[sym];
           if (!spec) continue;
 
-          // Senaryo motoru ile gerçekçi fiyat hesabı
+          // Senaryo motoru ile gerçekçi fiyat hesabı (Her sembole özel davranış)
           const spreadPips = spec.spread / spec.pipSize;
-          const nextTick = calculateNextPrice(cur.bid, spec.digits, spreadPips);
+          const nextTick = calculateNextPrice(cur.bid, spec.digits, spreadPips, sym);
 
           const newHigh = Math.max(cur.high, nextTick.ask);
           const newLow = Math.min(cur.low, nextTick.bid);

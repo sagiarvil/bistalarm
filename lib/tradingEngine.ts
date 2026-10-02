@@ -3,7 +3,7 @@ import Decimal from 'decimal.js';
 export interface SymbolSpec {
   symbol: string;
   name: string;
-  category: 'Forex' | 'Indices' | 'Commodities' | 'Crypto';
+  category: 'Forex' | 'Indices' | 'Commodities' | 'Crypto' | 'Synthetic';
   contractSize: number;
   digits: number;
   pipSize: number;
@@ -13,38 +13,39 @@ export interface SymbolSpec {
 }
 
 export const SYMBOL_SPECS: Record<string, SymbolSpec> = {
-  'NASDAQ.j': {
-    symbol: 'NASDAQ.j',
-    name: 'US Tech 100 Index',
-    category: 'Indices',
-    contractSize: 1,
-    digits: 2,
-    pipSize: 0.01,
-    spread: 0.70,
-    commissionPerLot: 1.50,
-    basePrice: 30411.30,
+  // --- FOREX PARİTELERİ ---
+  'EURUSD': {
+    symbol: 'EURUSD',
+    name: 'Euro vs US Dollar',
+    category: 'Forex',
+    contractSize: 100000,
+    digits: 5,
+    pipSize: 0.0001,
+    spread: 0.00008,
+    commissionPerLot: 3.00,
+    basePrice: 1.08450,
   },
-  'XAUUSDX': {
-    symbol: 'XAUUSDX',
-    name: 'Gold vs US Dollar',
-    category: 'Commodities',
-    contractSize: 100,
-    digits: 2,
-    pipSize: 0.01,
-    spread: 0.70,
-    commissionPerLot: 3.50,
-    basePrice: 4157.43,
+  'GBPUSD': {
+    symbol: 'GBPUSD',
+    name: 'Great Britain Pound vs US Dollar',
+    category: 'Forex',
+    contractSize: 100000,
+    digits: 5,
+    pipSize: 0.0001,
+    spread: 0.00010,
+    commissionPerLot: 3.00,
+    basePrice: 1.30250,
   },
-  'DAX.j': {
-    symbol: 'DAX.j',
-    name: 'Germany 40 Index',
-    category: 'Indices',
-    contractSize: 1,
-    digits: 2,
+  'USDJPY': {
+    symbol: 'USDJPY',
+    name: 'US Dollar vs Japanese Yen',
+    category: 'Forex',
+    contractSize: 100000,
+    digits: 3,
     pipSize: 0.01,
-    spread: 0.60,
-    commissionPerLot: 1.50,
-    basePrice: 25001.80,
+    spread: 0.010,
+    commissionPerLot: 3.00,
+    basePrice: 148.650,
   },
   'DXY.j': {
     symbol: 'DXY.j',
@@ -57,6 +58,19 @@ export const SYMBOL_SPECS: Record<string, SymbolSpec> = {
     commissionPerLot: 1.50,
     basePrice: 101.796,
   },
+
+  // --- KIYMETLİ METALLER & EMTİA ---
+  'XAUUSDX': {
+    symbol: 'XAUUSDX',
+    name: 'Gold vs US Dollar (Spot)',
+    category: 'Commodities',
+    contractSize: 100,
+    digits: 2,
+    pipSize: 0.01,
+    spread: 0.15,
+    commissionPerLot: 3.50,
+    basePrice: 2650.40,
+  },
   'XAGUSD': {
     symbol: 'XAGUSD',
     name: 'Silver vs US Dollar',
@@ -66,7 +80,53 @@ export const SYMBOL_SPECS: Record<string, SymbolSpec> = {
     pipSize: 0.001,
     spread: 0.020,
     commissionPerLot: 2.50,
-    basePrice: 60.780,
+    basePrice: 31.450,
+  },
+  'BRENT.c': {
+    symbol: 'BRENT.c',
+    name: 'Brent Crude Oil Spot',
+    category: 'Commodities',
+    contractSize: 100,
+    digits: 2,
+    pipSize: 0.01,
+    spread: 0.03,
+    commissionPerLot: 2.00,
+    basePrice: 74.80,
+  },
+
+  // --- KÜRESEL BORSA ENDEKSLERİ ---
+  'NASDAQ.j': {
+    symbol: 'NASDAQ.j',
+    name: 'US Tech 100 Index',
+    category: 'Indices',
+    contractSize: 1,
+    digits: 2,
+    pipSize: 0.01,
+    spread: 0.70,
+    commissionPerLot: 1.50,
+    basePrice: 20450.00,
+  },
+  'SPX500.j': {
+    symbol: 'SPX500.j',
+    name: 'S&P 500 Wall Street Index',
+    category: 'Indices',
+    contractSize: 1,
+    digits: 2,
+    pipSize: 0.01,
+    spread: 0.40,
+    commissionPerLot: 1.50,
+    basePrice: 5780.50,
+  },
+  'DAX.j': {
+    symbol: 'DAX.j',
+    name: 'Germany 40 Index',
+    category: 'Indices',
+    contractSize: 1,
+    digits: 2,
+    pipSize: 0.01,
+    spread: 0.60,
+    commissionPerLot: 1.50,
+    basePrice: 19420.00,
   },
   'US2000.j': {
     symbol: 'US2000.j',
@@ -75,14 +135,51 @@ export const SYMBOL_SPECS: Record<string, SymbolSpec> = {
     contractSize: 1,
     digits: 2,
     pipSize: 0.01,
-    spread: 1.00,
+    spread: 0.50,
     commissionPerLot: 1.50,
-    basePrice: 2781.15,
+    basePrice: 2210.00,
   },
+
+  // --- KRİPTO VARLIKLAR (7/24) ---
+  'BTCUSD': {
+    symbol: 'BTCUSD',
+    name: 'Bitcoin vs US Dollar',
+    category: 'Crypto',
+    contractSize: 1,
+    digits: 2,
+    pipSize: 0.01,
+    spread: 5.00,
+    commissionPerLot: 5.00,
+    basePrice: 64200.00,
+  },
+  'ETHUSD': {
+    symbol: 'ETHUSD',
+    name: 'Ethereum vs US Dollar',
+    category: 'Crypto',
+    contractSize: 1,
+    digits: 2,
+    pipSize: 0.01,
+    spread: 0.50,
+    commissionPerLot: 2.00,
+    basePrice: 2640.00,
+  },
+  'SOLUSD': {
+    symbol: 'SOLUSD',
+    name: 'Solana vs US Dollar',
+    category: 'Crypto',
+    contractSize: 1,
+    digits: 2,
+    pipSize: 0.01,
+    spread: 0.10,
+    commissionPerLot: 1.00,
+    basePrice: 154.20,
+  },
+
+  // --- SENTETİK VOLATİLİTE & YENİ NESİL KAZANÇ ENSTRÜMANLARI ---
   'BOOM1000': {
     symbol: 'BOOM1000',
     name: 'Synthetic Boom 1000 Index (7/24 Spike)',
-    category: 'Indices',
+    category: 'Synthetic',
     contractSize: 1,
     digits: 2,
     pipSize: 0.01,
@@ -93,7 +190,7 @@ export const SYMBOL_SPECS: Record<string, SymbolSpec> = {
   'CRASH500': {
     symbol: 'CRASH500',
     name: 'Synthetic Crash 500 Index (7/24 Drop)',
-    category: 'Indices',
+    category: 'Synthetic',
     contractSize: 1,
     digits: 2,
     pipSize: 0.01,
@@ -101,14 +198,25 @@ export const SYMBOL_SPECS: Record<string, SymbolSpec> = {
     commissionPerLot: 0.00,
     basePrice: 8750.20,
   },
+  'VOLATILITY75': {
+    symbol: 'VOLATILITY75',
+    name: 'Synthetic Volatility 75 Index (7/24)',
+    category: 'Synthetic',
+    contractSize: 1,
+    digits: 2,
+    pipSize: 0.01,
+    spread: 0.40,
+    commissionPerLot: 0.00,
+    basePrice: 1450.30,
+  },
   'ARB-USDT': {
     symbol: 'ARB-USDT',
     name: 'Latency Arbitrage LP Feed (0-Risk Scalp)',
-    category: 'Crypto',
+    category: 'Synthetic',
     contractSize: 10,
     digits: 3,
     pipSize: 0.001,
-    spread: 0.010,
+    spread: 0.002,
     commissionPerLot: 0.50,
     basePrice: 1.002,
   }

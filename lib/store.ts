@@ -3,15 +3,33 @@ import { VIDEO_HISTORY_ITEMS, VIDEO_QUOTES_SYMBOLS } from './videoReferenceData'
 
 // Başlangıç Fiyatları (Videodaki Fiyatlar ekranı)
 export const CURRENT_PRICES: Record<string, { bid: number; ask: number; high: number; low: number; time: string }> = {
-  'NASDAQ.j': { bid: 30411.30, ask: 30412.00, high: 30967.40, low: 30408.70, time: '17:22:42' },
-  'XAUUSDX': { bid: 4157.43, ask: 4158.13, high: 4182.59, low: 4139.04, time: '17:22:43' },
-  'DAX.j': { bid: 25001.80, ask: 25002.40, high: 25234.80, low: 24828.40, time: '17:22:43' },
+  // Forex
+  'EURUSD': { bid: 1.08450, ask: 1.08458, high: 1.08920, low: 1.08110, time: '17:22:42' },
+  'GBPUSD': { bid: 1.30250, ask: 1.30260, high: 1.30880, low: 1.29850, time: '17:22:42' },
+  'USDJPY': { bid: 148.650, ask: 148.660, high: 149.200, low: 147.900, time: '17:22:42' },
   'DXY.j': { bid: 101.796, ask: 101.831, high: 101.996, low: 101.456, time: '17:22:44' },
-  'XAGUSD': { bid: 60.780, ask: 60.800, high: 61.4190, low: 59.9560, time: '17:22:43' },
-  'US2000.j': { bid: 2781.15, ask: 2782.15, high: 2816.25, low: 2772.55, time: '17:22:43' },
+
+  // Metaller & Emtia
+  'XAUUSDX': { bid: 2650.40, ask: 2650.55, high: 2668.20, low: 2642.10, time: '17:22:43' },
+  'XAGUSD': { bid: 31.450, ask: 31.470, high: 32.100, low: 30.950, time: '17:22:43' },
+  'BRENT.c': { bid: 74.80, ask: 74.83, high: 75.90, low: 73.60, time: '17:22:43' },
+
+  // Endeksler
+  'NASDAQ.j': { bid: 20450.00, ask: 20450.70, high: 20620.00, low: 20380.00, time: '17:22:42' },
+  'SPX500.j': { bid: 5780.50, ask: 5780.90, high: 5820.00, low: 5750.00, time: '17:22:42' },
+  'DAX.j': { bid: 19420.00, ask: 19420.60, high: 19580.00, low: 19310.00, time: '17:22:43' },
+  'US2000.j': { bid: 2210.00, ask: 2210.50, high: 2240.00, low: 2190.00, time: '17:22:43' },
+
+  // Kripto
+  'BTCUSD': { bid: 64200.00, ask: 64205.00, high: 65400.00, low: 63100.00, time: '17:22:45' },
+  'ETHUSD': { bid: 2640.00, ask: 2640.50, high: 2710.00, low: 2580.00, time: '17:22:45' },
+  'SOLUSD': { bid: 154.20, ask: 154.30, high: 158.50, low: 149.80, time: '17:22:45' },
+
+  // Sentetik & Arbitraj
   'BOOM1000': { bid: 12450.80, ask: 12451.30, high: 12690.00, low: 12380.00, time: '17:22:45' },
   'CRASH500': { bid: 8750.20, ask: 8750.70, high: 8920.00, low: 8610.00, time: '17:22:45' },
-  'ARB-USDT': { bid: 1.002, ask: 1.012, high: 1.025, low: 0.995, time: '17:22:45' }
+  'VOLATILITY75': { bid: 1450.30, ask: 1450.70, high: 1490.00, low: 1420.00, time: '17:22:45' },
+  'ARB-USDT': { bid: 1.002, ask: 1.004, high: 1.025, low: 0.995, time: '17:22:45' }
 };
 
 // Videodaki Tüm Geçmiş Pozisyonlar

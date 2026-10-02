@@ -49,7 +49,8 @@ export function updateScenarioConfig(newConfig: Partial<ScenarioConfig>) {
 export function calculateNextPrice(
   currentBid: number,
   digits: number,
-  spreadPips: number
+  spreadPips: number,
+  symbol?: string
 ): { bid: number; ask: number; changeDirection: 'up' | 'down' | 'flat'; isShock: boolean } {
   const cfg = currentScenarioConfig;
   const spread = spreadPips * Math.pow(10, -digits);
@@ -62,6 +63,37 @@ export function calculateNextPrice(
   let isShock = false;
   let multiplier = cfg.volatilityMultiplier;
 
+  // --- ENSTRÜMANA ÖZEL MATEMATİKSEL SİNYAL VE DAVRANIŞ MOTORU ---
+  if (symbol === 'BOOM1000') {
+    // Boom Endeksi: Küçük adımlarla hafif aşağı akar, %7 ihtimalle anlık yukarı devasa patlar (+80-150 pip)
+    if (Math.random() < 0.07) {
+      drift = 12.0 + Math.random() * 8.0;
+      isShock = true;
+    } else {
+      drift = -0.7; // Sabit yavaş aşağı süzülme
+    }
+  } else if (symbol === 'CRASH500') {
+    // Crash Endeksi: Yavaş yavaş yukarı tırmanır, %7 ihtimalle anlık aşağı devasa çöker (-80-150 pip)
+    if (Math.random() < 0.07) {
+      drift = -(12.0 + Math.random() * 8.0);
+      isShock = true;
+    } else {
+      drift = 0.7; // Sabit yavaş yukarı tırmanış
+    }
+  } else if (symbol === 'ARB-USDT') {
+    // Arbitraj paritesi: 1.000 çıpası etrafında milisaniyelik salınım
+    const distFromPeg = currentBid - 1.000;
+    drift = -distFromPeg * 15.0 + (Math.random() - 0.5) * 2.0;
+  } else if (symbol?.includes('BTC') || symbol?.includes('ETH') || symbol?.includes('SOL')) {
+    // Kripto Varlıklar: Daha yüksek volatilite ve anlık momentum dalgaları
+    multiplier *= 1.4;
+    drift = (Math.random() - 0.49) * 2.5;
+  } else if (symbol === 'EURUSD' || symbol === 'GBPUSD' || symbol === 'USDJPY') {
+    // Majör Forex: Kurumsal likidite, dengeli akış ve mikro pip adımları
+    drift = (Math.random() - 0.5) * 1.2;
+  }
+
+  // Admin Tarafından Aktif Edilen Küresel Piyasa Senaryosu (Varsa sembol hareketini yönlendirir)
   switch (cfg.activeScenario) {
     case 'BULL_TREND':
       // %65 yukarı, %35 aşağı (geri çekilme/pullback ile organik yükseliş)
@@ -122,7 +154,9 @@ export function calculateNextPrice(
     case 'NORMAL_WALK':
     default:
       // Standart Geometric Brownian Motion
-      drift = cfg.bias * 1.0;
+      if (!symbol?.includes('BOOM') && !symbol?.includes('CRASH')) {
+        drift += cfg.bias * 1.0;
+      }
       break;
   }
 
