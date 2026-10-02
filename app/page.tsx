@@ -359,65 +359,65 @@ export default function Home() {
   return (
     <div className="w-full h-full bg-[#06080d] relative text-[#c9d1d9] font-sans">
       
-      {/* ÜST GEÇİŞ ÇUBUĞU (PORTAL & TERMINAL GEÇİŞİ) */}
-      <div className="bg-[#0b0e14] border-b border-[#1c2230] px-3 sm:px-6 py-1.5 flex items-center justify-between text-xs z-50">
-        <div className="flex items-center gap-3">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span className="font-mono text-gray-400 text-[11px] hidden sm:inline">EXBINA PRIME GLOBAL</span>
+      {/* ÜST GEÇİŞ ÇUBUĞU (YALNIZCA TERMINALDE GÖRÜNÜR - PORTALDAKİ MÜKERRER BAŞLIKLARI ENGELLER) */}
+      {mainView === 'terminal' && (
+        <div className="bg-[#0b0e14] border-b border-[#1c2230] px-3 sm:px-6 py-1.5 flex items-center justify-between text-xs z-50">
+          <div className="flex items-center gap-3">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span className="font-mono text-gray-400 text-[11px] hidden sm:inline">EXBINA PRIME GLOBAL</span>
 
-          {/* Görünüm Değiştirici */}
-          <div className="flex items-center bg-[#141a24] p-0.5 rounded border border-[#232c3d]">
-            <button
-              onClick={() => setMainView('portal')}
-              className={`px-2.5 py-1 rounded text-[11px] font-semibold transition ${
-                mainView === 'portal' ? 'bg-blue-600 text-white font-bold' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              🏛️ Kurumsal Portal
-            </button>
-            <button
-              onClick={() => setMainView('terminal')}
-              className={`px-2.5 py-1 rounded text-[11px] font-semibold transition ${
-                mainView === 'terminal' ? 'bg-blue-600 text-white font-bold' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              💻 Canlı WebTrader
-            </button>
-          </div>
-        </div>
+            {/* Görünüm Değiştirici */}
+            <div className="flex items-center bg-[#141a24] p-0.5 rounded border border-[#232c3d]">
+              <button
+                onClick={() => setMainView('portal')}
+                className="px-2.5 py-1 rounded text-[11px] font-semibold transition text-gray-400 hover:text-white"
+              >
+                🏛️ Kurumsal Portal
+              </button>
+              <button
+                onClick={() => setMainView('terminal')}
+                className="px-2.5 py-1 rounded text-[11px] font-semibold transition bg-blue-600 text-white font-bold"
+              >
+                💻 Canlı WebTrader
+              </button>
+            </div>
 
-        <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-3 font-mono text-[11px] bg-[#121722] px-3 py-1 rounded border border-[#1e2637]">
-            <span className="text-gray-400">Bakiye:</span>
-            <span className="font-bold text-emerald-400">${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
-            <span className="text-gray-600">|</span>
-            <span className="text-gray-400">Serbest:</span>
-            <span className="font-bold text-cyan-400">${account.freeMargin.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
           </div>
 
-          <button 
-            onClick={() => setIsAuthModalOpen(true)}
-            className="bg-[#121824] hover:bg-[#1a2335] border border-[#232c3d] text-gray-200 hover:text-white px-2.5 py-1 rounded text-[11px] transition flex items-center gap-1.5 font-mono"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            <span>{currentUser ? currentUser.name.split(' ')[0] : 'Giriş Yap'}</span>
-          </button>
+          <div className="flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-3 font-mono text-[11px] bg-[#121722] px-3 py-1 rounded border border-[#1e2637]">
+              <span className="text-gray-400">Bakiye:</span>
+              <span className="font-bold text-emerald-400">${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+              <span className="text-gray-600">|</span>
+              <span className="text-gray-400">Serbest:</span>
+              <span className="font-bold text-cyan-400">${account.freeMargin.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+            </div>
 
-          <button 
-            onClick={() => setActiveModal('deposit')}
-            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1 rounded transition text-[11px] shadow flex items-center gap-1"
-          >
-            <span>+</span> Para Yatır
-          </button>
+            <button 
+              onClick={() => setIsAuthModalOpen(true)}
+              className="bg-[#121824] hover:bg-[#1a2335] border border-[#232c3d] text-gray-200 hover:text-white px-2.5 py-1 rounded text-[11px] transition flex items-center gap-1.5 font-mono"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span>{currentUser ? currentUser.name.split(' ')[0] : 'Giriş Yap'}</span>
+            </button>
 
-          <Link
-            href="/admin"
-            className="bg-[#18202d] hover:bg-[#222c3d] border border-blue-500/30 text-blue-400 px-2.5 py-1 rounded text-[11px] transition hidden sm:flex items-center gap-1 font-mono font-medium"
-          >
-            <span>⚙️</span> Dealer
-          </Link>
+            <button 
+              onClick={() => setActiveModal('deposit')}
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1 rounded transition text-[11px] shadow flex items-center gap-1"
+            >
+              <span>+</span> Para Yatır
+            </button>
+
+            <Link
+              href="/admin"
+              className="bg-[#18202d] hover:bg-[#222c3d] border border-blue-500/30 text-blue-400 px-2.5 py-1 rounded text-[11px] transition hidden sm:flex items-center gap-1 font-mono font-medium"
+            >
+              <span>⚙️</span> Dealer
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
+
 
       {/* ANA İÇERİK: GLOBAL FX PORTALI VEYA CANLI PRO WEBTRADER */}
       {mainView === 'portal' ? (

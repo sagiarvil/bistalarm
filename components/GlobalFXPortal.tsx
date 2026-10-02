@@ -101,8 +101,16 @@ export default function GlobalFXPortal({
             </div>
           </div>
 
-          {/* Sağ Eylem Butonları (Kesinlikle Kırılmayan & Taşmayan ECN Mimarisi) */}
+          {/* Sağ Eylem Butonları (Tek ve Mükerrersiz Kurumsal ECN Navigasyon) */}
           <div className="flex items-center gap-2.5 shrink-0">
+            {/* Canlı Bakiye Rozeti */}
+            <div className="hidden lg:flex items-center gap-2 font-mono text-xs bg-[#101724] px-3 py-1.5 rounded-lg border border-[#232f44]">
+              <span className="text-gray-400">Bakiye:</span>
+              <span className="font-bold text-emerald-400">
+                ${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
+            </div>
+
             {onOpenAuth && (
               <button
                 onClick={onOpenAuth}
@@ -117,9 +125,9 @@ export default function GlobalFXPortal({
 
             <button
               onClick={onOpenDeposit}
-              className="bg-[#151c28] hover:bg-[#1f293b] border border-[#26354a] text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition whitespace-nowrap active:scale-95"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-2 rounded-lg transition whitespace-nowrap active:scale-95 flex items-center gap-1 shadow"
             >
-              Para Yatır
+              <span>+</span> Para Yatır
             </button>
 
             <button
@@ -137,6 +145,7 @@ export default function GlobalFXPortal({
               <span>⚙️</span> Dealer
             </Link>
           </div>
+
 
         </div>
       </nav>
