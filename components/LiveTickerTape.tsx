@@ -15,10 +15,27 @@ const DEFAULT_MARQUEE_SYMBOLS = [
   'XAUUSDX', 
   'NASDAQ.j', 
   'SPX500.j', 
+  'DAX.j',
+  'US2000.j',
+  'BIST30',
   'BTCUSD', 
   'ETHUSD', 
+  'SOLUSD',
+  'XRPUSD',
+  'AVAXUSD',
+  'BNBUSD',
+  'XAGUSD', 
+  'BRENT.c',
+  'USDCHF',
+  'AUDUSD',
+  'USDCAD',
+  'NZDUSD',
+  'EURGBP',
+  'EURJPY',
+  'GBPJPY',
   'BOOM1000', 
   'CRASH500', 
+  'VOLATILITY75',
   'ARB-USDT'
 ];
 
@@ -28,24 +45,24 @@ export default function LiveTickerTape({
 }: LiveTickerTapeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Kurşun geçirmez 60 FPS donanım kaydırma motoru (Tüm tarayıcı & cihaz kısıtlamalarını bypass eder)
+  // Kurşun geçirmez donanım ivmeli kaydırma motoru
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
     let animId: number;
     let lastTime = performance.now();
-    const PIXELS_PER_SECOND = 42; // Stabil ve okunabilir akış hızı
+    const PIXELS_PER_SECOND = 40;
 
     const loop = (now: number) => {
-      const delta = Math.min((now - lastTime) / 1000, 0.1); // Sekme değişimlerinde sıçramayı önler
+      const delta = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
 
       if (el) {
         el.scrollLeft += PIXELS_PER_SECOND * delta;
         // Listenin ilk yarısı bittiğinde sıfır gecikmeyle başa sar
         const half = el.scrollWidth / 2;
-        if (half > 0 && el.scrollLeft >= half) {
+        if (half > 0 && el.scrollLeft >= half - 1) {
           el.scrollLeft -= half;
         }
       }
@@ -86,22 +103,22 @@ export default function LiveTickerTape({
 
   return (
     <div className="bg-[#080b12] border-b border-[#182030] py-1.5 overflow-hidden select-none relative w-full z-40">
-      {/* Sol ve Sağ Gradyan Gölgeler (Yumuşak Geçiş) */}
-      <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-[#080b12] to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-[#080b12] to-transparent z-10 pointer-events-none" />
+      {/* Sol ve Sağ Gradyan Gölgeler */}
+      <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#080b12] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#080b12] to-transparent z-10 pointer-events-none" />
 
-      {/* Kaydırma Taşıyıcısı (RAF Donanım İvmeli Kesintisiz Akış) */}
+      {/* Kaydırma Taşıyıcısı (Genişliği garanti altına alınmış 2 dev şerit = sonsuz akış) */}
       <div 
         ref={containerRef} 
         className="flex items-center overflow-x-hidden no-scrollbar whitespace-nowrap w-full"
         style={{ scrollBehavior: 'auto', WebkitOverflowScrolling: 'touch' }}
       >
-        {/* 1. Şerit */}
+        {/* 1. Şerit (28 Sembol) */}
         <div className="flex items-center shrink-0">
           {DEFAULT_MARQUEE_SYMBOLS.map((sym, idx) => renderItem(sym, 'track1', idx))}
         </div>
 
-        {/* 2. Şerit (Sonsuz Döngü Kesintisiz Çift Bellek) */}
+        {/* 2. Şerit (28 Sembol - Kesintisiz Sonsuz Akış Eşleniği) */}
         <div className="flex items-center shrink-0" aria-hidden="true">
           {DEFAULT_MARQUEE_SYMBOLS.map((sym, idx) => renderItem(sym, 'track2', idx))}
         </div>

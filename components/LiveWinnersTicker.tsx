@@ -24,20 +24,32 @@ const INITIAL_WINNERS: WinnerItem[] = [
   { id: 'w6', user: 'caner_99', avatar: '🐯', game: 'Monaco VIP Blackjack 21', icon: '♠️', amount: 12500, multiplier: '2.5x', timeAgo: '1 dk önce', badge: 'EPIC' },
   { id: 'w7', user: 'deniz_bist', avatar: '💎', game: 'Çilek & Ananas VIP 777', icon: '🍍', amount: 19400, multiplier: '970x', timeAgo: '2 dk önce', badge: 'JACKPOT' },
   { id: 'w8', user: 'bora_monaco', avatar: '👑', game: 'Baccarat Punto Banco', icon: '🏛️', amount: 18000, multiplier: '2x', timeAgo: '2 dk önce', badge: 'CAESARS VIP' },
+  { id: 'w9', user: 'serdar_pro', avatar: '🔥', game: 'Rocket Crash Aviator', icon: '🚀', amount: 11200, multiplier: '56x', timeAgo: '2 dk önce', badge: 'EPIC' },
+  { id: 'w10', user: 'volkan_77', avatar: '⚡', game: 'Monte Carlo Ruleti', icon: '🎡', amount: 28800, multiplier: '36x', timeAgo: '3 dk önce', badge: 'ROYAL' },
+  { id: 'w11', user: 'cem_trader', avatar: '🦁', game: 'Elmas Mayın 5 Adım', icon: '💎', amount: 5400, multiplier: '27x', timeAgo: '3 dk önce', badge: 'CAESARS VIP' },
+  { id: 'w12', user: 'tolga_vip', avatar: '🦅', game: 'Plinko Altın Yuva', icon: '🟡', amount: 16500, multiplier: '500x', timeAgo: '4 dk önce', badge: 'JACKPOT' },
+  { id: 'w13', user: 'kaan_fx', avatar: '⚜️', game: 'VIP Blackjack 21', icon: '♠️', amount: 9800, multiplier: '2.5x', timeAgo: '4 dk önce', badge: 'EPIC' },
+  { id: 'w14', user: 'onur_cesar', avatar: '👑', game: 'Çilek VIP 777 Slot', icon: '🍓', amount: 22100, multiplier: '884x', timeAgo: '5 dk önce', badge: 'JACKPOT' },
+  { id: 'w15', user: 'sinan_bist', avatar: '🐯', game: 'Viral Şans Çarkı', icon: '🎡', amount: 7500, multiplier: '50x', timeAgo: '5 dk önce', badge: 'MEGA' },
+  { id: 'w16', user: 'hakan_gold', avatar: '💎', game: 'Baccarat Punto Banco', icon: '🏛️', amount: 14000, multiplier: '2x', timeAgo: '6 dk önce', badge: 'CAESARS VIP' },
+  { id: 'w17', user: 'murat_monaco', avatar: '🔥', game: 'Rocket Crash Aviator', icon: '🚀', amount: 13400, multiplier: '67x', timeAgo: '6 dk önce', badge: 'EPIC' },
+  { id: 'w18', user: 'levent_vip', avatar: '⚡', game: 'Monte Carlo Rulet', icon: '🎡', amount: 31500, multiplier: '36x', timeAgo: '7 dk önce', badge: 'ROYAL' },
+  { id: 'w19', user: 'eren_pro', avatar: '🦁', game: 'Elmas Mayın 7 Adım', icon: '💎', amount: 8900, multiplier: '44x', timeAgo: '7 dk önce', badge: 'CAESARS VIP' },
+  { id: 'w20', user: 'berk_fx', avatar: '🦅', game: 'Plinko 1000x', icon: '🟡', amount: 25000, multiplier: '1000x', timeAgo: '8 dk önce', badge: 'JACKPOT' },
 ];
 
 export default function LiveWinnersTicker() {
   const [winners, setWinners] = useState<WinnerItem[]>(INITIAL_WINNERS);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Kurşun geçirmez 60 FPS donanım kaydırma motoru (Tüm tarayıcı & cihaz kısıtlamalarını bypass eder)
+  // Kurşun geçirmez donanım ivmeli kaydırma motoru
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
 
     let animId: number;
     let lastTime = performance.now();
-    const SPEED = 48; // Canlı kazananlar akış hızı (piksel/saniye)
+    const SPEED = 46;
 
     const loop = (now: number) => {
       const delta = Math.min((now - lastTime) / 1000, 0.1);
@@ -46,7 +58,7 @@ export default function LiveWinnersTicker() {
       if (el) {
         el.scrollLeft += SPEED * delta;
         const half = el.scrollWidth / 2;
-        if (half > 0 && el.scrollLeft >= half) {
+        if (half > 0 && el.scrollLeft >= half - 1) {
           el.scrollLeft -= half;
         }
       }
@@ -61,9 +73,9 @@ export default function LiveWinnersTicker() {
     };
   }, []);
 
-  // Canlı kazanç akışı simülatörü (Her 5.5 saniyede bir yeni Caesars VIP kazanan düşer)
+  // Canlı kazanç akışı simülatörü (Her 4 saniyede bir yeni Caesars VIP kazanan listeye akar)
   useEffect(() => {
-    const randomUsers = ['arda_fx', 'kemal_vip', 'mert_tr', 'emre_monaco', 'burak_pro', 'yasin_gold', 'tarik_77', 'serdar_cesar', 'okan_vegas'];
+    const randomUsers = ['arda_fx', 'kemal_vip', 'mert_tr', 'emre_monaco', 'burak_pro', 'yasin_gold', 'tarik_77', 'serdar_cesar', 'okan_vegas', 'ali_bist', 'koray_fx', 'zafer_king'];
     const randomGames = [
       { game: 'Çilek VIP 777 Slot', icon: '🍓', minMult: 150, maxMult: 1000, badge: 'JACKPOT' as const },
       { game: 'Rocket Crash Aviator', icon: '🚀', minMult: 20, maxMult: 90, badge: 'EPIC' as const },
@@ -81,9 +93,9 @@ export default function LiveWinnersTicker() {
       const wonAmount = bet * mult;
 
       const newWinner: WinnerItem = {
-        id: `w-${Date.now()}`,
+        id: `w-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
         user: `${u.substring(0, 4)}***`,
-        avatar: ['👑', '🦁', '⚡', '🦅', '🔥', '⚜️'][Math.floor(Math.random() * 6)],
+        avatar: ['👑', '🦁', '⚡', '🦅', '🔥', '⚜️', '💎', '🐯'][Math.floor(Math.random() * 8)],
         game: g.game,
         icon: g.icon,
         amount: wonAmount,
@@ -92,8 +104,8 @@ export default function LiveWinnersTicker() {
         badge: g.badge
       };
 
-      setWinners(prev => [newWinner, ...prev.slice(0, 11)]);
-    }, 5500);
+      setWinners(prev => [newWinner, ...prev.slice(0, 23)]);
+    }, 4000);
 
     return () => clearInterval(timer);
   }, []);
