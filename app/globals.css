@@ -156,8 +156,62 @@ body {
     animation-play-state: running !important;
   }
   .animate-marquee {
-    animation: ticker-marquee-legacy 28s linear infinite !important;
-    animation-play-state: running !important;
+    animation-duration: 20s !important;
   }
+}
+
+/* ========================================================================= */
+/* 3D GERÇEKÇİ MADENİ PARA FIRLATMA VE TAKLA ANİMASYONU (COIN TOSS 3D) */
+/* ========================================================================= */
+@keyframes coin-flip-toss-yazi {
+  0% {
+    transform: translateY(0) scale(1) rotateX(0deg) rotateZ(0deg);
+  }
+  30% {
+    transform: translateY(-90px) scale(1.3) rotateX(720deg) rotateZ(15deg);
+  }
+  60% {
+    transform: translateY(-110px) scale(1.4) rotateX(1440deg) rotateZ(-15deg);
+  }
+  85% {
+    transform: translateY(-20px) scale(1.05) rotateX(2000deg) rotateZ(5deg);
+  }
+  95% {
+    transform: translateY(4px) scale(0.95) rotateX(2160deg) rotateZ(0deg);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotateX(2160deg) rotateZ(0deg);
+  }
+}
+
+@keyframes coin-flip-toss-tura {
+  0% {
+    transform: translateY(0) scale(1) rotateX(0deg) rotateZ(0deg);
+  }
+  30% {
+    transform: translateY(-90px) scale(1.3) rotateX(720deg) rotateZ(-15deg);
+  }
+  60% {
+    transform: translateY(-110px) scale(1.4) rotateX(1440deg) rotateZ(15deg);
+  }
+  85% {
+    transform: translateY(-20px) scale(1.05) rotateX(2180deg) rotateZ(-5deg);
+  }
+  95% {
+    transform: translateY(4px) scale(0.95) rotateX(2340deg) rotateZ(0deg);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotateX(2340deg) rotateZ(0deg);
+  }
+}
+
+.coin-animate-yazi {
+  animation: coin-flip-toss-yazi 1.25s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  transform-style: preserve-3d;
+}
+
+.coin-animate-tura {
+  animation: coin-flip-toss-tura 1.25s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  transform-style: preserve-3d;
 }
 

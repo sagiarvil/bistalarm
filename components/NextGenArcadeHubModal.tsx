@@ -324,10 +324,22 @@ export default function NextGenArcadeHubModal({
   const [coinStreak, setCoinStreak] = useState<number>(0);
   const [coinLastSide, setCoinLastSide] = useState<'YAZI' | 'TURA' | null>(null);
   const [coinGameActive, setCoinGameActive] = useState<boolean>(false);
+  const [coinTargetSide, setCoinTargetSide] = useState<'YAZI' | 'TURA' | null>(null);
 
   const getCoinStreakMultiplier = (streak: number) => {
     if (streak === 0) return 1.0;
     return Number((Math.pow(1.96, streak)).toFixed(2));
+  };
+
+  // Gerçekçi Metalik Para Çınlama Sesi (Metallic Coin Ping & Spin Sound)
+  const playMetallicCoinSound = () => {
+    // Fırlatma çınlaması (High-pitched silver ping)
+    playSound(1800, 'triangle', 0.15);
+    setTimeout(() => playSound(2400, 'sine', 0.25), 80);
+    // Havada takla atma çınlamaları
+    setTimeout(() => playSound(2200, 'triangle', 0.08), 300);
+    setTimeout(() => playSound(2600, 'triangle', 0.08), 550);
+    setTimeout(() => playSound(2000, 'sine', 0.08), 800);
   };
 
   const handleFlipCoin = (choice: 'YAZI' | 'TURA') => {
@@ -343,23 +355,29 @@ export default function NextGenArcadeHubModal({
     }
 
     setCoinFlipping(true);
-    playSound(600, 'square', 0.1);
+    playMetallicCoinSound();
+
+    const outcome = flipCoin(choice);
+    setCoinTargetSide(outcome.result);
 
     setTimeout(() => {
-      const outcome = flipCoin(choice);
       setCoinLastSide(outcome.result);
       setCoinFlipping(false);
 
+      // Yere çarpma / masaya oturma sesi (Metal table drop clink)
+      playSound(300, 'triangle', 0.08);
+      setTimeout(() => playSound(1400, 'sine', 0.12), 40);
+
       if (outcome.won) {
         setCoinStreak(prev => prev + 1);
-        playSound(850, 'sine', 0.25);
+        playSound(880, 'sine', 0.35); // A5 Zafer sesi
       } else {
         // Kaybetti
         setCoinStreak(0);
         setCoinGameActive(false);
         playSound(150, 'sawtooth', 0.4);
       }
-    }, 600);
+    }, 1250);
   };
 
   const handleCoinCashout = () => {
@@ -905,17 +923,72 @@ export default function NextGenArcadeHubModal({
                 </div>
               </div>
 
-              {/* Yazı Tura Görsel Alanı */}
-              <div className="relative h-64 sm:h-72 bg-[#060810] border-2 border-emerald-500/40 rounded-2xl flex flex-col items-center justify-center p-4 overflow-hidden shadow-inner space-y-3">
-                <div className={`w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-yellow-400 bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-500 shadow-[0_0_50px_rgba(245,158,11,0.5)] flex items-center justify-center text-4xl sm:text-5xl font-black text-black select-none transition-transform ${
-                  coinFlipping ? 'animate-spin' : ''
-                }`}>
-                  {coinLastSide ? (coinLastSide === 'YAZI' ? '🦅' : '👑') : '🪙'}
+              {/* Gerçekçi 3D Madeni Para Fırlatma Arenası */}
+              <div className="relative h-64 sm:h-72 bg-gradient-to-b from-[#04060c] via-[#090e1a] to-[#040710] border-2 border-emerald-500/40 rounded-2xl flex flex-col items-center justify-center p-4 overflow-hidden shadow-inner space-y-3 perspective-1000">
+                
+                {/* Havada Para Fırlatma Sahnesi (3D Koin & Gölge) */}
+                <div className="relative flex flex-col items-center justify-center h-36">
+                  
+                  {/* 3D Altın Madeni Para */}
+                  <div className={`relative w-28 h-28 sm:w-32 sm:h-32 rounded-full select-none ${
+                    coinFlipping 
+                      ? (coinTargetSide === 'YAZI' ? 'coin-animate-yazi' : 'coin-animate-tura')
+                      : 'transform hover:scale-105 transition-transform duration-300'
+                  }`}>
+                    
+                    {/* Metalik Altın Dış Çerçeve ve Yivler */}
+                    <div className="w-full h-full rounded-full border-4 border-yellow-200 bg-gradient-to-tr from-amber-600 via-yellow-400 to-yellow-200 shadow-[0_0_35px_rgba(245,158,11,0.6)] flex items-center justify-center p-1.5 relative overflow-hidden">
+                      
+                      {/* İç Pirinç Halka & Mikro Gravür */}
+                      <div className="w-full h-full rounded-full border-2 border-dashed border-amber-900/60 bg-gradient-to-b from-yellow-300 via-amber-400 to-yellow-500 flex flex-col items-center justify-center shadow-inner relative">
+                        
+                        {/* Işık Parıltısı Refleksi */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-white/30 via-transparent to-black/20 pointer-events-none rounded-full" />
+
+                        {coinLastSide ? (
+                          coinLastSide === 'YAZI' ? (
+                            <div className="flex flex-col items-center justify-center text-center">
+                              <span className="text-3xl sm:text-4xl filter drop-shadow">🦅</span>
+                              <span className="text-[10px] sm:text-xs font-black font-serif text-amber-950 uppercase tracking-widest mt-0.5">
+                                YAZI
+                              </span>
+                              <span className="text-[7px] font-mono text-amber-900/80 font-bold">MONACO • 2026</span>
+                            </div>
+                          ) : (
+                            <div className="flex flex-col items-center justify-center text-center">
+                              <span className="text-3xl sm:text-4xl filter drop-shadow">👑</span>
+                              <span className="text-[10px] sm:text-xs font-black font-serif text-amber-950 uppercase tracking-widest mt-0.5">
+                                TURA
+                              </span>
+                              <span className="text-[7px] font-mono text-amber-900/80 font-bold">CASINO VIP</span>
+                            </div>
+                          )
+                        ) : (
+                          <div className="flex flex-col items-center justify-center text-center">
+                            <span className="text-3xl sm:text-4xl filter drop-shadow">🪙</span>
+                            <span className="text-[10px] sm:text-xs font-black font-serif text-amber-950 uppercase tracking-widest mt-0.5">
+                              $100 VIP
+                            </span>
+                            <span className="text-[7px] font-mono text-amber-900/80 font-bold">HAZIR</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Dinamik Masaya Vuran Para Gölgesi */}
+                  <div className={`w-24 sm:w-28 h-3.5 bg-black/60 rounded-full blur-sm mt-3 transition-all duration-300 ${
+                    coinFlipping ? 'scale-50 opacity-20' : 'scale-100 opacity-80'
+                  }`} />
                 </div>
 
                 <div className="text-center font-mono">
                   <div className="text-sm font-bold text-gray-200">
-                    {coinLastSide ? `Son Gelen: ${coinLastSide === 'YAZI' ? '🦅 YAZI' : '👑 TURA'}` : 'Madeni Parayı Fırlatmak İçin Seçim Yapın'}
+                    {coinFlipping 
+                      ? '⚡ Para havada taklalar atıyor...' 
+                      : coinLastSide 
+                      ? `Son Gelen: ${coinLastSide === 'YAZI' ? '🦅 YAZI (KARTAL)' : '👑 TURA (TAÇ)'}` 
+                      : 'Madeni Parayı Fırlatmak İçin Seçim Yapın'}
                   </div>
                   {coinStreak > 0 ? (
                     <div className="text-emerald-400 font-extrabold text-sm sm:text-base mt-1 animate-pulse">
