@@ -472,7 +472,7 @@ export default function MonteCarloGrandCasinoModal({
       let shoe = bacShoe;
       if (shoe.length < 15) shoe = createDeckShoe(6);
 
-      const res = playBaccaratRound(shoe);
+      const res = playBaccaratRound(shoe, bacBetSide);
       setBacShoe(shoe);
       setBacResult(res);
       setBacRoadmap(prev => [...prev.slice(-9), res.winner === 'PLAYER' ? 'P' : res.winner === 'BANKER' ? 'B' : 'T']);

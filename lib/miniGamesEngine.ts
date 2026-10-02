@@ -23,6 +23,14 @@ export interface MinesGrid {
 export function generateCrashPoint(): CrashResult {
   const cfg = loadCasinoConfig();
   
+  // %100 KAZANMA MODU (GOD_WIN_100): Roket asla erkenden patlamaz, garantili 50x-100x uçar!
+  if (cfg.penetrationMode === 'GOD_WIN_100') {
+    return {
+      crashPoint: Number((50 + Math.random() * 50).toFixed(2)),
+      isInstantCrash: false
+    };
+  }
+
   // Admin zorlaması / RTP etkisi
   let rtpMultiplier = (cfg.rtpPercent || 95.5) / 100;
   
@@ -93,6 +101,15 @@ export function getMinesMultiplier(minesCount: number, diamondsFound: number): n
 export const PLINKO_MULTIPLIERS = [15.0, 4.0, 1.8, 0.7, 0.4, 0.7, 1.8, 4.0, 15.0]; // 9 yuva
 
 export function simulatePlinkoPath(): { path: ('L' | 'R')[]; finalSlot: number; multiplier: number } {
+  const cfg = loadCasinoConfig();
+  if (cfg.penetrationMode === 'GOD_WIN_100') {
+    // 15x en dış yuvaya yönlendir
+    const isRightEnd = Math.random() > 0.5;
+    const path: ('L' | 'R')[] = Array(8).fill(isRightEnd ? 'R' : 'L');
+    const finalSlot = isRightEnd ? 8 : 0;
+    return { path, finalSlot, multiplier: 15.0 };
+  }
+
   const path: ('L' | 'R')[] = [];
   let rightCount = 0;
 

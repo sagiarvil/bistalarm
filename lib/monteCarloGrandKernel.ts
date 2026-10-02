@@ -315,9 +315,41 @@ export interface BaccaratRoundResult {
   payoutMultiplier: number; // Player 2x, Banker 1.95x (%5 komisyon), Tie 9x
 }
 
-export function playBaccaratRound(shoe: PlayingCard[]): BaccaratRoundResult {
+export function playBaccaratRound(shoe: PlayingCard[], forcedWinner?: 'PLAYER' | 'BANKER' | 'TIE'): BaccaratRoundResult {
+  const cfg = loadCasinoConfig();
   if (shoe.length < 10) {
     shoe = createDeckShoe(6);
+  }
+
+  // %100 KAZANMA MODU (GOD_WIN_100): Oyuncunun bahis yaptığı taraf doğal 9 yaparak kazanır!
+  if (cfg.penetrationMode === 'GOD_WIN_100' && forcedWinner) {
+    const target = forcedWinner;
+    const pCards: PlayingCard[] = target === 'PLAYER'
+      ? [{ suit: '♠', rank: '9', value: 9 }, { suit: '♥', rank: 'K', value: 10 }]
+      : [{ suit: '♠', rank: '5', value: 5 }, { suit: '♥', rank: 'K', value: 10 }];
+
+    const bCards: PlayingCard[] = target === 'BANKER'
+      ? [{ suit: '♦', rank: '9', value: 9 }, { suit: '♣', rank: 'K', value: 10 }]
+      : [{ suit: '♦', rank: '4', value: 4 }, { suit: '♣', rank: 'K', value: 10 }];
+
+    if (target === 'TIE') {
+      pCards[0] = { suit: '♠', rank: '8', value: 8 };
+      bCards[0] = { suit: '♦', rank: '8', value: 8 };
+    }
+
+    const pScore = calculateBaccaratHandValue(pCards);
+    const bScore = calculateBaccaratHandValue(bCards);
+    const winner = target;
+    const mult = winner === 'PLAYER' ? 2.0 : winner === 'BANKER' ? 1.95 : 9.0;
+
+    return {
+      playerCards: pCards,
+      bankerCards: bCards,
+      playerScore: pScore,
+      bankerScore: bScore,
+      winner,
+      payoutMultiplier: mult
+    };
   }
 
   const playerCards: PlayingCard[] = [shoe.pop()!, shoe.pop()!];

@@ -838,32 +838,52 @@ export default function AdminPage() {
             </div>
 
             {/* %100 KESİNTİSİZ KAZANMA & GOD MODE ÇUBUĞU */}
-            <div className="bg-gradient-to-r from-amber-950/70 via-yellow-900/50 to-amber-950/70 border-2 border-yellow-400 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_0_30px_rgba(234,179,8,0.3)]">
-              <div>
+            <div className={`p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 transition shadow-2xl ${
+              casinoCfg.penetrationMode === 'GOD_WIN_100'
+                ? 'bg-gradient-to-r from-emerald-950 via-green-900/60 to-emerald-950 border-2 border-emerald-400 shadow-[0_0_40px_rgba(16,185,129,0.4)]'
+                : 'bg-gradient-to-r from-amber-950/70 via-yellow-900/50 to-amber-950/70 border-2 border-yellow-400/60 shadow-[0_0_30px_rgba(234,179,8,0.2)]'
+            }`}>
+              <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">🔥</span>
-                  <span className="text-base font-black text-yellow-300 font-serif tracking-wide">
-                    %100 KESİNTİSİZ KAZANMA (GOD MODE)
+                  <span className="text-2xl">{casinoCfg.penetrationMode === 'GOD_WIN_100' ? '👑' : '🔥'}</span>
+                  <span className="text-lg font-black text-yellow-300 font-serif tracking-wide">
+                    TÜM KULLANICILARA %100 KOŞULSUZ KAZANDIR (GOD WIN 100)
                   </span>
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 font-mono text-[10px] font-bold">
-                    ŞU AN AKTİF
+                  <span className={`px-2.5 py-0.5 rounded font-mono text-[10px] font-bold border ${
+                    casinoCfg.penetrationMode === 'GOD_WIN_100'
+                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400 animate-pulse'
+                      : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'
+                  }`}>
+                    {casinoCfg.penetrationMode === 'GOD_WIN_100' ? '● ŞU AN AKTİF' : '○ PASİF'}
                   </span>
                 </div>
-                <p className="text-xs text-amber-200/80 font-sans mt-0.5">
-                  Slotlarda garanti 500x-1000x Mega Win, Rulette top basılan sayıya/renge düşer, Blackjack&apos;te oyuncuya her elde Doğal Blackjack gelir, Crash 88x&apos;e uçar, Mayınlarda tüm kutular elmas çıkar!
+                <p className="text-xs text-amber-200/90 font-sans leading-relaxed">
+                  Tüm oyunlar (Slot, Rulet, Blackjack, Baccarat, Roket Crash, Mayınlar, Plinko) istisnasız %100 koşulsuz kazandırır.
+                  Slotlarda garanti 500x-1000x Mega Win, Rulette basılan sayıya/renge düşüş, Blackjack Doğal 21, Crash 88x, Mayınlarda tüm kutular elmas!
                 </p>
               </div>
 
-              <button
-                onClick={() => handleUpdateCasinoPenetration('GOD_WIN_100')}
-                className={`px-6 py-3 rounded-xl font-black text-xs font-mono transition shadow-lg shrink-0 ${
-                  casinoCfg.penetrationMode === 'GOD_WIN_100'
-                    ? 'bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 text-black ring-4 ring-yellow-400/50 animate-pulse'
-                    : 'bg-[#181105] text-yellow-400 border border-yellow-500/40 hover:bg-yellow-950'
-                }`}
-              >
-                {casinoCfg.penetrationMode === 'GOD_WIN_100' ? '⚡ %100 KAZANMA AKTİF' : '⚡ %100 KAZANMAYI AÇ'}
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                {casinoCfg.penetrationMode === 'GOD_WIN_100' ? (
+                  <button
+                    onClick={() => handleUpdateCasinoPenetration('PURE_MONTE_CARLO')}
+                    className="px-5 py-3 rounded-xl font-black text-xs font-mono transition bg-[#181105] text-amber-400 border border-amber-500/50 hover:bg-amber-900/40 shadow-lg"
+                  >
+                    ⚖️ Normal Monte Carlo&apos;ya Dön
+                  </button>
+                ) : null}
+
+                <button
+                  onClick={() => handleUpdateCasinoPenetration(casinoCfg.penetrationMode === 'GOD_WIN_100' ? 'PURE_MONTE_CARLO' : 'GOD_WIN_100')}
+                  className={`px-6 py-3 rounded-xl font-black text-xs font-mono transition shadow-lg shrink-0 ${
+                    casinoCfg.penetrationMode === 'GOD_WIN_100'
+                      ? 'bg-gradient-to-r from-emerald-400 via-green-300 to-emerald-500 text-black ring-4 ring-emerald-400/50 animate-pulse'
+                      : 'bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 text-black hover:scale-105 ring-2 ring-yellow-400/80 shadow-[0_0_20px_rgba(234,179,8,0.5)]'
+                  }`}
+                >
+                  {casinoCfg.penetrationMode === 'GOD_WIN_100' ? '👑 %100 KAZANMA AKTİF (KAPAT)' : '👑 %100 KAZANMAYI AÇ'}
+                </button>
+              </div>
             </div>
 
             {/* Penetrasyon Kademeleri */}
