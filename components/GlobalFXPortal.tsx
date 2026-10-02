@@ -13,6 +13,7 @@ interface GlobalFXPortalProps {
   onOpenNextGen: () => void;
   onOpenCasinoSlot?: () => void;
   onOpenArcadeHub?: () => void;
+  onOpenGrandCasino?: () => void;
 }
 
 export default function GlobalFXPortal({
@@ -23,7 +24,8 @@ export default function GlobalFXPortal({
   onOpenWithdraw,
   onOpenNextGen,
   onOpenCasinoSlot,
-  onOpenArcadeHub
+  onOpenArcadeHub,
+  onOpenGrandCasino
 }: GlobalFXPortalProps) {
   const [marketTab, setMarketTab] = useState<'POPULAR' | 'FOREX' | 'INDICES' | 'METALS' | 'CRYPTO' | 'SYNTHETIC'>('POPULAR');
 
@@ -81,6 +83,11 @@ export default function GlobalFXPortal({
               <button onClick={onOpenNextGen} className="flex items-center gap-1 text-purple-400 hover:text-purple-300 transition">
                 <span>🚀</span> Yeni Nesil Kazanç
               </button>
+              {onOpenGrandCasino && (
+                <button onClick={onOpenGrandCasino} className="flex items-center gap-1 text-amber-300 hover:text-amber-100 font-serif font-black tracking-wide transition">
+                  <span>🇲🇨</span> Monte Carlo Grand Casino
+                </button>
+              )}
               {onOpenArcadeHub && (
                 <button onClick={onOpenArcadeHub} className="flex items-center gap-1 text-cyan-400 hover:text-cyan-300 font-bold transition">
                   <span>🎮</span> Nova Arcade (Crash/Mines)
@@ -98,6 +105,16 @@ export default function GlobalFXPortal({
 
           {/* Sağ Eylem Butonları */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {onOpenGrandCasino && (
+              <button
+                onClick={onOpenGrandCasino}
+                className="bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 hover:opacity-95 text-black font-black text-xs px-3 sm:px-4 py-2 rounded-lg transition shadow-[0_0_20px_rgba(245,158,11,0.5)] border border-amber-300 flex items-center gap-1.5 active:scale-95 font-serif"
+              >
+                <span>🇲🇨</span>
+                <span className="hidden sm:inline">Grand</span> Casino
+              </button>
+            )}
+
             {onOpenArcadeHub && (
               <button
                 onClick={onOpenArcadeHub}

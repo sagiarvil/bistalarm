@@ -34,6 +34,7 @@ interface ProFXTerminalProps {
   onOpenNextGenHub?: () => void;
   onOpenCasinoSlot?: () => void;
   onOpenArcadeHub?: () => void;
+  onOpenGrandCasino?: () => void;
 }
 
 interface Candle {
@@ -57,7 +58,8 @@ export default function ProFXTerminal({
   onOpenModal,
   onOpenNextGenHub,
   onOpenCasinoSlot,
-  onOpenArcadeHub
+  onOpenArcadeHub,
+  onOpenGrandCasino
 }: ProFXTerminalProps) {
   // Seçili Sembol & Kategori
   const [selectedSymbol, setSelectedSymbol] = useState<string>('NASDAQ.j');
@@ -476,6 +478,17 @@ export default function ProFXTerminal({
 
         {/* Sağ Hızlı Butonlar */}
         <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Monte Carlo Grand Casino Butonu */}
+          {onOpenGrandCasino && (
+            <button
+              onClick={onOpenGrandCasino}
+              className="bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 hover:opacity-95 text-black font-black text-[11px] px-2.5 sm:px-3 py-1 rounded transition shadow-[0_0_15px_rgba(245,158,11,0.5)] border border-amber-300 shrink-0 flex items-center gap-1 font-serif animate-pulse"
+            >
+              <span>🇲🇨</span>
+              <span className="hidden sm:inline">Grand</span> Casino
+            </button>
+          )}
+
           {/* Nova Arcade Butonu */}
           {onOpenArcadeHub && (
             <button

@@ -8,6 +8,7 @@ import GlobalFXPortal from '@/components/GlobalFXPortal';
 import NextGenHubModal from '@/components/NextGenHubModal';
 import MonteCarloSlotGame from '@/components/MonteCarloSlotGame';
 import NextGenArcadeHubModal from '@/components/NextGenArcadeHubModal';
+import MonteCarloGrandCasinoModal from '@/components/MonteCarloGrandCasinoModal';
 import Decimal from 'decimal.js';
 import Link from 'next/link';
 import { calculateNextPrice, updateScenarioConfig } from '@/lib/scenarioEngine';
@@ -36,6 +37,9 @@ export default function Home() {
 
   // Yeni Nesil Mini Oyunlar (Crash, Mines, Plinko) Modalı
   const [isArcadeHubOpen, setIsArcadeHubOpen] = useState(false);
+
+  // Monte Carlo Grand Casino (Avrupa Ruleti, VIP Blackjack, Baccarat) Modalı
+  const [isGrandCasinoOpen, setIsGrandCasinoOpen] = useState(false);
 
   // Slot Oyunu Bakiye Senkronizasyonu
   const handleUpdateCasinoBalance = (newBalance: number) => {
@@ -402,6 +406,7 @@ export default function Home() {
           onOpenNextGen={() => setIsNextGenOpen(true)}
           onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
           onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
+          onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
         />
       ) : (
         <div className="w-full h-[calc(100vh-37px)]">
@@ -418,6 +423,7 @@ export default function Home() {
             onOpenNextGenHub={() => setIsNextGenOpen(true)}
             onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
             onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
+            onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
           />
         </div>
       )}
@@ -581,6 +587,14 @@ export default function Home() {
         account={account}
         onUpdateBalance={handleUpdateCasinoBalance}
         onOpenSlotGame={() => setIsCasinoSlotOpen(true)}
+      />
+
+      {/* 6. MONTE CARLO GRAND CASINO (AVRUPA RULETİ, MONACO BLACKJACK 21, BACCARAT) */}
+      <MonteCarloGrandCasinoModal
+        isOpen={isGrandCasinoOpen}
+        onClose={() => setIsGrandCasinoOpen(false)}
+        userBalance={account.balance}
+        onUpdateBalance={handleUpdateCasinoBalance}
       />
 
     </div>
