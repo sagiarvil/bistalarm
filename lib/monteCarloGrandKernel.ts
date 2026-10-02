@@ -31,23 +31,52 @@ export const ROULETTE_NUMBERS = [
 export const RED_NUMBERS = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
 export const BLACK_NUMBERS = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35];
 
+// Fransız Rulet Sektörleri (Racetrack Call Bets)
+export const VOISINS_DU_ZERO = [22, 18, 29, 7, 28, 12, 35, 3, 26, 0, 32, 15, 19, 4, 21, 2, 25]; // 17 Sayı
+export const TIERS_DU_CYLINDRE = [27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33]; // 12 Sayı
+export const ORPHELINS = [1, 20, 14, 31, 9, 17, 34, 6]; // 8 Sayı
+export const JEU_ZERO = [12, 35, 3, 26, 0, 32, 15]; // 7 Sayı
+
 export type RouletteBetType = 
-  | 'STRAIGHT' // Tek sayı (35:1)
-  | 'RED'      // Kırmızı (1:1)
-  | 'BLACK'    // Siyah (1:1)
-  | 'EVEN'     // Çift (1:1)
-  | 'ODD'      // Tek (1:1)
-  | 'LOW'      // 1-18 (1:1)
-  | 'HIGH'     // 19-36 (1:1)
-  | 'DOZEN_1'  // 1-12 (2:1)
-  | 'DOZEN_2'  // 13-24 (2:1)
-  | 'DOZEN_3'; // 25-36 (2:1)
+  | 'STRAIGHT'  // Tek sayı (35:1)
+  | 'RED'       // Kırmızı (1:1)
+  | 'BLACK'     // Siyah (1:1)
+  | 'EVEN'      // Çift (1:1)
+  | 'ODD'       // Tek (1:1)
+  | 'LOW'       // 1-18 (1:1)
+  | 'HIGH'      // 19-36 (1:1)
+  | 'DOZEN_1'   // 1-12 (2:1)
+  | 'DOZEN_2'   // 13-24 (2:1)
+  | 'DOZEN_3'   // 25-36 (2:1)
+  | 'VOISINS'   // Voisins du Zéro (2.1x)
+  | 'TIERS'     // Tiers du Cylindre (3x)
+  | 'ORPHELINS' // Orphelins (4.5x)
+  | 'JEU_ZERO'; // Jeu Zéro (5x)
 
 export interface RouletteBet {
   type: RouletteBetType;
   target?: number; // STRAIGHT ise seçilen numara
   amount: number;
 }
+
+// Canlı VIP Salon Akışı (Live Casino Atmosphere Feed)
+export interface VIPCallout {
+  id: string;
+  salon: 'Salle Garnier' | 'Salle Médecin' | 'Salon Privé';
+  player: string;
+  game: string;
+  amount: number;
+  multiplier?: string;
+  timeAgo: string;
+}
+
+export const MONTE_CARLO_VIP_MOCK_FEED: VIPCallout[] = [
+  { id: '1', salon: 'Salle Garnier', player: 'Baron_de_Rothschild', game: 'Roulette (17 Noir)', amount: 14000, multiplier: '36x', timeAgo: 'Az önce' },
+  { id: '2', salon: 'Salon Privé', player: 'Al_Maktoum_VIP', game: 'Blackjack 21', amount: 8500, multiplier: '3:2', timeAgo: '1 dk önce' },
+  { id: '3', salon: 'Salle Médecin', player: 'Alexandre_Monaco', game: 'Baccarat Banco', amount: 19500, multiplier: '1.95x', timeAgo: '2 dk önce' },
+  { id: '4', salon: 'Salle Garnier', player: 'Sophia_Loren_VIP', game: 'Çilek VIP 777 Slot', amount: 32000, multiplier: '100x', timeAgo: '3 dk önce' },
+  { id: '5', salon: 'Salon Privé', player: 'Lord_Hamilton', game: 'Roulette (Voisins)', amount: 6200, multiplier: '2.1x', timeAgo: '4 dk önce' }
+];
 
 export interface RouletteSpinResult {
   winningNumber: number;
@@ -137,6 +166,18 @@ export function spinEuropeanRoulette(bets: RouletteBet[]): RouletteSpinResult {
         break;
       case 'DOZEN_3':
         if (winningNumber >= 25 && winningNumber <= 36) { won = true; multiplier = 3; }
+        break;
+      case 'VOISINS':
+        if (VOISINS_DU_ZERO.includes(winningNumber)) { won = true; multiplier = 2.15; }
+        break;
+      case 'TIERS':
+        if (TIERS_DU_CYLINDRE.includes(winningNumber)) { won = true; multiplier = 3.05; }
+        break;
+      case 'ORPHELINS':
+        if (ORPHELINS.includes(winningNumber)) { won = true; multiplier = 4.60; }
+        break;
+      case 'JEU_ZERO':
+        if (JEU_ZERO.includes(winningNumber)) { won = true; multiplier = 5.25; }
         break;
     }
 

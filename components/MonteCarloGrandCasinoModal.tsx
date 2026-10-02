@@ -10,6 +10,12 @@ import {
   RED_NUMBERS,
   BLACK_NUMBERS,
   ROULETTE_NUMBERS,
+  VOISINS_DU_ZERO,
+  TIERS_DU_CYLINDRE,
+  ORPHELINS,
+  JEU_ZERO,
+  MONTE_CARLO_VIP_MOCK_FEED,
+  VIPCallout,
   createDeckShoe,
   calculateHandValue,
   PlayingCard,
@@ -35,6 +41,17 @@ export default function MonteCarloGrandCasinoModal({
 }: MonteCarloGrandCasinoModalProps) {
   const [activeTab, setActiveTab] = useState<CasinoTab>('ROULETTE');
   const [selectedChip, setSelectedChip] = useState<number>(25);
+  const [screenShake, setScreenShake] = useState<boolean>(false);
+  const [activeFeedIdx, setActiveFeedIdx] = useState<number>(0);
+  const [racetrackOpen, setRacetrackOpen] = useState<boolean>(true);
+
+  // Canlı VIP Ticker Döngüsü (Her 4 saniyede bir Monaco salonlarından akış)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveFeedIdx(prev => (prev + 1) % MONTE_CARLO_VIP_MOCK_FEED.length);
+    }, 4200);
+    return () => clearInterval(timer);
+  }, []);
 
   // Web Audio Context (Fildişi top, altın fiş, krupiye tıkırtısı sesleri)
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -460,7 +477,9 @@ export default function MonteCarloGrandCasinoModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-md p-2 sm:p-4 overflow-y-auto animate-fadeIn select-none">
       
       {/* Monte Carlo Salle Garnier Ana Muhafaza Kutusu */}
-      <div className="relative w-full max-w-5xl bg-gradient-to-b from-[#1b1008] via-[#0d1e12] to-[#051109] border-4 border-[#d4af37] rounded-3xl shadow-[0_0_80px_rgba(212,175,55,0.4)] overflow-hidden flex flex-col my-auto text-white">
+      <div className={`relative w-full max-w-5xl bg-gradient-to-b from-[#1b1008] via-[#0d1e12] to-[#051109] border-4 border-[#d4af37] rounded-3xl shadow-[0_0_80px_rgba(212,175,55,0.4)] overflow-hidden flex flex-col my-auto text-white transition-transform duration-200 ${
+        screenShake ? 'scale-[1.01] translate-y-[-2px] ring-4 ring-yellow-400' : ''
+      }`}>
         
         {/* Lüks Maun Ağacı ve Altın Barok Başlık */}
         <div className="relative bg-gradient-to-r from-[#2a1408] via-[#4a240c] to-[#2a1408] border-b-2 border-[#d4af37] p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
@@ -498,6 +517,25 @@ export default function MonteCarloGrandCasinoModal({
               ✕
             </button>
           </div>
+        </div>
+
+        {/* Canlı VIP Salon Akışı (Live Casino Atmosphere Broadcast) */}
+        <div className="bg-gradient-to-r from-[#140b05] via-[#241306] to-[#140b05] border-b border-[#d4af37]/30 px-4 py-1.5 flex items-center justify-between text-[11px] font-mono">
+          <div className="flex items-center gap-2 overflow-hidden">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+            <span className="text-yellow-400 font-bold uppercase shrink-0 font-serif">
+              [{MONTE_CARLO_VIP_MOCK_FEED[activeFeedIdx].salon}]
+            </span>
+            <span className="text-gray-300 truncate">
+              {MONTE_CARLO_VIP_MOCK_FEED[activeFeedIdx].player} — {MONTE_CARLO_VIP_MOCK_FEED[activeFeedIdx].game}
+            </span>
+            <span className="text-emerald-400 font-black shrink-0">
+              +${MONTE_CARLO_VIP_MOCK_FEED[activeFeedIdx].amount.toLocaleString()} ({MONTE_CARLO_VIP_MOCK_FEED[activeFeedIdx].multiplier})
+            </span>
+          </div>
+          <span className="text-gray-500 text-[10px] shrink-0 hidden sm:inline">
+            Canlı Monaco Yayını
+          </span>
         </div>
 
         {/* Oyun Seçim Menüsü (Salle Garnier Salonları) */}
@@ -660,6 +698,64 @@ export default function MonteCarloGrandCasinoModal({
                   ${val}
                 </button>
               ))}
+            </div>
+
+            {/* Fransız Rulet Yarış Pisti (Racetrack Call Bets) */}
+            <div className="bg-[#041a0e] border-2 border-[#d4af37]/50 rounded-2xl p-3 shadow-inner">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-serif font-black text-yellow-300 uppercase tracking-widest flex items-center gap-1.5">
+                  <span>🏁</span> PISTE DE COURSE MONACO (FRENCH RACETRACK CALL BETS)
+                </span>
+                <span className="text-[10px] text-gray-400 font-mono">
+                  Sektör Bahisleri (Tek Tıkla Tüm Komşuları Kapsa)
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button
+                  onClick={() => addRouletteBet('JEU_ZERO')}
+                  className="py-2.5 px-3 rounded-xl bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] hover:to-[#0c3922] border border-[#d4af37]/60 text-left transition group shadow-md"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-serif font-black text-yellow-300">JEU ZÉRO</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">5.25x</span>
+                  </div>
+                  <div className="text-[9px] text-gray-300 font-mono mt-1">7 Sayı (0, 3, 12, 15, 26, 32, 35)</div>
+                </button>
+
+                <button
+                  onClick={() => addRouletteBet('VOISINS')}
+                  className="py-2.5 px-3 rounded-xl bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] hover:to-[#0c3922] border border-[#d4af37]/60 text-left transition group shadow-md"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-serif font-black text-yellow-300">VOISINS DU ZÉRO</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">2.15x</span>
+                  </div>
+                  <div className="text-[9px] text-gray-300 font-mono mt-1">17 Sayı (Sıfırın tüm komşuları)</div>
+                </button>
+
+                <button
+                  onClick={() => addRouletteBet('ORPHELINS')}
+                  className="py-2.5 px-3 rounded-xl bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] hover:to-[#0c3922] border border-[#d4af37]/60 text-left transition group shadow-md"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-serif font-black text-yellow-300">ORPHELINS</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">4.60x</span>
+                  </div>
+                  <div className="text-[9px] text-gray-300 font-mono mt-1">8 Yetim Sayı (1, 6, 9, 14, 17, 20, 31, 34)</div>
+                </button>
+
+                <button
+                  onClick={() => addRouletteBet('TIERS')}
+                  className="py-2.5 px-3 rounded-xl bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] hover:to-[#0c3922] border border-[#d4af37]/60 text-left transition group shadow-md"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-serif font-black text-yellow-300">TIERS DU CYLINDRE</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">3.05x</span>
+                  </div>
+                  <div className="text-[9px] text-gray-300 font-mono mt-1">12 Sayı (Silindirin Karşı 1/3'ü)</div>
+                </button>
+              </div>
             </div>
 
             {/* Fransız Çuha Rulet Masası (French Layout) */}

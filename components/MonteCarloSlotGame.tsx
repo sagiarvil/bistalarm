@@ -8,6 +8,7 @@ import {
   SpinResult, 
   SlotSymbol 
 } from '@/lib/monteCarloEngine';
+import { MONTE_CARLO_VIP_MOCK_FEED } from '@/lib/monteCarloGrandKernel';
 import { UserAccount } from '@/lib/tradingEngine';
 
 interface MonteCarloSlotGameProps {
@@ -28,6 +29,14 @@ export default function MonteCarloSlotGame({
   const [lastMultiplier, setLastMultiplier] = useState<number>(0);
   const [showMegaWin, setShowMegaWin] = useState<boolean>(false);
   const [auditInfo, setAuditInfo] = useState<{ serverSeed: string; clientSeed: string; nonce: number } | null>(null);
+  const [vipFeedIdx, setVipFeedIdx] = useState<number>(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setVipFeedIdx(prev => (prev + 1) % MONTE_CARLO_VIP_MOCK_FEED.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
 
   // 5 makara x 3 satır başlangıç matrisi
   const [reels, setReels] = useState<string[][]>([
@@ -97,8 +106,38 @@ export default function MonteCarloSlotGame({
     } catch (e) {}
   };
 
+  // Nöropatik Kalp Atışı Sesi (Lub-Dub Heartbeat)
+  const playHeartbeat = () => {
+    try {
+      if (!audioCtxRef.current) return;
+      const ctx = audioCtxRef.current;
+      const now = ctx.currentTime;
+      
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.frequency.setValueAtTime(65, now);
+      gain1.gain.setValueAtTime(0.25, now);
+      gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.12);
+
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.frequency.setValueAtTime(50, now + 0.14);
+      gain2.gain.setValueAtTime(0.2, now + 0.14);
+      gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.28);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now + 0.14);
+      osc2.stop(now + 0.28);
+    } catch (e) {}
+  };
+
   const [leverPulling, setLeverPulling] = useState<boolean>(false);
   const [stoppingReels, setStoppingReels] = useState<boolean[]>([false, false, false, false, false]);
+  const [isTensionSpin, setIsTensionSpin] = useState<boolean>(false);
 
   const handleSpin = () => {
     if (isSpinning) return;
@@ -110,30 +149,56 @@ export default function MonteCarloSlotGame({
 
     setIsSpinning(true);
     setLeverPulling(true);
+    setIsTensionSpin(false);
     setStoppingReels([false, false, false, false, false]);
     setShowMegaWin(false);
     playSound('spin');
 
     setTimeout(() => setLeverPulling(false), 300);
 
-    // Bakiyeden bahsi düş
     const balanceAfterBet = account.balance - bet;
     onUpdateBalance(balanceAfterBet);
 
-    // Algoritma hesaplaması
     const result: SpinResult = executeSlotSpin(bet);
 
-    // Kademeli Mekanik Makara Duruşları (Reel 1 to 5)
-    [0, 1, 2, 3, 4].forEach((idx) => {
-      setTimeout(() => {
-        setStoppingReels(prev => {
-          const next = [...prev];
-          next[idx] = true;
-          return next;
-        });
-        playSound('click');
-      }, 500 + idx * 180);
-    });
+    // İlk 2 Makara Duruşu
+    setTimeout(() => {
+      setStoppingReels(prev => [true, false, false, false, false]);
+      playSound('click');
+    }, 450);
+
+    setTimeout(() => {
+      setStoppingReels(prev => [true, true, false, false, false]);
+      playSound('click');
+
+      // Nöropatik Anticipation Kontrolü: 1. ve 2. makarada yüksek sembol varsa kalp atışı başlar!
+      const highSymbols = ['seven', 'wild', 'strawberry', 'diamond'];
+      const r1Match = result.grid[0].some(s => highSymbols.includes(s));
+      const r2Match = result.grid[1].some(s => highSymbols.includes(s));
+
+      if (r1Match && r2Match) {
+        setIsTensionSpin(true);
+        playHeartbeat();
+        setTimeout(playHeartbeat, 500);
+      }
+    }, 750);
+
+    // Kalan 3., 4. ve 5. makaralar (Gerilim hissiyle uzatılmış duruş)
+    setTimeout(() => {
+      setStoppingReels(prev => [true, true, true, false, false]);
+      playSound('click');
+    }, 1150);
+
+    setTimeout(() => {
+      setStoppingReels(prev => [true, true, true, true, false]);
+      playSound('click');
+    }, 1450);
+
+    setTimeout(() => {
+      setStoppingReels([true, true, true, true, true]);
+      playSound('click');
+      setIsTensionSpin(false);
+    }, 1800);
 
     // Final Sonuç ve Kazanç Bildirimi
     setTimeout(() => {
@@ -159,13 +224,12 @@ export default function MonteCarloSlotGame({
         }
       }
 
-      // Auto-spin devamı
       if (autoSpin && balanceAfterBet >= bet) {
-        setTimeout(handleSpin, 1400);
+        setTimeout(handleSpin, 1600);
       } else if (autoSpin) {
         setAutoSpin(false);
       }
-    }, 1500);
+    }, 2000);
   };
 
   const getSymbol = (id: string): SlotSymbol => {
@@ -209,6 +273,25 @@ export default function MonteCarloSlotGame({
           </button>
         </div>
 
+        {/* Canlı VIP Kazanç Yayını (Monte Carlo Slot Hub) */}
+        <div className="bg-[#0b0416] border-b border-amber-500/20 px-4 py-1.5 flex items-center justify-between text-[11px] font-mono">
+          <div className="flex items-center gap-2 overflow-hidden">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
+            <span className="text-yellow-400 font-bold uppercase font-serif shrink-0">
+              [{MONTE_CARLO_VIP_MOCK_FEED[vipFeedIdx].salon}]
+            </span>
+            <span className="text-gray-300 truncate">
+              {MONTE_CARLO_VIP_MOCK_FEED[vipFeedIdx].player} — {MONTE_CARLO_VIP_MOCK_FEED[vipFeedIdx].game}
+            </span>
+            <span className="text-emerald-400 font-black shrink-0">
+              +${MONTE_CARLO_VIP_MOCK_FEED[vipFeedIdx].amount.toLocaleString()} ({MONTE_CARLO_VIP_MOCK_FEED[vipFeedIdx].multiplier})
+            </span>
+          </div>
+          <span className="text-gray-500 text-[10px] shrink-0 hidden sm:inline">
+            Canlı Casino Yayını
+          </span>
+        </div>
+
         {/* Ana Makine Gövdesi */}
         <div className="p-4 sm:p-6 space-y-5">
           
@@ -229,7 +312,11 @@ export default function MonteCarloSlotGame({
           </div>
 
           {/* 5x3 Makaralar (Reels Grid) */}
-          <div className="relative bg-[#07030e] border-4 border-amber-500/50 rounded-2xl p-3 shadow-inner overflow-hidden">
+          <div className={`relative bg-[#07030e] border-4 rounded-2xl p-3 shadow-inner overflow-hidden transition-all duration-300 ${
+            isTensionSpin 
+              ? 'border-yellow-400 ring-4 ring-yellow-400/80 shadow-[0_0_60px_rgba(245,158,11,0.9)] animate-pulse' 
+              : 'border-amber-500/50'
+          }`}>
             
             {/* Arka Plan Neon Çizgiler */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent pointer-events-none"></div>
