@@ -877,49 +877,60 @@ export default function NextGenArcadeHubModal({
 
           {/* 5. OYUN: COIN FLIP STREAK (SERİ YAZI-TURA) */}
           {activeTab === 'COIN_FLIP_STREAK' && (
-            <div className="space-y-4">
-              {/* AKILLI YÖNLENDİRİCİ ETİKETLER */}
-              <div className="bg-gradient-to-r from-emerald-950/60 via-teal-950/50 to-emerald-950/60 border border-emerald-500/30 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded bg-emerald-500 text-black font-black text-[10px] uppercase">STRATEJİ</span>
-                  <span className="text-gray-300 font-bold">Her Doğru Tahminde Kazanç ~2x Katlanır!</span>
+            <div className="space-y-3">
+              {/* AKILLI YÖNLENDİRİCİ ETİKETLER & KAZANMA KURALLARI REHBERİ */}
+              <div className="bg-gradient-to-r from-emerald-950/80 via-teal-950/60 to-emerald-950/80 border border-emerald-500/40 rounded-xl p-3 space-y-2 text-xs font-mono">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded bg-emerald-500 text-black font-black text-[10px] uppercase">KAZANMA MANTIĞI</span>
+                    <span className="text-emerald-300 font-bold">Nasıl Kazanılır?</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded bg-teal-500 text-black font-black text-[10px] uppercase animate-pulse">SERİ DURUMU</span>
+                    <span className="text-yellow-300 font-bold">{coinStreak} Seri Başarılı (Çarpan: {getCoinStreakMultiplier(coinStreak)}x)</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded bg-teal-500 text-black font-black text-[10px] uppercase animate-pulse">SERİ</span>
-                  <span className="text-teal-300 font-bold">{coinStreak} Seri (Mevcut: {getCoinStreakMultiplier(coinStreak)}x)</span>
+                <div className="text-[11px] text-gray-300 space-y-1 border-t border-emerald-500/20 pt-1.5 font-sans">
+                  <p>• <strong>Kural:</strong> 🦅 <strong>Yazı</strong> veya 👑 <strong>Tura</strong> seçin. Paranızı seçtiğiniz an <strong>${bet}</strong> bakiyenizden düşer.</p>
+                  <p>• <strong>Ödül Katlanması:</strong> Seçtiğiniz taraf gelirse kazanırsınız! 1. Adım: <strong>1.96x</strong> (${(bet * 1.96).toFixed(2)}), 2. Adım: <strong>3.84x</strong> (${(bet * 3.84).toFixed(2)}), 3. Adım: <strong>7.53x</strong> (${(bet * 7.53).toFixed(2)}), 4. Adım: <strong>14.76x</strong> (${(bet * 14.76).toFixed(2)})...</p>
+                  <p>• <strong>Kazancı Tahsil Etme:</strong> İstediğiniz adımda <strong>&quot;KÂRI AL&quot;</strong> butonuna basıp tüm parayı anında bakiyenize yükleyebilirsiniz. Yanlış tahmin ederseniz tur biter.</p>
                 </div>
               </div>
 
               {/* Yazı Tura Görsel Alanı */}
-              <div className="relative h-72 sm:h-80 bg-[#060810] border-2 border-emerald-500/40 rounded-2xl flex flex-col items-center justify-center p-4 overflow-hidden shadow-inner space-y-4">
-                <div className={`w-32 h-32 rounded-full border-4 border-yellow-400 bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-500 shadow-[0_0_50px_rgba(245,158,11,0.5)] flex items-center justify-center text-4xl font-black text-black select-none ${
+              <div className="relative h-64 sm:h-72 bg-[#060810] border-2 border-emerald-500/40 rounded-2xl flex flex-col items-center justify-center p-4 overflow-hidden shadow-inner space-y-3">
+                <div className={`w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-yellow-400 bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-500 shadow-[0_0_50px_rgba(245,158,11,0.5)] flex items-center justify-center text-4xl sm:text-5xl font-black text-black select-none transition-transform ${
                   coinFlipping ? 'animate-spin' : ''
                 }`}>
                   {coinLastSide ? (coinLastSide === 'YAZI' ? '🦅' : '👑') : '🪙'}
                 </div>
 
                 <div className="text-center font-mono">
-                  <div className="text-sm font-bold text-gray-300">
-                    {coinLastSide ? `Gelen: ${coinLastSide}` : 'Yazı mı, Tura mı?'}
+                  <div className="text-sm font-bold text-gray-200">
+                    {coinLastSide ? `Son Gelen: ${coinLastSide === 'YAZI' ? '🦅 YAZI' : '👑 TURA'}` : 'Madeni Parayı Fırlatmak İçin Seçim Yapın'}
                   </div>
-                  {coinStreak > 0 && (
-                    <div className="text-emerald-400 font-extrabold text-base mt-1 animate-pulse">
-                      🔥 {coinStreak} Adım Başarılı! Çarpan: {getCoinStreakMultiplier(coinStreak)}x (Kâr: ${(bet * getCoinStreakMultiplier(coinStreak)).toFixed(2)})
+                  {coinStreak > 0 ? (
+                    <div className="text-emerald-400 font-extrabold text-sm sm:text-base mt-1 animate-pulse">
+                      🔥 {coinStreak} Adım Kazandınız! Çarpan: {getCoinStreakMultiplier(coinStreak)}x ➔ Hesaba Geçecek: ${(bet * getCoinStreakMultiplier(coinStreak)).toFixed(2)}
+                    </div>
+                  ) : (
+                    <div className="text-xs text-gray-400 mt-1">
+                      Maliyet: ${bet} | İlk Kazanç: ${(bet * 1.96).toFixed(2)}
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Yazı Tura Kontrolleri */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#0c1020] p-4 rounded-xl border border-emerald-500/30 font-mono">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400">BAHİS:</span>
+              {/* Yazı Tura Kontrolleri (Maliyet & Tahsilat Netliği) */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#0c1020] p-3.5 rounded-xl border border-emerald-500/30 font-mono">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-xs text-gray-400 font-bold">BAHİS (MALİYET):</span>
                   {[5, 10, 20, 50, 100].map(amt => (
                     <button
                       key={amt}
                       disabled={coinGameActive}
                       onClick={() => setBet(amt)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold ${bet === amt ? 'bg-emerald-600 text-white' : 'bg-[#182035] text-gray-300'}`}
+                      className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition ${bet === amt ? 'bg-emerald-600 text-white shadow ring-2 ring-emerald-400' : 'bg-[#182035] text-gray-300 hover:text-white'}`}
                     >
                       ${amt}
                     </button>
@@ -930,7 +941,8 @@ export default function NextGenArcadeHubModal({
                   {coinGameActive && coinStreak > 0 && (
                     <button
                       onClick={handleCoinCashout}
-                      className="px-5 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-black font-black text-xs rounded-xl shadow-lg active:scale-95 animate-pulse"
+                      className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 text-black font-black text-xs sm:text-sm rounded-xl shadow-lg active:scale-95 animate-pulse"
+                      title="Biriken kazancı anında hesabınıza aktarır"
                     >
                       💰 KÂRI AL (${(bet * getCoinStreakMultiplier(coinStreak)).toFixed(2)})
                     </button>
@@ -938,16 +950,16 @@ export default function NextGenArcadeHubModal({
                   <button
                     disabled={coinFlipping}
                     onClick={() => handleFlipCoin('YAZI')}
-                    className="flex-1 sm:flex-none px-6 py-3 bg-[#162035] hover:bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 font-black text-xs rounded-xl transition active:scale-95 disabled:opacity-50"
+                    className="flex-1 sm:flex-none px-5 py-2.5 bg-[#162035] hover:bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 font-black text-xs rounded-xl transition active:scale-95 disabled:opacity-50 flex items-center justify-center gap-1.5"
                   >
-                    🦅 YAZI SEÇ
+                    <span>🦅</span> YAZI (${bet})
                   </button>
                   <button
                     disabled={coinFlipping}
                     onClick={() => handleFlipCoin('TURA')}
-                    className="flex-1 sm:flex-none px-6 py-3 bg-[#162035] hover:bg-amber-950/80 border border-amber-500/50 text-yellow-300 font-black text-xs rounded-xl transition active:scale-95 disabled:opacity-50"
+                    className="flex-1 sm:flex-none px-5 py-2.5 bg-[#162035] hover:bg-amber-950/80 border border-amber-500/50 text-yellow-300 font-black text-xs rounded-xl transition active:scale-95 disabled:opacity-50 flex items-center justify-center gap-1.5"
                   >
-                    👑 TURA SEÇ
+                    <span>👑</span> TURA (${bet})
                   </button>
                 </div>
               </div>

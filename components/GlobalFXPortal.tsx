@@ -41,22 +41,22 @@ export default function GlobalFXPortal({
   // Canlı Ticker Pariteleri (Majörler, Sentetikler, Kripto, Emtia)
   const marqueeSymbols = ['EURUSD', 'GBPUSD', 'USDJPY', 'XAUUSDX', 'NASDAQ.j', 'SPX500.j', 'BTCUSD', 'ETHUSD', 'BOOM1000', 'CRASH500', 'ARB-USDT'];
 
-  // Kategoriye Göre Semboller (Her Sekme Birebir Kendi Verisine ve Sinyaline Gider)
+  // Kategoriye Göre Semboller (Küresel Standartlarda Zengin Enstrüman Havuzu)
   const getSymbolsByCategory = () => {
     switch (marketTab) {
       case 'FOREX':
-        return ['EURUSD', 'GBPUSD', 'USDJPY', 'DXY.j'];
+        return ['EURUSD', 'GBPUSD', 'USDJPY', 'USDCHF', 'AUDUSD', 'USDCAD', 'NZDUSD', 'EURGBP', 'EURJPY', 'GBPJPY', 'DXY.j'];
       case 'INDICES':
-        return ['NASDAQ.j', 'SPX500.j', 'DAX.j', 'US2000.j'];
+        return ['NASDAQ.j', 'SPX500.j', 'DAX.j', 'US2000.j', 'BIST30'];
       case 'METALS':
         return ['XAUUSDX', 'XAGUSD', 'BRENT.c'];
       case 'CRYPTO':
-        return ['BTCUSD', 'ETHUSD', 'SOLUSD'];
+        return ['BTCUSD', 'ETHUSD', 'SOLUSD', 'XRPUSD', 'AVAXUSD', 'BNBUSD'];
       case 'SYNTHETIC':
         return ['BOOM1000', 'CRASH500', 'VOLATILITY75', 'ARB-USDT'];
       case 'POPULAR':
       default:
-        return ['EURUSD', 'XAUUSDX', 'NASDAQ.j', 'BTCUSD', 'BOOM1000', 'ARB-USDT'];
+        return ['EURUSD', 'XAUUSDX', 'NASDAQ.j', 'SPX500.j', 'BIST30', 'BTCUSD', 'SOLUSD', 'BOOM1000', 'CRASH500', 'ARB-USDT'];
     }
   };
 
@@ -306,7 +306,7 @@ export default function GlobalFXPortal({
       {/* ========================================================================= */}
       {/* 4. CANLI PİYASA DERİNLİK VE FİYAT MATRİSİ (MARKET EXPLORER) */}
       {/* ========================================================================= */}
-      <section id="markets" className="py-12 bg-[#090c12] border-t border-[#182030] px-4 lg:px-8">
+      <section id="markets" className="py-12 bg-[#090c12] border-t border-[#182030] px-4 lg:px-8 scroll-mt-20">
         <div className="max-w-7xl mx-auto space-y-6">
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -415,7 +415,7 @@ export default function GlobalFXPortal({
       {/* ========================================================================= */}
       {/* 5. HESAP TÜRLERİ MATRİSİ (EXNESS & IC MARKETS STANDARDI) */}
       {/* ========================================================================= */}
-      <section id="accounts" className="py-16 px-4 lg:px-8 max-w-7xl mx-auto space-y-8">
+      <section id="accounts" className="py-16 px-4 lg:px-8 max-w-7xl mx-auto space-y-8 scroll-mt-20">
         <div className="text-center space-y-2">
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-wide">
             Her Strateji İçin Optimize Edilmiş Hesap Tipleri
@@ -834,7 +834,7 @@ export default function GlobalFXPortal({
       {/* ========================================================================= */}
       {/* 6. TEKNOLOJİ & FON GÜVENLİĞİ BÖLÜMÜ */}
       {/* ========================================================================= */}
-      <section id="technology" className="py-14 bg-[#090c12] border-t border-[#182030] px-4 lg:px-8">
+      <section id="technology" className="py-14 bg-[#090c12] border-t border-[#182030] px-4 lg:px-8 scroll-mt-20">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           
           <div className="space-y-4">

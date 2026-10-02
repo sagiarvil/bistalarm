@@ -832,139 +832,144 @@ export default function MonteCarloGrandCasinoModal({
             </div>
 
 
-            {/* Fransız Rulet Yarış Pisti (Racetrack Call Bets) */}
-            <div className="bg-[#041a0e] border-2 border-[#d4af37]/50 rounded-2xl p-3 shadow-inner">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-serif font-black text-yellow-300 uppercase tracking-widest flex items-center gap-1.5">
+            {/* Fransız Rulet Yarış Pisti & Özel Sektör Bahisleri (Akıllı Katlanabilir) */}
+            <div className="bg-[#041a0e] border border-[#d4af37]/40 rounded-xl p-2 shadow-inner">
+              <div 
+                onClick={() => setRacetrackOpen(!racetrackOpen)}
+                className="flex items-center justify-between cursor-pointer select-none"
+              >
+                <span className="text-[10px] sm:text-[11px] font-serif font-black text-yellow-300 uppercase tracking-widest flex items-center gap-1.5">
                   <span>🏁</span> PISTE DE COURSE MONACO (FRENCH RACETRACK CALL BETS)
                 </span>
-                <span className="text-[10px] text-gray-400 font-mono">
-                  Sektör Bahisleri (Tek Tıkla Tüm Komşuları Kapsa)
+                <span className="text-[9px] sm:text-[10px] text-amber-400 font-mono flex items-center gap-1">
+                  <span>{racetrackOpen ? '▲ Gizle' : '▼ Sektörleri Göster (Voisins, Tiers, Orphelins)'}</span>
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <button
-                  onClick={() => addRouletteBet('JEU_ZERO')}
-                  className="py-2.5 px-3 rounded-xl bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] hover:to-[#0c3922] border border-[#d4af37]/60 text-left transition group shadow-md"
-                >
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-serif font-black text-yellow-300">JEU ZÉRO</span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">5.25x</span>
-                  </div>
-                  <div className="text-[9px] text-gray-300 font-mono mt-1">7 Sayı (0, 3, 12, 15, 26, 32, 35)</div>
-                </button>
+              {racetrackOpen && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mt-2 pt-1 border-t border-[#d4af37]/20">
+                  <button
+                    onClick={() => addRouletteBet('JEU_ZERO')}
+                    className="py-1.5 px-2 rounded-lg bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] border border-[#d4af37]/50 text-left transition shadow"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="text-[11px] font-serif font-black text-yellow-300">JEU ZÉRO</span>
+                      <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">5.25x</span>
+                    </div>
+                    <div className="text-[8px] text-gray-300 font-mono">7 Sayı (0, 3, 12, 15, 26, 32, 35)</div>
+                  </button>
 
-                <button
-                  onClick={() => addRouletteBet('VOISINS')}
-                  className="py-2.5 px-3 rounded-xl bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] hover:to-[#0c3922] border border-[#d4af37]/60 text-left transition group shadow-md"
-                >
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-serif font-black text-yellow-300">VOISINS DU ZÉRO</span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">2.15x</span>
-                  </div>
-                  <div className="text-[9px] text-gray-300 font-mono mt-1">17 Sayı (Sıfırın tüm komşuları)</div>
-                </button>
+                  <button
+                    onClick={() => addRouletteBet('VOISINS')}
+                    className="py-1.5 px-2 rounded-lg bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] border border-[#d4af37]/50 text-left transition shadow"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="text-[11px] font-serif font-black text-yellow-300">VOISINS DU ZÉRO</span>
+                      <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">2.15x</span>
+                    </div>
+                    <div className="text-[8px] text-gray-300 font-mono">17 Sayı (Sıfırın komşuları)</div>
+                  </button>
 
-                <button
-                  onClick={() => addRouletteBet('ORPHELINS')}
-                  className="py-2.5 px-3 rounded-xl bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] hover:to-[#0c3922] border border-[#d4af37]/60 text-left transition group shadow-md"
-                >
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-serif font-black text-yellow-300">ORPHELINS</span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">4.60x</span>
-                  </div>
-                  <div className="text-[9px] text-gray-300 font-mono mt-1">8 Yetim Sayı (1, 6, 9, 14, 17, 20, 31, 34)</div>
-                </button>
+                  <button
+                    onClick={() => addRouletteBet('ORPHELINS')}
+                    className="py-1.5 px-2 rounded-lg bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] border border-[#d4af37]/50 text-left transition shadow"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="text-[11px] font-serif font-black text-yellow-300">ORPHELINS</span>
+                      <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">4.60x</span>
+                    </div>
+                    <div className="text-[8px] text-gray-300 font-mono">8 Sayı (1, 6, 9, 14, 17, 20, 31, 34)</div>
+                  </button>
 
-                <button
-                  onClick={() => addRouletteBet('TIERS')}
-                  className="py-2.5 px-3 rounded-xl bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] hover:to-[#0c3922] border border-[#d4af37]/60 text-left transition group shadow-md"
-                >
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-serif font-black text-yellow-300">TIERS DU CYLINDRE</span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">3.05x</span>
-                  </div>
-                  <div className="text-[9px] text-gray-300 font-mono mt-1">12 Sayı (Silindirin Karşı 1/3'ü)</div>
-                </button>
-              </div>
+                  <button
+                    onClick={() => addRouletteBet('TIERS')}
+                    className="py-1.5 px-2 rounded-lg bg-gradient-to-b from-[#0e4226] to-[#072415] hover:from-[#145733] border border-[#d4af37]/50 text-left transition shadow"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="text-[11px] font-serif font-black text-yellow-300">TIERS DU CYLINDRE</span>
+                      <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-amber-500/20 text-yellow-300 border border-amber-500/40 font-bold">3.05x</span>
+                    </div>
+                    <div className="text-[8px] text-gray-300 font-mono">12 Sayı (Silindirin Karşı 1/3'ü)</div>
+                  </button>
+                </div>
+              )}
             </div>
 
-            {/* Fransız Çuha Rulet Masası (French Layout) */}
-            <div className="bg-[#09351e] border-4 border-[#d4af37]/60 rounded-2xl p-4 shadow-2xl space-y-3">
+            {/* Fransız Çuha Rulet Masası (French Layout - Kompakt ve Ekrana Tam Oturan Dinamik Boyut) */}
+            <div className="bg-[#09351e] border-2 sm:border-3 border-[#d4af37]/60 rounded-xl p-2 sm:p-3 shadow-xl space-y-2">
               
               {/* Dış Bahisler (Kırmızı, Siyah, Çift, Tek) */}
-              <div className="grid grid-cols-6 gap-2 text-xs font-bold font-serif">
+              <div className="grid grid-cols-6 gap-1.5 text-[10px] sm:text-xs font-bold font-serif">
                 <button 
                   onClick={() => addRouletteBet('LOW')}
-                  className="py-3 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
+                  className="py-2 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
                 >
                   MANQUE (1-18)
                 </button>
                 <button 
                   onClick={() => addRouletteBet('EVEN')}
-                  className="py-3 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
+                  className="py-2 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
                 >
                   PAIR (ÇİFT)
                 </button>
                 <button 
                   onClick={() => addRouletteBet('RED')}
-                  className="py-3 bg-gradient-to-r from-rose-800 to-red-700 hover:from-rose-700 hover:to-red-600 border border-rose-400 rounded-lg text-white shadow-lg transition"
+                  className="py-2 bg-gradient-to-r from-rose-800 to-red-700 hover:from-rose-700 hover:to-red-600 border border-rose-400 rounded-lg text-white shadow transition"
                 >
                   ROUGE (KIRMIZI)
                 </button>
                 <button 
                   onClick={() => addRouletteBet('BLACK')}
-                  className="py-3 bg-gradient-to-r from-zinc-950 to-zinc-900 hover:from-zinc-900 hover:to-zinc-800 border border-zinc-600 rounded-lg text-white shadow-lg transition"
+                  className="py-2 bg-gradient-to-r from-zinc-950 to-zinc-900 hover:from-zinc-900 hover:to-zinc-800 border border-zinc-600 rounded-lg text-white shadow transition"
                 >
                   NOIR (SİYAH)
                 </button>
                 <button 
                   onClick={() => addRouletteBet('ODD')}
-                  className="py-3 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
+                  className="py-2 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
                 >
                   IMPAIR (TEK)
                 </button>
                 <button 
                   onClick={() => addRouletteBet('HIGH')}
-                  className="py-3 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
+                  className="py-2 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-amber-200 transition"
                 >
                   PASSE (19-36)
                 </button>
               </div>
 
               {/* Düzineler (Douzaines) */}
-              <div className="grid grid-cols-3 gap-2 text-xs font-bold font-serif">
+              <div className="grid grid-cols-3 gap-1.5 text-[10px] sm:text-xs font-bold font-serif">
                 <button 
                   onClick={() => addRouletteBet('DOZEN_1')}
-                  className="py-2.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-yellow-300 transition"
+                  className="py-1.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-yellow-300 transition"
                 >
                   1ère 12 (1 - 12) [2:1]
                 </button>
                 <button 
                   onClick={() => addRouletteBet('DOZEN_2')}
-                  className="py-2.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-yellow-300 transition"
+                  className="py-1.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-yellow-300 transition"
                 >
                   2ème 12 (13 - 24) [2:1]
                 </button>
                 <button 
                   onClick={() => addRouletteBet('DOZEN_3')}
-                  className="py-2.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-yellow-300 transition"
+                  className="py-1.5 bg-[#062414] hover:bg-[#0c4426] border border-[#d4af37]/40 rounded-lg text-yellow-300 transition"
                 >
                   3ème 12 (25 - 36) [2:1]
                 </button>
               </div>
 
               {/* 0 ve 1-36 Rakam Izgarası */}
-              <div className="flex gap-2">
+              <div className="flex gap-1.5">
                 <button
                   onClick={() => addRouletteBet('STRAIGHT', 0)}
-                  className="w-14 rounded-lg bg-gradient-to-b from-emerald-700 to-emerald-900 hover:from-emerald-600 hover:to-emerald-800 border-2 border-emerald-400 font-bold text-xl flex items-center justify-center shadow-lg"
+                  className="w-10 sm:w-12 rounded-lg bg-gradient-to-b from-emerald-700 to-emerald-900 hover:from-emerald-600 hover:to-emerald-800 border-2 border-emerald-400 font-bold text-base sm:text-lg flex items-center justify-center shadow"
                 >
                   0
                 </button>
 
-                <div className="grid grid-cols-12 gap-1.5 flex-1 font-mono text-xs font-bold">
+                <div className="grid grid-cols-12 gap-1 flex-1 font-mono text-[10px] sm:text-xs font-bold">
                   {Array.from({ length: 36 }, (_, i) => i + 1).map(num => {
                     const isRed = RED_NUMBERS.includes(num);
                     const betOnThis = rouletteBets.find(b => b.type === 'STRAIGHT' && b.target === num);
@@ -973,7 +978,7 @@ export default function MonteCarloGrandCasinoModal({
                       <button
                         key={num}
                         onClick={() => addRouletteBet('STRAIGHT', num)}
-                        className={`h-10 rounded-md border flex flex-col items-center justify-center transition relative ${
+                        className={`h-7 sm:h-8 rounded border flex flex-col items-center justify-center transition relative ${
                           isRed 
                             ? 'bg-gradient-to-b from-rose-800 to-rose-950 hover:from-rose-700 border-rose-500 text-white' 
                             : 'bg-gradient-to-b from-zinc-900 to-black hover:from-zinc-800 border-zinc-700 text-white'
@@ -981,7 +986,7 @@ export default function MonteCarloGrandCasinoModal({
                       >
                         <span>{num}</span>
                         {betOnThis && (
-                          <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-yellow-400 text-black text-[9px] font-black flex items-center justify-center shadow-md">
+                          <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-yellow-400 text-black text-[8px] font-black flex items-center justify-center shadow">
                             •
                           </span>
                         )}

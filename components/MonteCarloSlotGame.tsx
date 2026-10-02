@@ -425,22 +425,24 @@ export default function MonteCarloSlotGame({
           </div>
 
           {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ & HEYECAN AKIŞI */}
-          <div className="bg-gradient-to-r from-purple-950/60 via-amber-950/40 to-purple-950/60 border border-amber-500/30 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded bg-amber-500 text-black font-black text-[10px] uppercase tracking-wide">
-                1. ADIM
-              </span>
-              <span className="text-gray-300 font-bold">Bahsini Seç (${bet})</span>
+          <div className="bg-gradient-to-r from-purple-950/80 via-amber-950/50 to-purple-950/80 border border-amber-500/40 rounded-xl p-3 space-y-2 text-xs font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-amber-500 text-black font-black text-[10px] uppercase tracking-wide">
+                  KAZANMA MANTIĞI & KURALLAR
+                </span>
+                <span className="text-yellow-300 font-bold">20 Hatlı Klasik Vegas Slot Sistemi</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-yellow-300 font-bold bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/30">
+                <span className="animate-spin">⚡</span>
+                <span>%100 KAZANMA & 1000x JACKPOT AKTİF!</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded bg-emerald-500 text-black font-black text-[10px] uppercase tracking-wide animate-pulse">
-                2. ADIM
-              </span>
-              <span className="text-emerald-300 font-bold">Kolu Çek veya ÇEVİR'e Bas!</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-yellow-300 font-bold bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/30">
-              <span className="animate-spin">⚡</span>
-              <span>1000x Mega Win Garantili!</span>
+            <div className="text-[11px] text-gray-300 space-y-1 border-t border-amber-500/20 pt-1.5 font-sans">
+              <p>• <strong>Maliyet & Bakiye Düşümü:</strong> Her çevirmede seçtiğiniz <strong>${bet}</strong> anında bakiyenizden düşer.</p>
+              <p>• <strong>Nasıl Kazanılır:</strong> Soldan sağa aynı hizada en az 3 aynı meyve veya vegas sembolü geldiğinde kazanırsınız. ⭐ <strong>Wild</strong> her sembolün yerine geçer!</p>
+              <p>• <strong>Ödeme Çarpanları:</strong> 🍓 Çilek: 3x-25x | 🍍 Ananas: 4x-40x | 🍉 Karpuz: 5x-50x | 🥇 Altın: 15x-200x | 💎 Elmas: 25x-500x | 🎰 777: <strong>50x-1000x JACKPOT!</strong></p>
+              <p>• <strong>Kazanç Yüklemesi:</strong> Kazandığınız tutar kuruşu kuruşuna anında bakiyenize eklenir ve ekranda altın kutlama patlar.</p>
             </div>
           </div>
 
