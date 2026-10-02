@@ -7,6 +7,7 @@ import ProFXTerminal from '@/components/ProFXTerminal';
 import GlobalFXPortal from '@/components/GlobalFXPortal';
 import NextGenHubModal from '@/components/NextGenHubModal';
 import MonteCarloSlotGame from '@/components/MonteCarloSlotGame';
+import NextGenArcadeHubModal from '@/components/NextGenArcadeHubModal';
 import Decimal from 'decimal.js';
 import Link from 'next/link';
 import { calculateNextPrice, updateScenarioConfig } from '@/lib/scenarioEngine';
@@ -32,6 +33,9 @@ export default function Home() {
 
   // Monte Carlo Çilek & Ananas Casino Slot Modalı
   const [isCasinoSlotOpen, setIsCasinoSlotOpen] = useState(false);
+
+  // Yeni Nesil Mini Oyunlar (Crash, Mines, Plinko) Modalı
+  const [isArcadeHubOpen, setIsArcadeHubOpen] = useState(false);
 
   // Slot Oyunu Bakiye Senkronizasyonu
   const handleUpdateCasinoBalance = (newBalance: number) => {
@@ -342,13 +346,22 @@ export default function Home() {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Yeni Nesil Mobil Mini Oyunlar Butonu */}
+          <button
+            onClick={() => setIsArcadeHubOpen(true)}
+            className="bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:opacity-90 text-white font-extrabold text-[11px] px-2.5 sm:px-3 py-1 rounded transition shadow-[0_0_15px_rgba(99,102,241,0.4)] flex items-center gap-1.5"
+          >
+            <span>🎮</span>
+            <span className="hidden sm:inline">Nova</span> Arcade (Crash & Mines)
+          </button>
+
           {/* Monte Carlo Çilek & Ananas Slot Butonu */}
           <button
             onClick={() => setIsCasinoSlotOpen(true)}
             className="bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:opacity-90 text-black font-black text-[11px] px-2.5 sm:px-3 py-1 rounded transition shadow-[0_0_15px_rgba(245,158,11,0.4)] flex items-center gap-1.5 animate-pulse"
           >
             <span>🍓</span>
-            <span className="hidden sm:inline">Çilek & Ananas</span> VIP Slots
+            <span className="hidden sm:inline">Çilek & Ananas</span> Slots
           </button>
 
           <button
@@ -388,6 +401,7 @@ export default function Home() {
           onOpenWithdraw={() => setActiveModal('withdraw')}
           onOpenNextGen={() => setIsNextGenOpen(true)}
           onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
+          onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
         />
       ) : (
         <div className="w-full h-[calc(100vh-37px)]">
@@ -403,6 +417,7 @@ export default function Home() {
             onOpenModal={(m) => setActiveModal(m)}
             onOpenNextGenHub={() => setIsNextGenOpen(true)}
             onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
+            onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
           />
         </div>
       )}
@@ -558,6 +573,15 @@ export default function Home() {
           onClose={() => setIsCasinoSlotOpen(false)}
         />
       )}
+
+      {/* 5. NOVA ARCADE: YENİ NESİL MOBİL MİNİ OYUNLAR (CRASH, MINES, PLINKO) */}
+      <NextGenArcadeHubModal
+        isOpen={isArcadeHubOpen}
+        onClose={() => setIsArcadeHubOpen(false)}
+        account={account}
+        onUpdateBalance={handleUpdateCasinoBalance}
+        onOpenSlotGame={() => setIsCasinoSlotOpen(true)}
+      />
 
     </div>
   );

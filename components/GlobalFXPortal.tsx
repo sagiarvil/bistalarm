@@ -12,6 +12,7 @@ interface GlobalFXPortalProps {
   onOpenWithdraw: () => void;
   onOpenNextGen: () => void;
   onOpenCasinoSlot?: () => void;
+  onOpenArcadeHub?: () => void;
 }
 
 export default function GlobalFXPortal({
@@ -21,7 +22,8 @@ export default function GlobalFXPortal({
   onOpenDeposit,
   onOpenWithdraw,
   onOpenNextGen,
-  onOpenCasinoSlot
+  onOpenCasinoSlot,
+  onOpenArcadeHub
 }: GlobalFXPortalProps) {
   const [marketTab, setMarketTab] = useState<'POPULAR' | 'FOREX' | 'INDICES' | 'METALS' | 'CRYPTO' | 'SYNTHETIC'>('POPULAR');
 
@@ -79,6 +81,11 @@ export default function GlobalFXPortal({
               <button onClick={onOpenNextGen} className="flex items-center gap-1 text-purple-400 hover:text-purple-300 transition">
                 <span>🚀</span> Yeni Nesil Kazanç
               </button>
+              {onOpenArcadeHub && (
+                <button onClick={onOpenArcadeHub} className="flex items-center gap-1 text-cyan-400 hover:text-cyan-300 font-bold transition">
+                  <span>🎮</span> Nova Arcade (Crash/Mines)
+                </button>
+              )}
               {onOpenCasinoSlot && (
                 <button onClick={onOpenCasinoSlot} className="flex items-center gap-1 text-amber-400 hover:text-amber-300 font-bold transition">
                   <span>🍓</span> Çilek & Ananas VIP Slots
@@ -91,6 +98,16 @@ export default function GlobalFXPortal({
 
           {/* Sağ Eylem Butonları */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {onOpenArcadeHub && (
+              <button
+                onClick={onOpenArcadeHub}
+                className="bg-gradient-to-r from-cyan-600 to-indigo-600 hover:opacity-90 text-white font-bold text-xs px-3 py-2 rounded-lg transition shadow flex items-center gap-1.5 active:scale-95"
+              >
+                <span>🎮</span>
+                <span className="hidden sm:inline">Nova</span> Arcade
+              </button>
+            )}
+
             {onOpenCasinoSlot && (
               <button
                 onClick={onOpenCasinoSlot}
@@ -185,12 +202,21 @@ export default function GlobalFXPortal({
               <span>🚀</span> WebTrader&apos;ı Hemen Başlat
             </button>
 
+            {onOpenArcadeHub && (
+              <button
+                onClick={onOpenArcadeHub}
+                className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:opacity-90 text-white font-extrabold text-sm rounded-xl transition shadow-[0_0_25px_rgba(99,102,241,0.5)] flex items-center justify-center gap-2 active:scale-95"
+              >
+                <span>🎮</span> Nova Arcade (Crash/Mines)
+              </button>
+            )}
+
             {onOpenCasinoSlot && (
               <button
                 onClick={onOpenCasinoSlot}
-                className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:opacity-90 text-black font-black text-sm rounded-xl transition shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center justify-center gap-2 active:scale-95 animate-pulse"
+                className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:opacity-90 text-black font-black text-sm rounded-xl transition shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center justify-center gap-2 active:scale-95"
               >
-                <span>🍓</span> Çilek & Ananas VIP Slots
+                <span>🍓</span> Çilek & Ananas Slots
               </button>
             )}
 
