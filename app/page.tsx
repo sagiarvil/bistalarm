@@ -9,6 +9,7 @@ import NextGenHubModal from '@/components/NextGenHubModal';
 import MonteCarloSlotGame from '@/components/MonteCarloSlotGame';
 import NextGenArcadeHubModal from '@/components/NextGenArcadeHubModal';
 import MonteCarloGrandCasinoModal from '@/components/MonteCarloGrandCasinoModal';
+import GameTacticsGuideModal from '@/components/GameTacticsGuideModal';
 import Decimal from 'decimal.js';
 import Link from 'next/link';
 import { calculateNextPrice, updateScenarioConfig } from '@/lib/scenarioEngine';
@@ -40,6 +41,9 @@ export default function Home() {
 
   // Monte Carlo Grand Casino (Avrupa Ruleti, VIP Blackjack, Baccarat) Modalı
   const [isGrandCasinoOpen, setIsGrandCasinoOpen] = useState(false);
+
+  // VIP Kazanma Taktikleri & Oyun Rehberi Modalı
+  const [isTacticsGuideOpen, setIsTacticsGuideOpen] = useState(false);
 
   // Slot Oyunu Bakiye Senkronizasyonu
   const handleUpdateCasinoBalance = (newBalance: number) => {
@@ -389,6 +393,7 @@ export default function Home() {
           onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
           onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
           onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
+          onOpenTacticsGuide={() => setIsTacticsGuideOpen(true)}
         />
       ) : (
         <div className="w-full h-[calc(100vh-37px)]">
@@ -559,6 +564,10 @@ export default function Home() {
           account={account}
           onUpdateBalance={handleUpdateCasinoBalance}
           onClose={() => setIsCasinoSlotOpen(false)}
+          onOpenTacticsGuide={() => {
+            setIsCasinoSlotOpen(false);
+            setIsTacticsGuideOpen(true);
+          }}
         />
       )}
 
@@ -579,6 +588,36 @@ export default function Home() {
         onUpdateBalance={handleUpdateCasinoBalance}
         onOpenSlots={() => setIsCasinoSlotOpen(true)}
         onOpenArcade={() => setIsArcadeHubOpen(true)}
+        onOpenTacticsGuide={() => {
+          setIsGrandCasinoOpen(false);
+          setIsTacticsGuideOpen(true);
+        }}
+      />
+
+      {/* 7. VIP KAZANMA MANİFESTOSU VE OYUN TAKTİKLERİ REHBERİ */}
+      <GameTacticsGuideModal
+        isOpen={isTacticsGuideOpen}
+        onClose={() => setIsTacticsGuideOpen(false)}
+        onOpenRoulette={() => {
+          setIsTacticsGuideOpen(false);
+          setIsGrandCasinoOpen(true);
+        }}
+        onOpenBlackjack={() => {
+          setIsTacticsGuideOpen(false);
+          setIsGrandCasinoOpen(true);
+        }}
+        onOpenSlots={() => {
+          setIsTacticsGuideOpen(false);
+          setIsCasinoSlotOpen(true);
+        }}
+        onOpenCrash={() => {
+          setIsTacticsGuideOpen(false);
+          setIsArcadeHubOpen(true);
+        }}
+        onOpenMines={() => {
+          setIsTacticsGuideOpen(false);
+          setIsArcadeHubOpen(true);
+        }}
       />
 
     </div>

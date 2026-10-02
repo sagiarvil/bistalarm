@@ -31,6 +31,7 @@ interface MonteCarloGrandCasinoModalProps {
   onUpdateBalance: (newBalance: number) => void;
   onOpenSlots?: () => void;
   onOpenArcade?: () => void;
+  onOpenTacticsGuide?: () => void;
 }
 
 type CasinoTab = 'ROULETTE' | 'BLACKJACK' | 'BACCARAT';
@@ -41,7 +42,8 @@ export default function MonteCarloGrandCasinoModal({
   userBalance,
   onUpdateBalance,
   onOpenSlots,
-  onOpenArcade
+  onOpenArcade,
+  onOpenTacticsGuide
 }: MonteCarloGrandCasinoModalProps) {
   const [activeTab, setActiveTab] = useState<CasinoTab>('ROULETTE');
   const [selectedChip, setSelectedChip] = useState<number>(25);
@@ -577,10 +579,19 @@ export default function MonteCarloGrandCasinoModal({
             <span className="text-base">👑</span> Baccarat Punto Banco
           </button>
 
+          {onOpenTacticsGuide && (
+            <button
+              onClick={() => { onClose(); onOpenTacticsGuide(); }}
+              className="px-4 py-3 rounded-t-xl font-bold transition flex items-center gap-1.5 whitespace-nowrap text-yellow-300 hover:text-yellow-100 hover:bg-yellow-500/20 border border-yellow-500/40 bg-yellow-950/40 ml-auto"
+            >
+              <span>⚡</span> VIP Taktik Manifestosu
+            </button>
+          )}
+
           {onOpenSlots && (
             <button
               onClick={() => { onClose(); onOpenSlots(); }}
-              className="px-5 py-3 rounded-t-xl font-bold transition flex items-center gap-1.5 whitespace-nowrap text-amber-400 hover:text-amber-200 hover:bg-amber-500/10 ml-auto border border-amber-500/30"
+              className={`px-5 py-3 rounded-t-xl font-bold transition flex items-center gap-1.5 whitespace-nowrap text-amber-400 hover:text-amber-200 hover:bg-amber-500/10 border border-amber-500/30 ${!onOpenTacticsGuide ? 'ml-auto' : ''}`}
             >
               <span>🍓</span> Vegas VIP Slots
             </button>

@@ -14,6 +14,7 @@ interface GlobalFXPortalProps {
   onOpenCasinoSlot?: () => void;
   onOpenArcadeHub?: () => void;
   onOpenGrandCasino?: () => void;
+  onOpenTacticsGuide?: () => void;
 }
 
 export default function GlobalFXPortal({
@@ -25,7 +26,8 @@ export default function GlobalFXPortal({
   onOpenNextGen,
   onOpenCasinoSlot,
   onOpenArcadeHub,
-  onOpenGrandCasino
+  onOpenGrandCasino,
+  onOpenTacticsGuide
 }: GlobalFXPortalProps) {
   const [marketTab, setMarketTab] = useState<'POPULAR' | 'FOREX' | 'INDICES' | 'METALS' | 'CRYPTO' | 'SYNTHETIC'>('POPULAR');
 
@@ -86,6 +88,11 @@ export default function GlobalFXPortal({
               {onOpenGrandCasino && (
                 <button onClick={onOpenGrandCasino} className="flex items-center gap-1 text-amber-300 hover:text-amber-100 font-serif font-black tracking-wide transition">
                   <span>🇲🇨</span> Monte Carlo Salonu
+                </button>
+              )}
+              {onOpenTacticsGuide && (
+                <button onClick={onOpenTacticsGuide} className="flex items-center gap-1 text-yellow-400 hover:text-yellow-200 font-bold transition">
+                  <span>⚡</span> VIP Taktikler
                 </button>
               )}
               <a href="#technology" className="hover:text-white transition">Altyapı (0.01ms)</a>
@@ -204,6 +211,15 @@ export default function GlobalFXPortal({
             >
               <span>🏆</span> $100,000 Prop Fon Sınavı
             </button>
+
+            {onOpenTacticsGuide && (
+              <button
+                onClick={onOpenTacticsGuide}
+                className="w-full sm:w-auto px-5 py-3.5 bg-gradient-to-r from-amber-950/60 to-yellow-950/60 hover:from-amber-900/80 hover:to-yellow-900/80 border border-yellow-500/50 text-yellow-300 font-bold text-sm rounded-xl transition flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(234,179,8,0.2)] active:scale-95"
+              >
+                <span>⚡</span> VIP Taktikler & Rehber
+              </button>
+            )}
           </div>
 
           {/* Canlı Mini Piyasa & Hızlı Al/Sat Önizleme Konsolu (Exness / TradingView Standardı) */}
@@ -474,6 +490,198 @@ export default function GlobalFXPortal({
             </button>
           </div>
 
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 5.0. MONTE CARLO GRAND CASINO & YENİ NESİL OYUN SALONU */}
+      {/* ========================================================================= */}
+      <section className="py-14 bg-gradient-to-b from-[#06080d] via-[#120e06] to-[#06080d] border-t border-amber-900/40 px-4 lg:px-8">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-amber-500/20 pb-5">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                <span className="text-[11px] font-bold text-amber-400 uppercase tracking-widest font-mono">
+                  MONACO PRINCIPALITY STANDARDS • CANLI VEGAS LİGİ
+                </span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 font-serif mt-1">
+                🇲🇨 Casino de Monte-Carlo & VIP Oyun Salonu
+              </h2>
+              <p className="text-xs text-amber-200/70 max-w-2xl mt-1">
+                Fildişi bilyeli Avrupa Ruleti, tek desteli VIP Blackjack 21, retro Çilek/Ananas slot makineleri ve 200x Rocket Crash! Matematiksel olasılık ve cesaretin buluştuğu yer.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2.5 shrink-0">
+              {onOpenTacticsGuide && (
+                <button
+                  onClick={onOpenTacticsGuide}
+                  className="px-4 py-2.5 bg-gradient-to-r from-amber-950 via-yellow-900 to-amber-950 hover:opacity-90 border border-yellow-500/60 text-yellow-300 font-bold text-xs rounded-xl transition shadow-[0_0_20px_rgba(234,179,8,0.25)] flex items-center gap-1.5 active:scale-95"
+                >
+                  <span>⚡</span> VIP Taktik Manifestosu
+                </button>
+              )}
+              {onOpenGrandCasino && (
+                <button
+                  onClick={onOpenGrandCasino}
+                  className="px-5 py-2.5 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 hover:opacity-95 text-black font-black text-xs rounded-xl transition shadow-[0_0_25px_rgba(245,158,11,0.4)] border border-amber-300 flex items-center gap-1.5 active:scale-95 font-serif"
+                >
+                  <span>👑</span> Salona Giriş Yap
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* 4 Ana Oyun Kartı */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            {/* 1. Monte Carlo Rulet */}
+            <div className="bg-[#140e06]/80 border border-amber-500/30 hover:border-yellow-400 rounded-2xl p-5 space-y-3 flex flex-col justify-between transition-all hover:scale-[1.02] shadow-lg group">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-2xl">🎡</span>
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">%97.30 RTP</span>
+                </div>
+                <h3 className="text-base font-black text-amber-200 font-serif">Avrupa Ruleti 3D</h3>
+                <p className="text-[11px] text-gray-300 leading-relaxed">
+                  Fransız Racetrack (Voisins, Tiers, Orphelins), fildişi top akustiği ve 36 katına kadar anlık kazanç.
+                </p>
+                <div className="text-[11px] font-mono text-amber-400/90 pt-1">
+                  Strateji: <span className="text-yellow-200">Martingale & Çift Düzine</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 pt-2">
+                {onOpenGrandCasino && (
+                  <button
+                    onClick={onOpenGrandCasino}
+                    className="flex-1 py-2 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-black font-black rounded-xl text-xs transition shadow"
+                  >
+                    Masaya Otur
+                  </button>
+                )}
+                {onOpenTacticsGuide && (
+                  <button
+                    onClick={onOpenTacticsGuide}
+                    className="p-2 bg-amber-950/60 hover:bg-amber-900 border border-yellow-500/40 text-yellow-300 rounded-xl text-xs transition"
+                    title="Rulet Taktikleri"
+                  >
+                    ⚡
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* 2. Monaco VIP Blackjack 21 */}
+            <div className="bg-[#140e06]/80 border border-amber-500/30 hover:border-yellow-400 rounded-2xl p-5 space-y-3 flex flex-col justify-between transition-all hover:scale-[1.02] shadow-lg group">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-2xl">♠️</span>
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/40">%99.50 RTP</span>
+                </div>
+                <h3 className="text-base font-black text-amber-200 font-serif">Monaco VIP Blackjack 21</h3>
+                <p className="text-[11px] text-gray-300 leading-relaxed">
+                  3:2 Doğal Blackjack ödemesi, Double Down, Split ve Krupiyenin 17&apos;de durduğu kurumsal masa.
+                </p>
+                <div className="text-[11px] font-mono text-amber-400/90 pt-1">
+                  Strateji: <span className="text-yellow-200">MIT Matematik Tablosu</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 pt-2">
+                {onOpenGrandCasino && (
+                  <button
+                    onClick={onOpenGrandCasino}
+                    className="flex-1 py-2 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-black font-black rounded-xl text-xs transition shadow"
+                  >
+                    Dağıtımı Başlat
+                  </button>
+                )}
+                {onOpenTacticsGuide && (
+                  <button
+                    onClick={onOpenTacticsGuide}
+                    className="p-2 bg-amber-950/60 hover:bg-amber-900 border border-yellow-500/40 text-yellow-300 rounded-xl text-xs transition"
+                    title="Blackjack Taktikleri"
+                  >
+                    ⚡
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* 3. Çilek & Ananas VIP Slots */}
+            <div className="bg-[#140e06]/80 border border-amber-500/30 hover:border-yellow-400 rounded-2xl p-5 space-y-3 flex flex-col justify-between transition-all hover:scale-[1.02] shadow-lg group">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-2xl">🍓</span>
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40">500x JACKPOT</span>
+                </div>
+                <h3 className="text-base font-black text-amber-200 font-serif">Çilek & Ananas VIP Slot</h3>
+                <p className="text-[11px] text-gray-300 leading-relaxed">
+                  Retro mekanik makara fiziği, Golden Tension gerilim dönüşü, anında durdurma ve scatter ödülü.
+                </p>
+                <div className="text-[11px] font-mono text-amber-400/90 pt-1">
+                  Strateji: <span className="text-yellow-200">Dinamik Bahis & Auto Limiti</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 pt-2">
+                {onOpenCasinoSlot && (
+                  <button
+                    onClick={onOpenCasinoSlot}
+                    className="flex-1 py-2 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-black rounded-xl text-xs transition shadow"
+                  >
+                    Makarayı Çevir
+                  </button>
+                )}
+                {onOpenTacticsGuide && (
+                  <button
+                    onClick={onOpenTacticsGuide}
+                    className="p-2 bg-amber-950/60 hover:bg-amber-900 border border-yellow-500/40 text-yellow-300 rounded-xl text-xs transition"
+                    title="Slot Taktikleri"
+                  >
+                    ⚡
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* 4. Nova Rocket Crash & Mines */}
+            <div className="bg-[#140e06]/80 border border-amber-500/30 hover:border-yellow-400 rounded-2xl p-5 space-y-3 flex flex-col justify-between transition-all hover:scale-[1.02] shadow-lg group">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-2xl">🚀</span>
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40">200x ÇARPAN</span>
+                </div>
+                <h3 className="text-base font-black text-amber-200 font-serif">Rocket Crash & Elmas Madeni</h3>
+                <p className="text-[11px] text-gray-300 leading-relaxed">
+                  İbre yükseldikçe patlamadan önce nakde dön! Ya da 25 kutuda mayınları atlatıp elmasları topla.
+                </p>
+                <div className="text-[11px] font-mono text-amber-400/90 pt-1">
+                  Strateji: <span className="text-yellow-200">1.30x Sabit Kasa Katlama</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 pt-2">
+                {onOpenArcadeHub && (
+                  <button
+                    onClick={onOpenArcadeHub}
+                    className="flex-1 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black rounded-xl text-xs transition shadow"
+                  >
+                    Roketi Ateşle
+                  </button>
+                )}
+                {onOpenTacticsGuide && (
+                  <button
+                    onClick={onOpenTacticsGuide}
+                    className="p-2 bg-amber-950/60 hover:bg-amber-900 border border-yellow-500/40 text-yellow-300 rounded-xl text-xs transition"
+                    title="Crash & Mines Taktikleri"
+                  >
+                    ⚡
+                  </button>
+                )}
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 

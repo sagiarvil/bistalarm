@@ -15,12 +15,14 @@ interface MonteCarloSlotGameProps {
   account: UserAccount;
   onUpdateBalance: (newBalance: number) => void;
   onClose: () => void;
+  onOpenTacticsGuide?: () => void;
 }
 
 export default function MonteCarloSlotGame({
   account,
   onUpdateBalance,
-  onClose
+  onClose,
+  onOpenTacticsGuide
 }: MonteCarloSlotGameProps) {
   const [bet, setBet] = useState<number>(20);
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
@@ -318,12 +320,23 @@ export default function MonteCarloSlotGame({
             </div>
           </div>
 
-          <button
-            onClick={() => { setAutoSpin(false); onClose(); }}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center font-bold text-sm transition"
-          >
-            ✕
-          </button>
+          <div className="flex items-center gap-2">
+            {onOpenTacticsGuide && (
+              <button
+                onClick={() => { setAutoSpin(false); onClose(); onOpenTacticsGuide(); }}
+                className="px-3 py-1.5 rounded-xl bg-amber-950/60 hover:bg-amber-900 border border-yellow-500/50 text-yellow-300 font-bold text-xs flex items-center gap-1 transition shadow"
+              >
+                <span>⚡</span> Taktikler
+              </button>
+            )}
+
+            <button
+              onClick={() => { setAutoSpin(false); onClose(); }}
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center font-bold text-sm transition"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Canlı VIP Kazanç Yayını (Monte Carlo Slot Hub) */}
