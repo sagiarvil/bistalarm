@@ -27,14 +27,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr" className="dark min-h-screen bg-black">
+    <html lang="tr" className="dark min-h-screen bg-black scroll-smooth">
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="format-detection" content="telephone=no" />
       </head>
-      <body className="min-h-full bg-black text-white antialiased select-none overscroll-none touch-pan-y">
+      <body className="min-h-screen bg-black text-white antialiased overflow-x-hidden overflow-y-auto">
         {children}
       </body>
     </html>
