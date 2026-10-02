@@ -12,7 +12,10 @@ import {
   PLINKO_MULTIPLIERS,
   spinWheelOfFortune,
   WHEEL_SECTORS,
-  flipCoin
+  flipCoin,
+  BarbutBetType,
+  BarbutRollResult,
+  rollBarbutDice
 } from '@/lib/miniGamesEngine';
 import { loadCasinoConfig } from '@/lib/monteCarloEngine';
 import GrandWinCelebration from '@/components/GrandWinCelebration';
@@ -395,6 +398,81 @@ export default function NextGenArcadeHubModal({
     });
   };
 
+  // =========================================================================
+  // 6. KLASİK TÜRK BARBUTU & CASINO CRAPS STATE & LOGIC
+  // =========================================================================
+  const [barbutRolling, setBarbutRolling] = useState<boolean>(false);
+  const [barbutDice, setBarbutDice] = useState<[number, number]>([6, 6]);
+  const [barbutLastResult, setBarbutLastResult] = useState<BarbutRollResult | null>(null);
+  const [barbutBetType, setBarbutBetType] = useState<BarbutBetType>('BARBUT_WIN');
+  const [barbutHistory, setBarbutHistory] = useState<Array<{ d1: number; d2: number; name: string; won: boolean }>>([
+    { d1: 5, d2: 5, name: 'DÜ BEŞ', won: true },
+    { d1: 6, d2: 5, name: 'ŞEŞ-BEŞ', won: false },
+    { d1: 3, d2: 3, name: 'DÜ SE', won: true }
+  ]);
+
+  // Kemik Zar Yuvarlanma ve Şakırtı Sesleri
+  const playDiceRollSound = () => {
+    // Fincanda zarların sallanması ve masaya dökülmesi
+    const tones = [800, 950, 1100, 750, 900, 1200];
+    for (let i = 0; i < 8; i++) {
+      setTimeout(() => {
+        playSound(tones[i % tones.length], 'triangle', 0.04);
+      }, i * 40);
+    }
+  };
+
+  const handleRollBarbut = (selectedBet: BarbutBetType) => {
+    if (barbutRolling) return;
+    if (account.balance < bet) {
+      alert(`Yetersiz Bakiye! Bahis: $${bet}, Mevcut Bakiye: $${account.balance.toFixed(2)}`);
+      return;
+    }
+
+    setBarbutBetType(selectedBet);
+    onUpdateBalance(account.balance - bet);
+    setBarbutRolling(true);
+    setBarbutLastResult(null);
+    playDiceRollSound();
+
+    // Hızlı rastgele çalkantı efekti
+    const shakeInterval = setInterval(() => {
+      setBarbutDice([
+        Math.floor(Math.random() * 6) + 1,
+        Math.floor(Math.random() * 6) + 1
+      ]);
+    }, 80);
+
+    setTimeout(() => {
+      clearInterval(shakeInterval);
+      const res = rollBarbutDice(selectedBet);
+      setBarbutDice([res.dice1, res.dice2]);
+      setBarbutLastResult(res);
+      setBarbutRolling(false);
+
+      // Zarların masada durma tok sesi
+      playSound(350, 'square', 0.08);
+      setTimeout(() => playSound(280, 'triangle', 0.09), 30);
+
+      setBarbutHistory(prev => [
+        { d1: res.dice1, d2: res.dice2, name: res.combinationName, won: res.won },
+        ...prev.slice(0, 5)
+      ]);
+
+      if (res.won) {
+        const winAmount = Number((bet * res.multiplier).toFixed(2));
+        onUpdateBalance(account.balance - bet + winAmount);
+        playArcadeGrandFanfare();
+        setWinCelebration({
+          isOpen: true,
+          amount: winAmount,
+          title: `🎲 ${res.combinationName.toUpperCase()} KAZANCI (${res.multiplier}x)!`
+        });
+      } else {
+        playSound(160, 'sawtooth', 0.35);
+      }
+    }, 1100);
+  };
 
   // Modal kapandığında interval'leri temizle
   useEffect(() => {
@@ -456,10 +534,10 @@ export default function NextGenArcadeHubModal({
           </div>
 
           {/* Sekmeler - KAYDIRMASIZ DİNAMİK GRİD */}
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-1 bg-[#141a2e] p-1 rounded-xl border border-indigo-500/30 text-xs font-bold w-full sm:w-auto">
+          <div className="grid grid-cols-4 sm:grid-cols-7 gap-1 bg-[#141a2e] p-1 rounded-xl border border-indigo-500/30 text-xs font-bold w-full sm:w-auto">
             <button
               onClick={() => setActiveTab('CRASH_ROCKET')}
-              className={`px-2.5 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
+              className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
                 activeTab === 'CRASH_ROCKET' ? 'bg-gradient-to-r from-rose-600 to-orange-500 text-white shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
@@ -467,7 +545,7 @@ export default function NextGenArcadeHubModal({
             </button>
             <button
               onClick={() => setActiveTab('CRYPTO_MINES')}
-              className={`px-2.5 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
+              className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
                 activeTab === 'CRYPTO_MINES' ? 'bg-gradient-to-r from-cyan-600 to-blue-500 text-white shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
@@ -475,7 +553,7 @@ export default function NextGenArcadeHubModal({
             </button>
             <button
               onClick={() => setActiveTab('PLINKO_PIN')}
-              className={`px-2.5 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
+              className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
                 activeTab === 'PLINKO_PIN' ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-black shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
@@ -483,7 +561,7 @@ export default function NextGenArcadeHubModal({
             </button>
             <button
               onClick={() => setActiveTab('WHEEL_FORTUNE')}
-              className={`px-2.5 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
+              className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
                 activeTab === 'WHEEL_FORTUNE' ? 'bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
@@ -491,16 +569,24 @@ export default function NextGenArcadeHubModal({
             </button>
             <button
               onClick={() => setActiveTab('COIN_FLIP_STREAK')}
-              className={`px-2.5 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
+              className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
                 activeTab === 'COIN_FLIP_STREAK' ? 'bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
               <span>🪙</span> Yazı-Tura
             </button>
+            <button
+              onClick={() => setActiveTab('TURKISH_BARBUT')}
+              className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
+                activeTab === 'TURKISH_BARBUT' ? 'bg-gradient-to-r from-red-600 via-amber-600 to-yellow-500 text-white shadow ring-1 ring-yellow-400' : 'text-amber-400 hover:text-white'
+              }`}
+            >
+              <span>🎲</span> Barbut
+            </button>
             {onOpenSlotGame && (
               <button
                 onClick={() => { onClose(); onOpenSlotGame(); }}
-                className="px-2.5 py-1.5 rounded-lg text-amber-300 hover:text-white transition flex items-center justify-center gap-1 text-center"
+                className="px-2 py-1.5 rounded-lg text-amber-300 hover:text-white transition flex items-center justify-center gap-1 text-center"
               >
                 <span>🍓</span> Çilek
               </button>
@@ -1048,6 +1134,232 @@ export default function NextGenArcadeHubModal({
           )}
 
           {/* ========================================================================= */}
+          {/* 6. KLASİK TÜRK BARBUTU & CASINO CRAPS (KEMİK ZAR & 3D TAKLA) */}
+          {/* ========================================================================= */}
+          {activeTab === 'TURKISH_BARBUT' && (
+            <div className="space-y-4">
+              
+              {/* Kurallar ve Geleneksel Barbut Bilgilendirmesi */}
+              <div className="bg-gradient-to-r from-red-950/80 via-amber-950/60 to-red-950/80 border border-amber-500/40 rounded-xl p-3 space-y-2 text-xs font-mono">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded bg-red-600 text-white font-black text-[10px] uppercase">GELENEKSEL TÜRK BARBUTU</span>
+                    <span className="text-yellow-300 font-bold">2 Kemik Zar • Anında İcra</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded bg-amber-500 text-black font-black text-[10px] uppercase animate-pulse">DÜŞEŞ JACKPOT</span>
+                    <span className="text-yellow-300 font-bold">6-6 = 30x KAZANÇ!</span>
+                  </div>
+                </div>
+                <div className="text-[11px] text-gray-300 space-y-1 border-t border-amber-500/20 pt-1.5 font-sans">
+                  <p>• <strong>Geleneksel Barbut Zaferi (2.0x):</strong> <strong>3-3 (Dü Se), 5-5 (Dü Beş), 6-6 (Düşeş)</strong> veya <strong>1-2 (Altın Vuruş)</strong> gelirse kazanırsınız!</p>
+                  <p>• <strong>Zar Çarpanları:</strong> 🎲 Düşeş (6-6): <strong>30x</strong> | 🎲 Herhangi Çift: <strong>5.5x</strong> | 🎲 Şanslı 7 (Toplam 7): <strong>5.0x</strong> | 🎲 Yüksek (8-12): <strong>2.0x</strong> | 🎲 Düşük (2-6): <strong>2.0x</strong></p>
+                  <p>• <strong>Hızlı & Adil:</strong> Zarlar Web Audio kemik şıkırtısıyla yuvarlanır ve sonuç anında bakiyenize yansır.</p>
+                </div>
+              </div>
+
+              {/* Barbut Kemik Zarlar Arenası */}
+              <div className="relative h-64 sm:h-72 bg-gradient-to-b from-[#140608] via-[#220a0d] to-[#0d0305] border-2 border-red-500/40 rounded-2xl flex flex-col items-center justify-center p-4 overflow-hidden shadow-inner space-y-3">
+                
+                {/* 2 Adet 3D Kemik Zar Görseli */}
+                <div className="flex items-center justify-center gap-6 sm:gap-10 h-32 select-none">
+                  {[barbutDice[0], barbutDice[1]].map((val, idx) => (
+                    <div 
+                      key={idx}
+                      className={`w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-amber-50 via-white to-amber-100 border-4 border-amber-300 shadow-[0_10px_25px_rgba(0,0,0,0.6)] flex items-center justify-center relative transition-transform duration-200 ${
+                        barbutRolling ? 'animate-bounce scale-105 rotate-12' : 'hover:scale-105'
+                      }`}
+                    >
+                      {/* Gerçekçi Kemik Zar Noktaları (Pips) */}
+                      <div className="grid grid-cols-3 grid-rows-3 w-14 h-14 sm:w-16 sm:h-16 gap-1 items-center justify-items-center">
+                        {/* 1 */}
+                        {val === 1 && (
+                          <div className="col-start-2 row-start-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-rose-600 shadow-inner" />
+                        )}
+                        {/* 2 */}
+                        {val === 2 && (
+                          <>
+                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
+                          </>
+                        )}
+                        {/* 3 */}
+                        {val === 3 && (
+                          <>
+                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-2 row-start-2 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
+                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
+                          </>
+                        )}
+                        {/* 4 */}
+                        {val === 4 && (
+                          <>
+                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
+                            <div className="col-start-3 row-start-1 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
+                            <div className="col-start-1 row-start-3 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
+                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
+                          </>
+                        )}
+                        {/* 5 */}
+                        {val === 5 && (
+                          <>
+                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-3 row-start-1 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-2 row-start-2 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
+                            <div className="col-start-1 row-start-3 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
+                          </>
+                        )}
+                        {/* 6 */}
+                        {val === 6 && (
+                          <>
+                            <div className="col-start-1 row-start-1 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-3 row-start-1 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-1 row-start-2 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-3 row-start-2 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-1 row-start-3 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-3 row-start-3 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Zar Sonucu & Osmanlı-Türk Terminolojisi */}
+                <div className="text-center font-mono">
+                  <div className="text-sm sm:text-base font-black text-amber-300">
+                    {barbutRolling 
+                      ? '🎲 Zarlar masada şakırdıyor...' 
+                      : barbutLastResult 
+                      ? `${barbutLastResult.combinationName} (Toplam: ${barbutLastResult.total})` 
+                      : 'Zar Tahmininizi Seçip Zarları Atın'}
+                  </div>
+
+                  {barbutLastResult && (
+                    <div className={`text-xs sm:text-sm font-bold mt-1 ${barbutLastResult.won ? 'text-emerald-400' : 'text-gray-400'}`}>
+                      {barbutLastResult.won 
+                        ? `🎉 KAZANDINIZ! +$${(bet * barbutLastResult.multiplier).toFixed(2)} (${barbutLastResult.multiplier}x)` 
+                        : 'Kasa kazandı. Tekrar deneyin.'}
+                    </div>
+                  )}
+
+                  {/* Son Zar Geçmişi */}
+                  <div className="flex items-center justify-center gap-1.5 mt-2">
+                    <span className="text-[10px] text-gray-500 uppercase">Geçmiş:</span>
+                    {barbutHistory.slice(0, 4).map((h, i) => (
+                      <span 
+                        key={i} 
+                        className={`px-1.5 py-0.2 rounded text-[9px] font-mono font-bold ${
+                          h.won ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/40' : 'bg-zinc-900 text-gray-400 border border-zinc-700'
+                        }`}
+                      >
+                        {h.d1}-{h.d2}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Bahis Miktarı Seçici */}
+              <div className="flex items-center justify-between gap-2 bg-[#0e1220] p-2.5 rounded-xl border border-red-500/30 font-mono">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-xs text-gray-400 font-bold">BAHİS:</span>
+                  {[5, 10, 20, 50, 100].map(amt => (
+                    <button
+                      key={amt}
+                      disabled={barbutRolling}
+                      onClick={() => setBet(amt)}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${bet === amt ? 'bg-red-600 text-white shadow ring-2 ring-red-400' : 'bg-[#182035] text-gray-300 hover:text-white'}`}
+                    >
+                      ${amt}
+                    </button>
+                  ))}
+                </div>
+                <span className="text-xs text-amber-300 font-bold">
+                  Maliyet: ${bet}
+                </span>
+              </div>
+
+              {/* 6 Farklı Barbut Bahis Seçeneği ve Zar Atma Butonları */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 font-serif">
+                <button
+                  disabled={barbutRolling}
+                  onClick={() => handleRollBarbut('BARBUT_WIN')}
+                  className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-red-800 to-amber-700 hover:from-red-700 hover:to-amber-600 border border-amber-400/50 text-white transition active:scale-95 shadow text-left disabled:opacity-50"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs sm:text-sm text-yellow-200">BARBUT ZAFERİ</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-black/40 text-yellow-300 font-black">2.0x</span>
+                  </div>
+                  <div className="text-[9px] font-sans text-amber-200/80">3-3, 5-5, 6-6 veya 1-2</div>
+                </button>
+
+                <button
+                  disabled={barbutRolling}
+                  onClick={() => handleRollBarbut('DUSES')}
+                  className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-yellow-600 via-amber-500 to-yellow-600 hover:from-yellow-500 hover:to-amber-400 border border-yellow-200 text-black font-black transition active:scale-95 shadow text-left disabled:opacity-50"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs sm:text-sm">DÜŞEŞ (6-6)</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-black text-yellow-300 font-black">30x MEGA</span>
+                  </div>
+                  <div className="text-[9px] font-sans text-amber-950 font-bold">En Yüksek Barbut Jackpotu</div>
+                </button>
+
+                <button
+                  disabled={barbutRolling}
+                  onClick={() => handleRollBarbut('CIFT')}
+                  className="py-2.5 px-3 rounded-xl bg-[#141a2e] hover:bg-[#1e2642] border border-amber-500/40 text-white transition active:scale-95 shadow text-left disabled:opacity-50"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs sm:text-sm text-amber-300">HERHANGİ ÇİFT</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-amber-500/20 text-yellow-300 font-black">5.5x</span>
+                  </div>
+                  <div className="text-[9px] font-sans text-gray-400">1-1, 2-2, 3-3, 4-4, 5-5, 6-6</div>
+                </button>
+
+                <button
+                  disabled={barbutRolling}
+                  onClick={() => handleRollBarbut('YEDILI')}
+                  className="py-2.5 px-3 rounded-xl bg-[#141a2e] hover:bg-[#1e2642] border border-amber-500/40 text-white transition active:scale-95 shadow text-left disabled:opacity-50"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs sm:text-sm text-amber-300">ŞANSLI 7</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-amber-500/20 text-yellow-300 font-black">5.0x</span>
+                  </div>
+                  <div className="text-[9px] font-sans text-gray-400">Zar Toplamı Tam 7</div>
+                </button>
+
+                <button
+                  disabled={barbutRolling}
+                  onClick={() => handleRollBarbut('YUKSEK')}
+                  className="py-2.5 px-3 rounded-xl bg-[#141a2e] hover:bg-[#1e2642] border border-amber-500/40 text-white transition active:scale-95 shadow text-left disabled:opacity-50"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs sm:text-sm text-cyan-300">BÜYÜK ZAR (8-12)</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 font-black">2.0x</span>
+                  </div>
+                  <div className="text-[9px] font-sans text-gray-400">Toplam 8, 9, 10, 11, 12</div>
+                </button>
+
+                <button
+                  disabled={barbutRolling}
+                  onClick={() => handleRollBarbut('DUSUK')}
+                  className="py-2.5 px-3 rounded-xl bg-[#141a2e] hover:bg-[#1e2642] border border-amber-500/40 text-white transition active:scale-95 shadow text-left disabled:opacity-50"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs sm:text-sm text-purple-300">KÜÇÜK ZAR (2-6)</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-300 font-black">2.0x</span>
+                  </div>
+                  <div className="text-[9px] font-sans text-gray-400">Toplam 2, 3, 4, 5, 6</div>
+                </button>
+              </div>
+
+            </div>
+          )}
+
+          {/* ========================================================================= */}
           {/* OYUNLARIN KAZANMA MANTIĞI & KURALLAR REHBERİ (DETAYLI & NET ANLATIM) */}
           {/* ========================================================================= */}
           <div className="bg-[#080c16] border border-indigo-500/30 rounded-2xl p-4 sm:p-5 font-sans space-y-3 shadow-xl">
@@ -1103,12 +1415,21 @@ export default function NextGenArcadeHubModal({
                 </p>
               </div>
 
+              <div className="bg-[#0f1524] p-3 rounded-xl border border-red-500/20 space-y-1">
+                <div className="font-bold text-red-400 flex items-center gap-1.5">
+                  <span>🎲</span> Klasik Türk Barbutu Mantığı
+                </div>
+                <p className="text-[11px] text-gray-400 font-sans leading-relaxed">
+                  <strong>Kazanma Şartı:</strong> İki kemik zar atılır. Geleneksel barbutta 3-3 (Dü Se), 5-5 (Dü Beş), 6-6 (Düşeş) veya 1-2 (Altın Vuruş) zarları anında kazandırır! Düşeş bahsi ise tam 30x dev kazanç sağlar.
+                </p>
+              </div>
+
               <div className="bg-[#0f1524] p-3 rounded-xl border border-yellow-500/20 space-y-1">
                 <div className="font-bold text-yellow-400 flex items-center gap-1.5">
                   <span>👑</span> God Mode Garantisi
                 </div>
                 <p className="text-[11px] text-gray-400 font-sans leading-relaxed">
-                  Admin panelinden &quot;%100 Kazanma&quot; açıldığında; Mayınlar asla patlamaz, Roket devasa çarpanlara uçar, Çark 50x Jackpot verir, Yazı-Tura her seçimde kazanır!
+                  Admin panelinden &quot;%100 Kazanma&quot; açıldığında; Zarlar daima Düşeş (6-6) ve Barbut zaferi getirir, Roket uçar, Mayınlar patlamaz!
                 </p>
               </div>
 

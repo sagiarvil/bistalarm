@@ -3,7 +3,7 @@
 
 import { loadCasinoConfig } from './monteCarloEngine';
 
-export type MiniGameType = 'CRASH_ROCKET' | 'CRYPTO_MINES' | 'PLINKO_PIN' | 'WHEEL_FORTUNE' | 'COIN_FLIP_STREAK';
+export type MiniGameType = 'CRASH_ROCKET' | 'CRYPTO_MINES' | 'PLINKO_PIN' | 'WHEEL_FORTUNE' | 'COIN_FLIP_STREAK' | 'TURKISH_BARBUT';
 
 export interface MinesTargetTier {
   step: number;        // Örn 3, 5, 8, 12 adım
@@ -219,5 +219,178 @@ export function flipCoin(choice: 'YAZI' | 'TURA'): { result: 'YAZI' | 'TURA'; wo
   return {
     result: outcome,
     won: outcome === choice
+  };
+}
+
+/**
+ * 6. KLASİK TÜRK BARBUTU & CASINO CRAPS MOTORU
+ * Barbut Kuralları:
+ * - 2 adet zar atılır (D1: 1-6, D2: 1-6).
+ * - "ZAR TUTAN (ATICI)" veya "KÜÇÜK/BÜYÜK/ÇİFT/TEK/DÜŞEŞ" tahminleri yapılır.
+ * - Geleneksel Barbut Kazanan Zarları:
+ *   - 3-3, 5-5, 6-6 veya 1-2 (Altın Vuruş / Kazandıran Zarlar)
+ *   - 2-2, 4-4 veya 5-6 (Kaybettiren Zarlar)
+ * - Modern Casino Barbutu Modu:
+ *   - 'BARBUT_WIN': Geleneksel Barbut (3-3, 5-5, 6-6 veya 1-2) -> 2.0x
+ *   - 'DUSES': 6-6 (Düşeş Jackpot) -> 30.0x
+ *   - 'CIFT': Çift Zarlar (1-1, 2-2, 3-3, 4-4, 5-5, 6-6) -> 5.5x
+ *   - 'YUKSEK': Toplam 8-12 (Büyük Zar) -> 2.0x
+ *   - 'DUSUK': Toplam 2-6 (Küçük Zar) -> 2.0x
+ *   - 'YEDILI': Toplam 7 (Şanslı 7) -> 5.0x
+ */
+export type BarbutBetType = 'BARBUT_WIN' | 'DUSES' | 'CIFT' | 'YUKSEK' | 'DUSUK' | 'YEDILI';
+
+export interface BarbutRollResult {
+  dice1: number;
+  dice2: number;
+  total: number;
+  isPair: boolean;
+  combinationName: string;
+  won: boolean;
+  multiplier: number;
+}
+
+export function rollBarbutDice(betType: BarbutBetType): BarbutRollResult {
+  const cfg = loadCasinoConfig();
+
+  // GOD_WIN_100: Kullanıcının seçimine göre en yüksek kazançlı zarı garanti eder
+  if (cfg.penetrationMode === 'GOD_WIN_100') {
+    if (betType === 'DUSES') {
+      return {
+        dice1: 6,
+        dice2: 6,
+        total: 12,
+        isPair: true,
+        combinationName: 'DÜŞEŞ (6-6)',
+        won: true,
+        multiplier: 30.0
+      };
+    }
+    if (betType === 'BARBUT_WIN') {
+      return {
+        dice1: 5,
+        dice2: 5,
+        total: 10,
+        isPair: true,
+        combinationName: 'DÜBEŞ (5-5 Barbut Zaferi)',
+        won: true,
+        multiplier: 2.0
+      };
+    }
+    if (betType === 'CIFT') {
+      return {
+        dice1: 4,
+        dice2: 4,
+        total: 8,
+        isPair: true,
+        combinationName: 'DÖRT-CİHAR (4-4)',
+        won: true,
+        multiplier: 5.5
+      };
+    }
+    if (betType === 'YUKSEK') {
+      return {
+        dice1: 5,
+        dice2: 4,
+        total: 9,
+        isPair: false,
+        combinationName: 'BEŞ-DÖRT (Toplam 9)',
+        won: true,
+        multiplier: 2.0
+      };
+    }
+    if (betType === 'DUSUK') {
+      return {
+        dice1: 2,
+        dice2: 2,
+        total: 4,
+        isPair: true,
+        combinationName: 'İKİ-BİR (Toplam 4)',
+        won: true,
+        multiplier: 2.0
+      };
+    }
+    if (betType === 'YEDILI') {
+      return {
+        dice1: 4,
+        dice2: 3,
+        total: 7,
+        isPair: false,
+        combinationName: 'ŞANSLI YEDİ (4-3)',
+        won: true,
+        multiplier: 5.0
+      };
+    }
+  }
+
+  // Standart Fiziksel Rastgele Zar Atımı (1-6)
+  const d1 = Math.floor(Math.random() * 6) + 1;
+  const d2 = Math.floor(Math.random() * 6) + 1;
+  const total = d1 + d2;
+  const isPair = d1 === d2;
+
+  // Geleneksel Türkçe Barbut Terimleri
+  let combinationName = `${d1}-${d2}`;
+  if (d1 === 1 && d2 === 1) combinationName = 'HEP YEK (1-1)';
+  else if (d1 === 2 && d2 === 2) combinationName = 'DÜ BARA (2-2)';
+  else if (d1 === 3 && d2 === 3) combinationName = 'DÜ SE (3-3)';
+  else if (d1 === 4 && d2 === 4) combinationName = 'DÖRT CİHAR (4-4)';
+  else if (d1 === 5 && d2 === 5) combinationName = 'DÜ BEŞ (5-5)';
+  else if (d1 === 6 && d2 === 6) combinationName = 'DÜ ŞEŞ (6-6)';
+  else if ((d1 === 1 && d2 === 2) || (d1 === 2 && d2 === 1)) combinationName = 'İKİ-BİR (Altın Vuruş)';
+  else if ((d1 === 6 && d2 === 5) || (d1 === 5 && d2 === 6)) combinationName = 'ŞEŞ-BEŞ (6-5)';
+  else if (total === 7) combinationName = `ŞANSLI YEDİ (${d1}-${d2})`;
+
+  let won = false;
+  let multiplier = 0;
+
+  switch (betType) {
+    case 'BARBUT_WIN':
+      // Geleneksel Türk Barbutu: 3-3, 5-5, 6-6 veya 1-2 gelirse kazanır
+      if ((d1 === 3 && d2 === 3) || (d1 === 5 && d2 === 5) || (d1 === 6 && d2 === 6) || (d1 === 1 && d2 === 2) || (d1 === 2 && d2 === 1)) {
+        won = true;
+        multiplier = 2.0;
+      }
+      break;
+    case 'DUSES':
+      if (d1 === 6 && d2 === 6) {
+        won = true;
+        multiplier = 30.0;
+      }
+      break;
+    case 'CIFT':
+      if (isPair) {
+        won = true;
+        multiplier = 5.5;
+      }
+      break;
+    case 'YUKSEK':
+      if (total >= 8 && total <= 12) {
+        won = true;
+        multiplier = 2.0;
+      }
+      break;
+    case 'DUSUK':
+      if (total >= 2 && total <= 6) {
+        won = true;
+        multiplier = 2.0;
+      }
+      break;
+    case 'YEDILI':
+      if (total === 7) {
+        won = true;
+        multiplier = 5.0;
+      }
+      break;
+  }
+
+  return {
+    dice1: d1,
+    dice2: d2,
+    total,
+    isPair,
+    combinationName,
+    won,
+    multiplier
   };
 }
