@@ -10,7 +10,10 @@ export type MarketScenario =
   | 'LIQUIDITY_HUNT'     // Testere piyasası: Hem yukarı hem aşağı stopları patlatan sahte kırılımlar
   | 'FLASH_CRASH_V_RECOVERY' // Ani %3-5 çöküş ve dakikalar içinde geri toparlanma
   | 'WEEKEND_CRYPTO_RUSH'    // 7/24 kesintisiz yüksek volatilite sentetik hareket
-  | 'ARBITRAGE_GAP';     // 5-10 saniyelik arbitraj fırsat aralığı (Spread açılması/kayması)
+  | 'ARBITRAGE_GAP'          // 5-10 saniyelik arbitraj fırsat aralığı (Spread açılması/kayması)
+  | 'RANGE_CHOP'             // Dar koridorda testere piyasası (Yatay tuzak)
+  | 'BLACK_SWAN'             // Kara Kuğu Krizi: Küresel çöküş ve panik dalgası
+  | 'KARMA_CYCLE';           // 🔥 Otonom Karma Döngü Motoru (Fazlar arası otomatik geçiş)
 
 export interface ScenarioConfig {
   activeScenario: MarketScenario;
@@ -21,6 +24,7 @@ export interface ScenarioConfig {
   durationSeconds: number;      // Senaryonun aktif kalma süresi (sn)
   remainingSeconds: number;     // Kalan süre
   customNote?: string;          // Senaryo açıklaması / haber başlığı
+  cyclePhase?: string;          // Karma döngüsünün o anki aktif alt fazı
 }
 
 // Varsayılan Admin Senaryo Durumu
@@ -31,7 +35,8 @@ export let currentScenarioConfig: ScenarioConfig = {
   shockProbability: 0.02,
   durationSeconds: 300,
   remainingSeconds: 300,
-  customNote: 'Standart Piyasa Koşulları'
+  customNote: 'Standart Piyasa Koşulları',
+  cyclePhase: 'Standart'
 };
 
 export function updateScenarioConfig(newConfig: Partial<ScenarioConfig>) {
@@ -149,6 +154,52 @@ export function calculateNextPrice(
       multiplier *= 1.5;
       drift = (Math.random() - 0.5) * 4.0;
       break;
+
+    case 'RANGE_CHOP':
+      // Dar koridorda testere piyasası (Yatay tuzak)
+      multiplier *= 1.3;
+      drift = Math.sin(Date.now() / 2500) * 1.5;
+      break;
+
+    case 'BLACK_SWAN':
+      // Kara Kuğu Krizi: Küresel çöküş ve panik dalgası
+      multiplier *= 4.5;
+      if (Math.random() < 0.35) {
+        drift = -(6.0 + Math.random() * 4.0);
+        isShock = true;
+      } else {
+        drift = -1.5 + (Math.random() - 0.5) * 3.0;
+      }
+      break;
+
+    case 'KARMA_CYCLE': {
+      // 🔥 OTONOM KARMA DÖNGÜ MOTORU (Otomatik Piyasa Rejim Rotasyonu)
+      // 80 saniyelik dinamik döngü: Boğa -> Yatay -> Stop Avı -> Crash -> V-Recovery
+      const cycleSec = (Date.now() / 1000) % 80;
+      if (cycleSec < 20) {
+        multiplier *= 2.2;
+        drift = Math.random() > 0.3 ? 1.6 : -0.7; // Boğa
+        currentScenarioConfig.cyclePhase = '🚀 Faz 1: Boğa Rallisi (Pump)';
+      } else if (cycleSec < 35) {
+        multiplier *= 1.1;
+        drift = Math.sin(Date.now() / 2000) * 1.2; // Yatay
+        currentScenarioConfig.cyclePhase = '⚖️ Faz 2: Yatay Durgunluk (Chop)';
+      } else if (cycleSec < 50) {
+        multiplier *= 3.0;
+        drift = Math.sin(Date.now() / 1500) * 3.8; // Stop Avı
+        currentScenarioConfig.cyclePhase = '⚡ Faz 3: Likidite Tuzağı (Stop Hunt)';
+      } else if (cycleSec < 65) {
+        multiplier *= 3.8;
+        drift = -4.0 + (Math.random() - 0.5) * 2.0; // Flash Crash
+        isShock = true;
+        currentScenarioConfig.cyclePhase = '📉 Faz 4: Flash Crash (Panik Satış)';
+      } else {
+        multiplier *= 2.5;
+        drift = 3.2; // V-Recovery
+        currentScenarioConfig.cyclePhase = '📈 Faz 5: V-Toparlanma & Kapanış';
+      }
+      break;
+    }
 
     case 'WEEKEND_CRYPTO_RUSH':
     case 'NORMAL_WALK':

@@ -55,7 +55,17 @@ export default function AdminPage() {
     const interval = setInterval(() => {
       reloadData();
     }, 2000);
-    return () => clearInterval(interval);
+
+    const cycleTimer = setInterval(() => {
+      if (currentScenarioConfig.activeScenario === 'KARMA_CYCLE') {
+        setConfig({ ...currentScenarioConfig });
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(cycleTimer);
+    };
   }, []);
 
   const showNotify = (msg: string) => {
@@ -597,9 +607,38 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
                 
-                {/* 1. Standart Normal Dalgalanma */}
+                {/* 1. 🔥 KARMA DÖNGÜ MOTORU (ÖZEL VURGULU KUTU) */}
+                <button
+                  onClick={() => handleApplyScenario('KARMA_CYCLE', 'Otonom Karma Döngüsü', 2.5, 0.0)}
+                  className={`p-4 rounded-xl border text-left space-y-2 transition relative overflow-hidden group ${
+                    config.activeScenario === 'KARMA_CYCLE'
+                      ? 'bg-gradient-to-br from-amber-600/30 via-yellow-600/20 to-emerald-600/30 border-yellow-400 text-white shadow-[0_0_25px_rgba(245,158,11,0.4)] ring-2 ring-yellow-400/50'
+                      : 'bg-gradient-to-br from-[#181a28] to-[#121420] border-amber-500/40 text-amber-200 hover:border-amber-400'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-black text-xs font-mono text-yellow-300 flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-yellow-400 animate-ping" />
+                      KARMA DÖNGÜSÜ
+                    </span>
+                    <span className="text-base">🌀</span>
+                  </div>
+                  <div className="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-amber-400">
+                    Otonom Karma Motor
+                  </div>
+                  <p className="text-[11px] text-gray-300 font-sans">
+                    Boğa ➔ Yatay ➔ Stop Avı ➔ Crash ➔ V-Recovery (80s Rotasyon).
+                  </p>
+                  {config.activeScenario === 'KARMA_CYCLE' && config.cyclePhase && (
+                    <div className="text-[10px] text-emerald-300 font-mono font-bold bg-black/60 px-2 py-0.5 rounded border border-yellow-400/30">
+                      {config.cyclePhase}
+                    </div>
+                  )}
+                </button>
+
+                {/* 2. Standart Normal Dalgalanma */}
                 <button
                   onClick={() => handleApplyScenario('NORMAL_WALK', 'Standart Piyasa Dalgalanması', 1.0, 0.0)}
                   className={`p-4 rounded-xl border text-left space-y-2 transition ${
@@ -609,14 +648,14 @@ export default function AdminPage() {
                   }`}
                 >
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-xs font-mono">STANDART MOD</span>
+                    <span className="font-bold text-xs font-mono text-blue-400">STANDART MOD</span>
                     <span>⚖️</span>
                   </div>
                   <div className="text-sm font-bold text-white">Normal Walk</div>
                   <p className="text-[11px] text-gray-400 font-sans">1.0x Doğal Volatilite, Nötr Trend.</p>
                 </button>
 
-                {/* 2. Boğa Koşusu (Pump) */}
+                {/* 3. Boğa Koşusu (Pump) */}
                 <button
                   onClick={() => handleApplyScenario('BULL_TREND', 'Agresif Boğa Koşusu (Pump)', 2.2, 0.0035)}
                   className={`p-4 rounded-xl border text-left space-y-2 transition ${
@@ -633,9 +672,26 @@ export default function AdminPage() {
                   <p className="text-[11px] text-gray-400 font-sans">Sürekli yeşil mumlar, yukarı yönlü baskı.</p>
                 </button>
 
-                {/* 3. Ani Çöküş (Flash Crash) */}
+                {/* 4. Ayı Satış Dalgası (Bear Dump) */}
                 <button
-                  onClick={() => handleApplyScenario('FLASH_CRASH_V_RECOVERY', 'Flash Crash (Ani Çöküş)', 3.5, -0.006)}
+                  onClick={() => handleApplyScenario('BEAR_TREND', 'Kademeli Ayı Baskısı (Dump)', 2.2, -0.0035)}
+                  className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                    config.activeScenario === 'BEAR_TREND'
+                      ? 'bg-rose-600/20 border-rose-500 text-white shadow-lg'
+                      : 'bg-[#121824] border-[#1d273a] text-gray-300 hover:border-rose-500/50'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs font-mono text-rose-400">AYI BASKISI</span>
+                    <span>🐻</span>
+                  </div>
+                  <div className="text-sm font-bold text-rose-400">Kademeli Düşüş</div>
+                  <p className="text-[11px] text-gray-400 font-sans">Derinleşen kırmızı mumlar, satış baskısı.</p>
+                </button>
+
+                {/* 5. Ani Çöküş (Flash Crash) */}
+                <button
+                  onClick={() => handleApplyScenario('FLASH_CRASH_V_RECOVERY', 'Flash Crash (Ani Çöküş)', 3.8, -0.006)}
                   className={`p-4 rounded-xl border text-left space-y-2 transition ${
                     config.activeScenario === 'FLASH_CRASH_V_RECOVERY'
                       ? 'bg-rose-600/20 border-rose-500 text-white shadow-lg'
@@ -647,10 +703,10 @@ export default function AdminPage() {
                     <span>📉</span>
                   </div>
                   <div className="text-sm font-bold text-rose-400">Sert Düşüş Dalgası</div>
-                  <p className="text-[11px] text-gray-400 font-sans">3.5x Volatilite, ardışık kırmızı mumlar.</p>
+                  <p className="text-[11px] text-gray-400 font-sans">3.8x Volatilite, panik satışları.</p>
                 </button>
 
-                {/* 4. Stop Avı (Wick Spike) */}
+                {/* 6. Stop Avı (Wick Spike) */}
                 <button
                   onClick={() => handleApplyScenario('LIQUIDITY_HUNT', 'Stop-Loss Avcısı (İğne Atma)', 4.0, 0.0)}
                   className={`p-4 rounded-xl border text-left space-y-2 transition ${
@@ -665,6 +721,74 @@ export default function AdminPage() {
                   </div>
                   <div className="text-sm font-bold text-purple-300">Her İki Yöne İğne</div>
                   <p className="text-[11px] text-gray-400 font-sans">Dar alanda sert yukarı ve aşağı iğneleme.</p>
+                </button>
+
+                {/* 7. Testere Piyasası (Range Chop) */}
+                <button
+                  onClick={() => handleApplyScenario('RANGE_CHOP', 'Testere / Yatay Koridor', 1.4, 0.0)}
+                  className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                    config.activeScenario === 'RANGE_CHOP'
+                      ? 'bg-cyan-600/20 border-cyan-500 text-white shadow-lg'
+                      : 'bg-[#121824] border-[#1d273a] text-gray-300 hover:border-cyan-500/50'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs font-mono text-cyan-400">YATAY TUZAK</span>
+                    <span>🪚</span>
+                  </div>
+                  <div className="text-sm font-bold text-cyan-300">Testere (Chop)</div>
+                  <p className="text-[11px] text-gray-400 font-sans">Dar koridorda sahte kırılımlar, yatay sıkışma.</p>
+                </button>
+
+                {/* 8. Haber Şoku (News Spike) */}
+                <button
+                  onClick={() => handleApplyScenario('NEWS_SHOCK_SPIKE', 'NFP / FED Haber Şoku', 4.5, 0.005)}
+                  className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                    config.activeScenario === 'NEWS_SHOCK_SPIKE'
+                      ? 'bg-amber-600/20 border-amber-500 text-white shadow-lg'
+                      : 'bg-[#121824] border-[#1d273a] text-gray-300 hover:border-amber-500/50'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs font-mono text-amber-400">HABER ŞOKU</span>
+                    <span>💥</span>
+                  </div>
+                  <div className="text-sm font-bold text-amber-300">NFP / FED Kararı</div>
+                  <p className="text-[11px] text-gray-400 font-sans">4.5x Çılgın volatilite, 200 pip anlık sıçrama.</p>
+                </button>
+
+                {/* 9. Kara Kuğu Krizi (Black Swan) */}
+                <button
+                  onClick={() => handleApplyScenario('BLACK_SWAN', 'Kara Kuğu Kriz Modu', 5.0, -0.008)}
+                  className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                    config.activeScenario === 'BLACK_SWAN'
+                      ? 'bg-red-900/40 border-red-500 text-white shadow-lg'
+                      : 'bg-[#121824] border-[#1d273a] text-gray-300 hover:border-red-500/50'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs font-mono text-red-500">KARA KUĞU</span>
+                    <span>🦢</span>
+                  </div>
+                  <div className="text-sm font-bold text-red-400">Küresel Kriz</div>
+                  <p className="text-[11px] text-gray-400 font-sans">5.0x Panik çöküşü, derin likidite boşluğu.</p>
+                </button>
+
+                {/* 10. Kripto Rush (7/24 Hiper Momentum) */}
+                <button
+                  onClick={() => handleApplyScenario('WEEKEND_CRYPTO_RUSH', 'Kripto Hiper Momentum', 2.8, 0.002)}
+                  className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                    config.activeScenario === 'WEEKEND_CRYPTO_RUSH'
+                      ? 'bg-indigo-600/20 border-indigo-500 text-white shadow-lg'
+                      : 'bg-[#121824] border-[#1d273a] text-gray-300 hover:border-indigo-500/50'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs font-mono text-indigo-400">KRİPTO RUSH</span>
+                    <span>🪙</span>
+                  </div>
+                  <div className="text-sm font-bold text-indigo-300">Hiper Momentum</div>
+                  <p className="text-[11px] text-gray-400 font-sans">Kriptolarda parabolik dalgalar, kesintisiz hız.</p>
                 </button>
 
               </div>
