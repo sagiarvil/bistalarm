@@ -15,6 +15,8 @@ import {
   flipCoin
 } from '@/lib/miniGamesEngine';
 import { loadCasinoConfig } from '@/lib/monteCarloEngine';
+import GrandWinCelebration from '@/components/GrandWinCelebration';
+
 
 interface NextGenArcadeHubModalProps {
   isOpen: boolean;
@@ -33,6 +35,8 @@ export default function NextGenArcadeHubModal({
 }: NextGenArcadeHubModalProps) {
   const [activeTab, setActiveTab] = useState<MiniGameType>('CRASH_ROCKET');
   const [bet, setBet] = useState<number>(20);
+  const [winCelebration, setWinCelebration] = useState<{ isOpen: boolean; amount: number; title: string } | null>(null);
+
 
   // Ses Sentezleyici
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -125,6 +129,11 @@ export default function NextGenArcadeHubModal({
     setCashoutWin(winAmount);
     setCrashState('CASHED_OUT');
     playArcadeGrandFanfare();
+    setWinCelebration({
+      isOpen: true,
+      amount: winAmount,
+      title: `🚀 ROKET KAZANÇ (${currentMultiplier.toFixed(2)}x)!`
+    });
   };
 
   // =========================================================================
@@ -188,6 +197,11 @@ export default function NextGenArcadeHubModal({
           setMinesWinAmount(win);
           setMinesActive(false);
           playArcadeGrandFanfare();
+          setWinCelebration({
+            isOpen: true,
+            amount: win,
+            title: `💎 ELMAS MAYIN HEDEF (${newFound} ADIM)!`
+          });
         }, 300);
       }
     }
@@ -201,7 +215,13 @@ export default function NextGenArcadeHubModal({
     setMinesWinAmount(win);
     setMinesActive(false);
     playArcadeGrandFanfare();
+    setWinCelebration({
+      isOpen: true,
+      amount: win,
+      title: `💎 MAYIN KÂRI ALINDI (${mult}x)!`
+    });
   };
+
 
   // =========================================================================
   // 3. PLINKO STATE & LOGIC
@@ -284,6 +304,11 @@ export default function NextGenArcadeHubModal({
         onUpdateBalance(account.balance + win);
         setWheelWinAmount(win);
         playArcadeGrandFanfare();
+        setWinCelebration({
+          isOpen: true,
+          amount: win,
+          title: `🎡 ŞANS ÇARKI ZAFERİ (${sector.label})!`
+        });
       } else {
         playSound(150, 'sawtooth', 0.4);
       }
@@ -343,7 +368,13 @@ export default function NextGenArcadeHubModal({
     setCoinGameActive(false);
     setCoinStreak(0);
     playArcadeGrandFanfare();
+    setWinCelebration({
+      isOpen: true,
+      amount: win,
+      title: `🪙 SERİ YAZI-TURA KÂRI (${coinStreak}x SERİ)!`
+    });
   };
+
 
   // Modal kapandığında interval'leri temizle
   useEffect(() => {
@@ -995,6 +1026,20 @@ export default function NextGenArcadeHubModal({
 
       </div>
 
+      {/* ========================================================================= */}
+      {/* CAESARS & MONTE CARLO GRAND WIN CELEBRATION (ALTIN SİKKE & ZAFER EFEKTİ) */}
+      {/* ========================================================================= */}
+      {winCelebration && (
+        <GrandWinCelebration
+          isOpen={winCelebration.isOpen}
+          amount={winCelebration.amount}
+          title={winCelebration.title}
+          subtitle="Monaco Kraliyet Arcade Kasasından Bakiyenize Anında Eklendi!"
+          onClose={() => setWinCelebration(null)}
+        />
+      )}
+
     </div>
   );
 }
+

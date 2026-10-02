@@ -24,6 +24,8 @@ import {
   BaccaratRoundResult
 } from '@/lib/monteCarloGrandKernel';
 import { loadCasinoConfig } from '@/lib/monteCarloEngine';
+import GrandWinCelebration from '@/components/GrandWinCelebration';
+
 
 interface MonteCarloGrandCasinoModalProps {
   isOpen: boolean;
@@ -544,57 +546,18 @@ export default function MonteCarloGrandCasinoModal({
       }`}>
         
         {/* ========================================================================= */}
-        {/* CAESARS PALACE & MONTE CARLO GRAND WIN OVERLAY (PREMIUM KAZANMA EFEKTİ) */}
+        {/* CAESARS PALACE & MONTE CARLO GRAND WIN OVERLAY (60FPS ALTIN SİKKE & KUTLAMA) */}
         {/* ========================================================================= */}
         {grandWinBanner && (
-          <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center bg-black/75 backdrop-blur-sm animate-fadeIn">
-            {/* Altın Parıltı Hüzmesi */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-500/25 via-amber-600/10 to-transparent animate-pulse" />
-            
-            {/* Düşen Altın Sikkeler / Konfeti Efekti */}
-            <div className="absolute inset-0 overflow-hidden">
-              {Array.from({ length: 24 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute text-2xl sm:text-3xl animate-bounce select-none"
-                  style={{
-                    left: `${(i * 4.2) + 2}%`,
-                    top: `${(i % 5) * 18}%`,
-                    animationDuration: `${0.6 + (i % 4) * 0.25}s`,
-                    animationDelay: `${(i % 6) * 0.1}s`
-                  }}
-                >
-                  {i % 3 === 0 ? '🪙' : i % 3 === 1 ? '✨' : '👑'}
-                </div>
-              ))}
-            </div>
-
-            {/* Zafer Kartı */}
-            <div className="relative bg-gradient-to-b from-[#3a1b07] via-[#5c2b0c] to-[#200c02] border-4 border-[#ffd700] rounded-3xl p-6 sm:p-10 text-center shadow-[0_0_90px_rgba(255,215,0,0.8)] max-w-lg mx-4 transform scale-105 transition-all">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-gradient-to-tr from-amber-400 via-yellow-200 to-amber-600 border-4 border-white shadow-[0_0_30px_rgba(255,215,0,1)] flex items-center justify-center text-3xl sm:text-4xl mb-2 sm:mb-3 animate-pulse">
-                🏆
-              </div>
-
-              <span className="text-xs sm:text-sm font-mono tracking-widest text-amber-300 uppercase font-black block">
-                ⚜️ SALLE GARNIER HIGH ROLLER ⚜️
-              </span>
-
-              <h2 className="text-xl sm:text-3xl font-black font-serif text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 tracking-wider my-1 sm:my-2 drop-shadow-[0_2px_12px_rgba(255,215,0,0.5)]">
-                {grandWinBanner.title}
-              </h2>
-
-              <div className="my-2 sm:my-3 py-2 px-5 bg-black/60 rounded-2xl border-2 border-yellow-400/80 inline-block shadow-inner">
-                <span className="text-2xl sm:text-4xl font-black font-mono text-emerald-400 tracking-tight drop-shadow-[0_0_20px_rgba(52,211,153,0.8)]">
-                  +${grandWinBanner.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-
-              <p className="text-[11px] sm:text-xs text-amber-200/90 font-serif italic">
-                Monaco Kraliyet Kasasından Bakiyenize Anında Aktarıldı!
-              </p>
-            </div>
-          </div>
+          <GrandWinCelebration
+            isOpen={grandWinBanner.isOpen}
+            amount={grandWinBanner.amount}
+            title={grandWinBanner.title}
+            subtitle="Monaco Kraliyet Kasasından Bakiyenize Anında Aktarıldı!"
+            onClose={() => setGrandWinBanner(null)}
+          />
         )}
+
 
         {/* Lüks Maun Ağacı ve Altın Barok Başlık (Kompakt Tek Ekran) */}
         <div className="relative bg-gradient-to-r from-[#2a1408] via-[#4a240c] to-[#2a1408] border-b border-[#d4af37] py-1.5 px-3 sm:px-4 flex items-center justify-between gap-2 shrink-0">

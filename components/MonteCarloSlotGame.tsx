@@ -10,6 +10,8 @@ import {
 } from '@/lib/monteCarloEngine';
 import { MONTE_CARLO_VIP_MOCK_FEED } from '@/lib/monteCarloGrandKernel';
 import { UserAccount } from '@/lib/tradingEngine';
+import GrandWinCelebration from '@/components/GrandWinCelebration';
+
 
 interface MonteCarloSlotGameProps {
   account: UserAccount;
@@ -30,7 +32,9 @@ export default function MonteCarloSlotGame({
   const [lastWin, setLastWin] = useState<number>(0);
   const [lastMultiplier, setLastMultiplier] = useState<number>(0);
   const [showMegaWin, setShowMegaWin] = useState<boolean>(false);
+  const [winCelebration, setWinCelebration] = useState<{ isOpen: boolean; amount: number; title: string } | null>(null);
   const [auditInfo, setAuditInfo] = useState<{ serverSeed: string; clientSeed: string; nonce: number } | null>(null);
+
   const [vipFeedIdx, setVipFeedIdx] = useState<number>(0);
 
   useEffect(() => {
@@ -287,6 +291,14 @@ export default function MonteCarloSlotGame({
         nextBalance = balanceAfterBet + result.totalWin;
         onUpdateBalance(nextBalance);
 
+        const winTitle = result.isJackpot 
+          ? '🌟 ROYAL 777 JACKPOT! 🌟' 
+          : result.multiplier >= 10 
+          ? '🔥 MEGA VIP KAZANÇ!' 
+          : '👑 MONTE CARLO SLOT ZAFERİ!';
+
+        setWinCelebration({ isOpen: true, amount: result.totalWin, title: winTitle });
+
         if (result.isJackpot || result.multiplier >= 15) {
           setShowMegaWin(true);
           playSound('jackpot');
@@ -294,6 +306,7 @@ export default function MonteCarloSlotGame({
           playSound('win');
         }
       }
+
 
       // Güvenli Auto-spin Döngüsü
       if (autoSpinRef.current) {
@@ -598,6 +611,20 @@ export default function MonteCarloSlotGame({
 
       </div>
 
+      {/* ========================================================================= */}
+      {/* CAESARS & MONTE CARLO GRAND WIN CELEBRATION OVERLAY (ALTIN SİKKE & FANFAR) */}
+      {/* ========================================================================= */}
+      {winCelebration && (
+        <GrandWinCelebration
+          isOpen={winCelebration.isOpen}
+          amount={winCelebration.amount}
+          title={winCelebration.title}
+          subtitle="Monaco Kraliyet Slot Kasasından Bakiyenize Anında Eklendi!"
+          onClose={() => setWinCelebration(null)}
+        />
+      )}
+
     </div>
   );
+
 }
