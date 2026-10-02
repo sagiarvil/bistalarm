@@ -97,6 +97,9 @@ export default function MonteCarloSlotGame({
     } catch (e) {}
   };
 
+  const [leverPulling, setLeverPulling] = useState<boolean>(false);
+  const [stoppingReels, setStoppingReels] = useState<boolean[]>([false, false, false, false, false]);
+
   const handleSpin = () => {
     if (isSpinning) return;
     if (account.balance < bet) {
@@ -106,8 +109,12 @@ export default function MonteCarloSlotGame({
     }
 
     setIsSpinning(true);
+    setLeverPulling(true);
+    setStoppingReels([false, false, false, false, false]);
     setShowMegaWin(false);
     playSound('spin');
+
+    setTimeout(() => setLeverPulling(false), 300);
 
     // Bakiyeden bahsi düş
     const balanceAfterBet = account.balance - bet;
@@ -116,7 +123,19 @@ export default function MonteCarloSlotGame({
     // Algoritma hesaplaması
     const result: SpinResult = executeSlotSpin(bet);
 
-    // 1 saniyelik akıcı dönüş efekti
+    // Kademeli Mekanik Makara Duruşları (Reel 1 to 5)
+    [0, 1, 2, 3, 4].forEach((idx) => {
+      setTimeout(() => {
+        setStoppingReels(prev => {
+          const next = [...prev];
+          next[idx] = true;
+          return next;
+        });
+        playSound('click');
+      }, 500 + idx * 180);
+    });
+
+    // Final Sonuç ve Kazanç Bildirimi
     setTimeout(() => {
       setReels(result.grid);
       setIsSpinning(false);
@@ -142,11 +161,11 @@ export default function MonteCarloSlotGame({
 
       // Auto-spin devamı
       if (autoSpin && balanceAfterBet >= bet) {
-        setTimeout(handleSpin, 1200);
+        setTimeout(handleSpin, 1400);
       } else if (autoSpin) {
         setAutoSpin(false);
       }
-    }, 900);
+    }, 1500);
   };
 
   const getSymbol = (id: string): SlotSymbol => {
@@ -215,32 +234,64 @@ export default function MonteCarloSlotGame({
             {/* Arka Plan Neon Çizgiler */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent pointer-events-none"></div>
 
-            <div className="grid grid-cols-5 gap-2 sm:gap-3 relative z-10">
-              {reels.map((reel, colIdx) => (
-                <div 
-                  key={colIdx} 
-                  className={`flex flex-col gap-2 bg-[#120822] border border-amber-500/20 rounded-xl p-2 transition-all duration-300 ${
-                    isSpinning ? 'blur-[1.5px] scale-[0.98]' : 'blur-none scale-100'
-                  }`}
-                >
-                  {reel.map((symId, rowIdx) => {
-                    const sym = getSymbol(symId);
-                    return (
-                      <div 
-                        key={rowIdx} 
-                        className="h-16 sm:h-20 bg-[#1c0f33] border border-amber-500/20 rounded-lg flex flex-col items-center justify-center p-1 relative overflow-hidden group shadow-md"
-                      >
-                        <span className="text-3xl sm:text-4xl filter drop-shadow-md transition-transform group-hover:scale-110">
-                          {sym.icon}
-                        </span>
-                        <span className="text-[9px] font-bold text-amber-200/80 font-mono mt-0.5">
-                          {sym.name}
-                        </span>
-                      </div>
-                    );
-                  })}
+            <div className="flex items-center gap-3">
+              {/* 5x3 Makaralar */}
+              <div className="grid grid-cols-5 gap-2 sm:gap-3 flex-1 relative z-10">
+                {reels.map((reel, colIdx) => {
+                  const isReelStopped = stoppingReels[colIdx];
+                  const isSpinningThis = isSpinning && !isReelStopped;
+
+                  return (
+                    <div 
+                      key={colIdx} 
+                      className={`flex flex-col gap-2 bg-[#120822] border-2 rounded-xl p-2 transition-all duration-300 ${
+                        isSpinningThis 
+                          ? 'blur-[1.5px] scale-[0.98] border-purple-500/40' 
+                          : 'blur-none scale-100 border-amber-500/30'
+                      }`}
+                    >
+                      {reel.map((symId, rowIdx) => {
+                        const sym = getSymbol(symId);
+                        return (
+                          <div 
+                            key={rowIdx} 
+                            className="h-16 sm:h-20 bg-[#1c0f33] border border-amber-500/20 rounded-lg flex flex-col items-center justify-center p-1 relative overflow-hidden group shadow-md"
+                          >
+                            <span className="text-3xl sm:text-4xl filter drop-shadow-md transition-transform group-hover:scale-110">
+                              {sym.icon}
+                            </span>
+                            <span className="text-[9px] font-bold text-amber-200/80 font-mono mt-0.5">
+                              {sym.name}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Monte Carlo Altın Mekanik Çekme Kolu (Slot Lever) */}
+              <div 
+                onClick={handleSpin}
+                className="hidden sm:flex flex-col items-center justify-center cursor-pointer group select-none pl-2"
+                title="Kolu Çekerek Çevirin!"
+              >
+                <div className={`w-8 h-8 rounded-full bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-500 border-2 border-yellow-200 shadow-[0_0_15px_rgba(245,158,11,0.8)] transition-transform duration-300 ${
+                  leverPulling ? 'translate-y-16 scale-90' : 'group-hover:scale-110'
+                }`}>
                 </div>
-              ))}
+                <div className={`w-3 bg-gradient-to-r from-zinc-400 via-zinc-200 to-zinc-500 rounded-full border border-zinc-600 shadow-inner transition-all duration-300 ${
+                  leverPulling ? 'h-10 mt-1' : 'h-24'
+                }`}>
+                </div>
+                <div className="w-6 h-6 rounded-lg bg-zinc-800 border-2 border-amber-500/60 shadow-lg -mt-1 flex items-center justify-center text-[10px] text-amber-300">
+                  ⚙️
+                </div>
+                <span className="text-[9px] font-serif text-amber-300/80 mt-1 uppercase tracking-tighter">
+                  KOLU ÇEK
+                </span>
+              </div>
             </div>
 
             {/* Mega Win Pop-up Animasyonu */}
