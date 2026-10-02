@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { UserAccount, SYMBOL_SPECS } from '@/lib/tradingEngine';
 import Link from 'next/link';
+import { UserAccount, SYMBOL_SPECS } from '@/lib/tradingEngine';
+import { AuthUser } from '@/lib/authStore';
 
 interface GlobalFXPortalProps {
   account: UserAccount;
@@ -15,6 +16,8 @@ interface GlobalFXPortalProps {
   onOpenArcadeHub?: () => void;
   onOpenGrandCasino?: () => void;
   onOpenTacticsGuide?: () => void;
+  currentUser?: AuthUser | null;
+  onOpenAuth?: () => void;
 }
 
 export default function GlobalFXPortal({
@@ -27,7 +30,9 @@ export default function GlobalFXPortal({
   onOpenCasinoSlot,
   onOpenArcadeHub,
   onOpenGrandCasino,
-  onOpenTacticsGuide
+  onOpenTacticsGuide,
+  currentUser,
+  onOpenAuth
 }: GlobalFXPortalProps) {
   const [marketTab, setMarketTab] = useState<'POPULAR' | 'FOREX' | 'INDICES' | 'METALS' | 'CRYPTO' | 'SYNTHETIC'>('POPULAR');
 
@@ -96,6 +101,18 @@ export default function GlobalFXPortal({
 
           {/* Sağ Eylem Butonları (Kesinlikle Kırılmayan & Taşmayan ECN Mimarisi) */}
           <div className="flex items-center gap-2.5 shrink-0">
+            {onOpenAuth && (
+              <button
+                onClick={onOpenAuth}
+                className="bg-[#121824] hover:bg-[#1a2335] border border-[#222f44] text-white text-xs font-semibold px-3 py-2 rounded-lg transition flex items-center gap-1.5 whitespace-nowrap active:scale-95"
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span className="font-sans font-bold text-gray-200">
+                  {currentUser ? currentUser.name.split(' ')[0] : 'Giriş / Kayıt'}
+                </span>
+              </button>
+            )}
+
             <button
               onClick={onOpenDeposit}
               className="bg-[#151c28] hover:bg-[#1f293b] border border-[#26354a] text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition whitespace-nowrap active:scale-95"

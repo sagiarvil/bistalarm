@@ -1,3 +1,4 @@
+// app/admin/page.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -10,58 +11,115 @@ import {
 } from '@/lib/scenarioEngine';
 import { 
   CasinoEngineConfig, 
-  currentCasinoConfig, 
-  updateCasinoConfig, 
   loadCasinoConfig, 
+  updateCasinoConfig, 
   PenetrationMode 
 } from '@/lib/monteCarloEngine';
-import { SYMBOL_SPECS } from '@/lib/tradingEngine';
+import { AuthStore, AuthUser, FinancialRequest } from '@/lib/authStore';
 import { CURRENT_PRICES } from '@/lib/store';
+import { SYMBOL_SPECS } from '@/lib/tradingEngine';
+
+type AdminTab = 'USERS' | 'FINANCE' | 'MARKETS' | 'CASINO' | 'LOGS';
 
 export default function AdminPage() {
+  const [activeTab, setActiveTab] = useState<AdminTab>('USERS');
+  const [users, setUsers] = useState<AuthUser[]>([]);
+  const [selectedUser, setSelectedUser] = useState<AuthUser | null>(null);
+  const [requests, setRequests] = useState<FinancialRequest[]>([]);
   const [config, setConfig] = useState<ScenarioConfig>(currentScenarioConfig);
   const [casinoCfg, setCasinoCfg] = useState<CasinoEngineConfig>(() => loadCasinoConfig());
   const [prices, setPrices] = useState(CURRENT_PRICES);
-  const [userBalance, setUserBalance] = useState<number>(9746.60);
-  const [userCredit, setUserCredit] = useState<number>(4098.00);
-  const [userLeverage, setUserLeverage] = useState<number>(100);
+  const [customBalanceInput, setCustomBalanceInput] = useState<string>('1000');
+  const [notification, setNotification] = useState<string | null>(null);
   const [logMessages, setLogMessages] = useState<string[]>([
-    'Sistem başlatıldı. Fiyat senaryo ve Monte Carlo slot motoru aktif.',
-    'Piyasa Modu: Standart Rastgele Dalgalanma (Normal Walk)'
+    'Exbina Prime Dealer & Risk Yönetim Konsolu başlatıldı.',
+    'Equinix LD4 Londra Likidite Köprüsü: Çevrimiçi (0.01ms)',
+    'Monte Carlo Kriptografik Kasa Motoru: Aktif (Provably Fair)'
   ]);
 
-  // Canlı sayaç ve fiyat takibi
+  // Canlı Veri Senkronizasyonu
+  const reloadData = () => {
+    const userList = AuthStore.getUsers();
+    setUsers(userList);
+    if (!selectedUser && userList.length > 0) {
+      setSelectedUser(userList[0]);
+    } else if (selectedUser) {
+      const refreshed = userList.find(u => u.id === selectedUser.id);
+      if (refreshed) setSelectedUser(refreshed);
+    }
+    setRequests(AuthStore.getFinancialRequests());
+  };
+
   useEffect(() => {
+    reloadData();
     const interval = setInterval(() => {
-      // LocalStorage senkronizasyonu
-      const savedConfig = localStorage.getItem('mt5_scenario_config');
-      if (savedConfig) {
-        try {
-          setConfig(JSON.parse(savedConfig));
-        } catch (e) {}
-      }
-
-      const savedPrices = localStorage.getItem('mt5_live_prices');
-      if (savedPrices) {
-        try {
-          setPrices(JSON.parse(savedPrices));
-        } catch (e) {}
-      }
-
-      const savedAccount = localStorage.getItem('mt5_user_account');
-      if (savedAccount) {
-        try {
-          const acc = JSON.parse(savedAccount);
-          setUserBalance(acc.balance);
-          setUserCredit(acc.credit);
-          setUserLeverage(acc.leverage);
-        } catch (e) {}
-      }
-    }, 1000);
-
+      reloadData();
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
+  const showNotify = (msg: string) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(null), 3500);
+  };
+
+  const addLog = (msg: string) => {
+    const stamp = new Date().toLocaleTimeString('tr-TR');
+    setLogMessages(prev => [`[${stamp}] ${msg}`, ...prev.slice(0, 30)]);
+  };
+
+  // 1. KULLANICI BAKİYE & KALDIRAÇ YÖNETİMİ
+  const handleModifyUserBalance = (amount: number) => {
+    if (!selectedUser) return;
+    const newBal = Math.max(0, selectedUser.balance + amount);
+    AuthStore.updateUser(selectedUser.id, { balance: newBal });
+    reloadData();
+    addLog(`Kullanıcı (#${selectedUser.accountNumber} - ${selectedUser.name}) Bakiyesi güncellendi: ${amount > 0 ? '+' : ''}${amount} USD. Yeni Bakiye: $${newBal.toLocaleString()}`);
+    showNotify(`Bakiye güncellendi: $${newBal.toLocaleString()}`);
+  };
+
+  const handleModifyUserCredit = (amount: number) => {
+    if (!selectedUser) return;
+    const newCredit = Math.max(0, selectedUser.credit + amount);
+    AuthStore.updateUser(selectedUser.id, { credit: newCredit });
+    reloadData();
+    addLog(`Kullanıcı (#${selectedUser.accountNumber}) Kredisi güncellendi: +${amount} USD.`);
+    showNotify(`Kredi güncellendi: $${newCredit.toLocaleString()}`);
+  };
+
+  const handleUpdateUserLeverage = (leverage: number) => {
+    if (!selectedUser) return;
+    AuthStore.updateUser(selectedUser.id, { leverage });
+    reloadData();
+    addLog(`Kullanıcı (#${selectedUser.accountNumber}) Kaldıracı 1:${leverage} olarak ayarlandı.`);
+    showNotify(`Kaldıraç 1:${leverage} yapıldı.`);
+  };
+
+  const handleToggleUserStatus = () => {
+    if (!selectedUser) return;
+    const newStatus = selectedUser.status === 'active' ? 'suspended' : 'active';
+    AuthStore.updateUser(selectedUser.id, { status: newStatus });
+    reloadData();
+    addLog(`Kullanıcı (#${selectedUser.accountNumber}) durumu: ${newStatus === 'active' ? 'AKTİF' : 'DONDURULDU'}.`);
+    showNotify(`Hesap durumu: ${newStatus.toUpperCase()}`);
+  };
+
+  // 2. FİNANSAL TALEP ONAY / RET
+  const handleApproveRequest = (req: FinancialRequest) => {
+    AuthStore.updateRequestStatus(req.id, 'approved');
+    reloadData();
+    addLog(`Finansal Talep ONAYLANDI: #${req.id} • ${req.userEmail} • ${req.amount} USD (${req.type.toUpperCase()})`);
+    showNotify(`Talep #${req.id} onaylandı ve hesaba aktarıldı.`);
+  };
+
+  const handleRejectRequest = (req: FinancialRequest) => {
+    AuthStore.updateRequestStatus(req.id, 'rejected');
+    reloadData();
+    addLog(`Finansal Talep REDDEDİLDİ: #${req.id} • ${req.userEmail} • ${req.amount} USD`);
+    showNotify(`Talep #${req.id} reddedildi.`);
+  };
+
+  // 3. PİYASA SENARYO & VOLATİLİTE KONTROLÜ
   const handleApplyScenario = (scenario: MarketScenario, note: string, vol = 1.0, bias = 0.0) => {
     const newCfg = updateScenarioConfig({
       activeScenario: scenario,
@@ -72,584 +130,694 @@ export default function AdminPage() {
       remainingSeconds: 300
     });
     setConfig(newCfg);
-    localStorage.setItem('mt5_scenario_config', JSON.stringify(newCfg));
-
-    const log = `[${new Date().toLocaleTimeString('tr-TR')}] Senaryo Değiştirildi: ${note} (Volatilite: ${vol}x, Yön: ${bias > 0 ? 'Boğa' : bias < 0 ? 'Ayı' : 'Nötr'})`;
-    setLogMessages(prev => [log, ...prev.slice(0, 15)]);
-  };
-
-  const handleUpdateBalance = (amount: number, isCredit = false) => {
-    const savedAccount = localStorage.getItem('mt5_user_account');
-    if (savedAccount) {
-      try {
-        const acc = JSON.parse(savedAccount);
-        if (isCredit) {
-          acc.credit = Math.max(0, acc.credit + amount);
-          setUserCredit(acc.credit);
-        } else {
-          acc.balance = Math.max(0, acc.balance + amount);
-          setUserBalance(acc.balance);
-        }
-        localStorage.setItem('mt5_user_account', JSON.stringify(acc));
-        const log = `[${new Date().toLocaleTimeString('tr-TR')}] Hesap Güncellendi: ${isCredit ? 'Kredi' : 'Bakiye'} += ${amount} USD`;
-        setLogMessages(prev => [log, ...prev.slice(0, 15)]);
-      } catch (e) {}
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('mt5_scenario_config', JSON.stringify(newCfg));
     }
+    addLog(`Piyasa Senaryosu Devreye Alındı: ${note} (Volatilite: ${vol}x, Yön: ${bias > 0 ? 'Boğa' : bias < 0 ? 'Ayı' : 'Nötr'})`);
+    showNotify(`Piyasa Modu: ${note}`);
   };
 
-  const handleUpdateLeverage = (lev: number) => {
-    const savedAccount = localStorage.getItem('mt5_user_account');
-    if (savedAccount) {
-      try {
-        const acc = JSON.parse(savedAccount);
-        acc.leverage = lev;
-        setUserLeverage(lev);
-        localStorage.setItem('mt5_user_account', JSON.stringify(acc));
-        const log = `[${new Date().toLocaleTimeString('tr-TR')}] Kaldıraç Güncellendi: 1:${lev}`;
-        setLogMessages(prev => [log, ...prev.slice(0, 15)]);
-      } catch (e) {}
-    }
-  };
-
-  // Casino Slot Kontrolleri
-  const handleUpdateCasinoRtp = (rtp: number) => {
-    const updated = updateCasinoConfig({ rtpPercent: rtp });
-    setCasinoCfg({ ...updated });
-    const log = `[${new Date().toLocaleTimeString('tr-TR')}] Monte Carlo Slot RTP Ayarlandı: %${rtp}`;
-    setLogMessages(prev => [log, ...prev.slice(0, 15)]);
-  };
-
-  const handleUpdateCasinoMode = (mode: PenetrationMode, label: string) => {
+  // 4. MONTE CARLO KUMAR & PENETRASYON AYARI
+  const handleUpdateCasinoPenetration = (mode: PenetrationMode) => {
     const updated = updateCasinoConfig({ penetrationMode: mode });
-    setCasinoCfg({ ...updated });
-    const log = `[${new Date().toLocaleTimeString('tr-TR')}] Slot Penetrasyon Modu: ${label}`;
-    setLogMessages(prev => [log, ...prev.slice(0, 15)]);
+    setCasinoCfg(updated);
+    addLog(`Monte Carlo Casino Penetrasyon Kademesi Değiştirildi: ${mode}`);
+    showNotify(`Casino Penetrasyonu: ${mode}`);
   };
 
-  const handleForceJackpot = () => {
-    const updated = updateCasinoConfig({ forcedJackpotPending: true });
-    setCasinoCfg({ ...updated });
-    const log = `[${new Date().toLocaleTimeString('tr-TR')}] 🚨 DİKKAT: Bir sonraki slot çevirmesine 5x 777 MEGA JACKPOT (x1000) KİLİTLENDİ!`;
-    setLogMessages(prev => [log, ...prev.slice(0, 15)]);
+  const handleUpdateCasinoRTP = (rtp: number) => {
+    const updated = updateCasinoConfig({ rtpPercent: rtp });
+    setCasinoCfg(updated);
+    addLog(`Monte Carlo Oyunları Genel RTP Oranı: %${rtp} olarak kilitlendi.`);
+    showNotify(`RTP %${rtp} yapıldı.`);
   };
+
+  // Toplam İstatistikler
+  const totalUserBalance = users.reduce((sum, u) => sum + (u.balance || 0), 0);
+  const totalPendingDeposits = requests.filter(r => r.type === 'deposit' && r.status === 'pending').reduce((sum, r) => sum + r.amount, 0);
+  const totalPendingWithdraws = requests.filter(r => r.type === 'withdraw' && r.status === 'pending').reduce((sum, r) => sum + r.amount, 0);
 
   return (
-    <div className="min-h-screen bg-[#0d1117] text-[#c9d1d9] font-sans p-4 md:p-8">
-      {/* Üst Bar */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#30363d] pb-6 mb-8">
-        <div>
-          <div className="flex items-center gap-3">
-            <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
-            <h1 className="text-2xl font-bold text-white tracking-wide">
-              MT5 Dealer & Market Maker Kontrol Konsolu
-            </h1>
-            <span className="bg-[#238636]/20 text-[#3fb950] border border-[#238636]/40 text-xs px-2.5 py-0.5 rounded-full font-mono">
-              CANLI YAYIN
-            </span>
+    <div className="min-h-screen bg-[#070a0f] text-[#c9d1d9] font-sans antialiased selection:bg-blue-600 selection:text-white flex flex-col">
+      
+      {/* ========================================================================= */}
+      {/* 1. ÜST DEALER YÖNETİM ÇUBUĞU */}
+      {/* ========================================================================= */}
+      <header className="sticky top-0 z-50 bg-[#090d14]/95 backdrop-blur-md border-b border-[#1b2434] px-4 lg:px-8 py-3 flex items-center justify-between shadow-xl">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center font-black text-white text-sm shadow-[0_0_15px_rgba(41,121,255,0.4)]">
+              ⚙️
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-black text-base tracking-wider text-white">EXBINA PRIME</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-bold border border-blue-500/30 uppercase">
+                  MASTER DEALER & CRM
+                </span>
+              </div>
+              <span className="text-[10px] text-gray-400 font-mono">
+                Tier-1 Banka Likidite Masası & Risk Yönetim Konsolu
+              </span>
+            </div>
           </div>
-          <p className="text-sm text-[#8b949e] mt-1">
-            Algoritmik Piyasa Senaryoları, Fiyat Manipülasyonu & Üye Hesap Yönetim Paneli
-          </p>
         </div>
 
+        {/* Canlı Kasa Özeti & Navigasyon */}
         <div className="flex items-center gap-3">
-          <Link 
-            href="/" 
-            className="flex items-center gap-2 bg-[#21262d] hover:bg-[#30363d] text-white border border-[#30363d] px-4 py-2 rounded-lg text-sm font-semibold transition"
+          <div className="hidden lg:flex items-center gap-3 bg-[#0d121c] px-3.5 py-1.5 rounded-xl border border-[#1d273a] text-xs font-mono">
+            <span className="text-gray-400">Toplam Üye: <strong className="text-white">{users.length}</strong></span>
+            <span className="text-gray-600">|</span>
+            <span className="text-gray-400">Üye Bakiyeleri: <strong className="text-emerald-400">${totalUserBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong></span>
+            <span className="text-gray-600">|</span>
+            <span className="text-gray-400">Bekleyen Çekim: <strong className="text-rose-400">${totalPendingWithdraws.toLocaleString()}</strong></span>
+          </div>
+
+          <Link
+            href="/"
+            className="px-3.5 py-1.5 bg-[#141b27] hover:bg-[#1d2738] border border-[#263449] text-gray-300 hover:text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5"
           >
-            <span>📱</span> MT5 Mobil Terminale Git
+            <span>🏛️</span> Kurumsal Portal
           </Link>
+        </div>
+      </header>
+
+      {/* Bildirim Barı */}
+      {notification && (
+        <div className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-mono text-xs py-2 px-4 text-center font-bold shadow-lg animate-pulse">
+          ⚡ {notification}
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 2. YÖNETİM SEKMELERİ */}
+      {/* ========================================================================= */}
+      <div className="bg-[#0b0f17] border-b border-[#182232] px-4 lg:px-8 py-2">
+        <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto text-xs font-mono font-bold">
+          
+          <button
+            onClick={() => setActiveTab('USERS')}
+            className={`px-4 py-2 rounded-xl transition flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'USERS'
+                ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
+                : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'
+            }`}
+          >
+            <span>👥</span> Üye & Hesap Yönetimi ({users.length})
+          </button>
+
+          <button
+            onClick={() => setActiveTab('FINANCE')}
+            className={`px-4 py-2 rounded-xl transition flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'FINANCE'
+                ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
+                : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'
+            }`}
+          >
+            <span>💳</span> Para Yatırma / Çekme ({requests.filter(r => r.status === 'pending').length})
+          </button>
+
+          <button
+            onClick={() => setActiveTab('MARKETS')}
+            className={`px-4 py-2 rounded-xl transition flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'MARKETS'
+                ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
+                : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'
+            }`}
+          >
+            <span>📈</span> Fiyat & Senaryo Motoru
+          </button>
+
+          <button
+            onClick={() => setActiveTab('CASINO')}
+            className={`px-4 py-2 rounded-xl transition flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'CASINO'
+                ? 'bg-amber-600 text-white shadow-[0_0_15px_rgba(245,158,11,0.35)]'
+                : 'bg-[#121722] text-amber-400 hover:text-white border border-amber-500/20'
+            }`}
+          >
+            <span>🎰</span> Monte Carlo Penetrasyon
+          </button>
+
+          <button
+            onClick={() => setActiveTab('LOGS')}
+            className={`px-4 py-2 rounded-xl transition flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'LOGS'
+                ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
+                : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'
+            }`}
+          >
+            <span>📋</span> Denetim Logları
+          </button>
+
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* SOL VE ORTA KOLON: SENARYO KONTROL MERKEZİ */}
-        <div className="lg:col-span-2 space-y-6">
-          
-          {/* Aktif Senaryo Durumu */}
-          <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-5 shadow-lg">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <span>🎛️</span> Aktif Piyasa Rejimi
-              </h2>
-              <span className="text-xs font-mono bg-[#30363d] text-blue-400 px-3 py-1 rounded-md">
-                Kalan: {config.remainingSeconds}s
-              </span>
-            </div>
+      {/* ========================================================================= */}
+      {/* 3. ANA PANEL İÇERİĞİ */}
+      {/* ========================================================================= */}
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 space-y-6">
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-[#0d1117] rounded-lg border border-[#30363d]/60 mb-4">
-              <div>
-                <div className="text-xs text-[#8b949e]">Senaryo Modu</div>
-                <div className="text-sm font-bold text-emerald-400 mt-0.5">{config.activeScenario}</div>
-              </div>
-              <div>
-                <div className="text-xs text-[#8b949e]">Volatilite Çarpanı</div>
-                <div className="text-sm font-bold text-yellow-400 mt-0.5">{config.volatilityMultiplier}x</div>
-              </div>
-              <div>
-                <div className="text-xs text-[#8b949e]">Piyasa Eğilimi (Bias)</div>
-                <div className="text-sm font-bold text-cyan-400 mt-0.5">
-                  {config.bias > 0 ? `Boğa (+${config.bias})` : config.bias < 0 ? `Ayı (${config.bias})` : 'Nötr (0.0)'}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs text-[#8b949e]">Şok İhtimali</div>
-                <div className="text-sm font-bold text-purple-400 mt-0.5">%{ (config.shockProbability * 100).toFixed(0) }</div>
-              </div>
-            </div>
-
-            <div className="text-xs text-[#8b949e] italic">
-              ℹ️ Not: {config.customNote}
-            </div>
-          </div>
-
-          {/* Senaryo Tetikleme Butonları */}
-          <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-5 shadow-lg">
-            <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-              <span>🚀</span> Algoritmik Piyasa Senaryoları (Tek Tıkla Çalıştır)
-            </h2>
-            <p className="text-xs text-[#8b949e] mb-4">
-              Aşağıdaki senaryolardan birini seçtiğinizde, tüm üyelerin terminallerindeki fiyat akışı matematiksel olarak bu modele geçer.
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              
-              {/* Standart */}
-              <button 
-                onClick={() => handleApplyScenario('NORMAL_WALK', 'Standart Rastgele Dalgalanma (Brownian Motion)', 1.0, 0.0)}
-                className={`p-3.5 rounded-lg border text-left transition flex items-start gap-3 ${
-                  config.activeScenario === 'NORMAL_WALK' 
-                    ? 'bg-blue-600/20 border-blue-500 text-white' 
-                    : 'bg-[#0d1117] border-[#30363d] hover:border-gray-500 text-[#c9d1d9]'
-                }`}
-              >
-                <span className="text-xl">⚖️</span>
+        {/* ----------------------------------------------------------------------- */}
+        {/* SEKME 1: KULLANICI & CRM YÖNETİMİ */}
+        {/* ----------------------------------------------------------------------- */}
+        {activeTab === 'USERS' && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Sol: Kullanıcı Listesi */}
+            <div className="lg:col-span-7 bg-[#0b0f17] border border-[#1c2638] rounded-2xl p-5 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between pb-3 border-b border-[#182130]">
                 <div>
-                  <div className="font-semibold text-sm">Standart Piyasa (Normal Walk)</div>
-                  <div className="text-xs text-[#8b949e] mt-1">Dengeli, organik Brownian motion salınımı. İki yön eşit ihtimalli.</div>
-                </div>
-              </button>
-
-              {/* Boğa Rallisi */}
-              <button 
-                onClick={() => handleApplyScenario('BULL_TREND', 'Boğa Trendi: Düzeltmelerle Güçlü Yükseliş', 1.4, 0.7)}
-                className={`p-3.5 rounded-lg border text-left transition flex items-start gap-3 ${
-                  config.activeScenario === 'BULL_TREND' 
-                    ? 'bg-emerald-600/20 border-emerald-500 text-white' 
-                    : 'bg-[#0d1117] border-[#30363d] hover:border-gray-500 text-[#c9d1d9]'
-                }`}
-              >
-                <span className="text-xl">📈</span>
-                <div>
-                  <div className="font-semibold text-sm text-emerald-400">Boğa Trendi (Bull Rally)</div>
-                  <div className="text-xs text-[#8b949e] mt-1">%65 yukarı, %35 aşağı geri çekilmelerle sağlıklı yükseliş trendi.</div>
-                </div>
-              </button>
-
-              {/* Ayı Çöküşü */}
-              <button 
-                onClick={() => handleApplyScenario('BEAR_TREND', 'Ayı Trendi: Tepki Yükselişleriyle Organik Düşüş', 1.4, -0.7)}
-                className={`p-3.5 rounded-lg border text-left transition flex items-start gap-3 ${
-                  config.activeScenario === 'BEAR_TREND' 
-                    ? 'bg-red-600/20 border-red-500 text-white' 
-                    : 'bg-[#0d1117] border-[#30363d] hover:border-gray-500 text-[#c9d1d9]'
-                }`}
-              >
-                <span className="text-xl">📉</span>
-                <div>
-                  <div className="font-semibold text-sm text-red-400">Ayı Trendi (Bear Market)</div>
-                  <div className="text-xs text-[#8b949e] mt-1">%65 aşağı, %35 yukarı tepki alımlarıyla organik satış baskısı.</div>
-                </div>
-              </button>
-
-              {/* NFP / Haber Yukarı Şok */}
-              <button 
-                onClick={() => handleApplyScenario('NEWS_SHOCK_SPIKE', 'NFP / Faiz Kararı: Ani Yukarı İğne & Stop Avı', 3.0, 0.9)}
-                className={`p-3.5 rounded-lg border text-left transition flex items-start gap-3 ${
-                  config.activeScenario === 'NEWS_SHOCK_SPIKE' 
-                    ? 'bg-yellow-600/20 border-yellow-500 text-white' 
-                    : 'bg-[#0d1117] border-[#30363d] hover:border-gray-500 text-[#c9d1d9]'
-                }`}
-              >
-                <span className="text-xl">⚡</span>
-                <div>
-                  <div className="font-semibold text-sm text-yellow-400">Haber Şoku (NFP Spike)</div>
-                  <div className="text-xs text-[#8b949e] mt-1">3x volatilite. Yukarı anlık dev iğne atıp ardından kâr satışı getirir.</div>
-                </div>
-              </button>
-
-              {/* Haber Aşağı Şok */}
-              <button 
-                onClick={() => handleApplyScenario('NEWS_SHOCK_DUMP', 'Jeopolitik Kriz / Faiz Kararı: Ani Düşüş Şoku', 3.0, -0.9)}
-                className={`p-3.5 rounded-lg border text-left transition flex items-start gap-3 ${
-                  config.activeScenario === 'NEWS_SHOCK_DUMP' 
-                    ? 'bg-orange-600/20 border-orange-500 text-white' 
-                    : 'bg-[#0d1117] border-[#30363d] hover:border-gray-500 text-[#c9d1d9]'
-                }`}
-              >
-                <span className="text-xl">💥</span>
-                <div>
-                  <div className="font-semibold text-sm text-orange-400">Haber Şoku (Dump & Flush)</div>
-                  <div className="text-xs text-[#8b949e] mt-1">Aşağı yönlü ani 50-100 pip çöküş, alttaki stopları patlatma.</div>
-                </div>
-              </button>
-
-              {/* Testere / Stop Avı */}
-              <button 
-                onClick={() => handleApplyScenario('LIQUIDITY_HUNT', 'Testere Piyasası: Sahte Kırılımlar ve Çift Yönlü Stop Avı', 2.0, 0.0)}
-                className={`p-3.5 rounded-lg border text-left transition flex items-start gap-3 ${
-                  config.activeScenario === 'LIQUIDITY_HUNT' 
-                    ? 'bg-purple-600/20 border-purple-500 text-white' 
-                    : 'bg-[#0d1117] border-[#30363d] hover:border-gray-500 text-[#c9d1d9]'
-                }`}
-              >
-                <span className="text-xl">🪚</span>
-                <div>
-                  <div className="font-semibold text-sm text-purple-400">Testere & Likidite Avı (Chop)</div>
-                  <div className="text-xs text-[#8b949e] mt-1">Direnç kırar gibi yapıp döner, destek kırar gibi yapıp döner.</div>
-                </div>
-              </button>
-
-              {/* Flash Crash & V Recovery */}
-              <button 
-                onClick={() => handleApplyScenario('FLASH_CRASH_V_RECOVERY', 'Flash Crash: Ani Çöküş ve 60 sn İçinde V-Toparlanma', 3.5, 0.0)}
-                className={`p-3.5 rounded-lg border text-left transition flex items-start gap-3 ${
-                  config.activeScenario === 'FLASH_CRASH_V_RECOVERY' 
-                    ? 'bg-red-800/40 border-red-500 text-white' 
-                    : 'bg-[#0d1117] border-[#30363d] hover:border-gray-500 text-[#c9d1d9]'
-                }`}
-              >
-                <span className="text-xl">📉🔄</span>
-                <div>
-                  <div className="font-semibold text-sm text-red-300">Flash Crash & V-Recovery</div>
-                  <div className="text-xs text-[#8b949e] mt-1">Dakikalar içinde sert çöküş ardından panik alımlarıyla eski yerine dönüş.</div>
-                </div>
-              </button>
-
-              {/* Arbitraj Açığı */}
-              <button 
-                onClick={() => handleApplyScenario('ARBITRAGE_GAP', 'Arbitraj Fırsatı: Spread Açılması & Fiyat Kayması', 1.8, 0.2)}
-                className={`p-3.5 rounded-lg border text-left transition flex items-start gap-3 ${
-                  config.activeScenario === 'ARBITRAGE_GAP' 
-                    ? 'bg-cyan-600/20 border-cyan-500 text-white' 
-                    : 'bg-[#0d1117] border-[#30363d] hover:border-gray-500 text-[#c9d1d9]'
-                }`}
-              >
-                <span className="text-xl">⚡🌐</span>
-                <div>
-                  <div className="font-semibold text-sm text-cyan-400">Arbitraj & Fiyat Kayması</div>
-                  <div className="text-xs text-[#8b949e] mt-1">Spread anlık 3 katına çıkar, hızlı scalper botlar için arbitraj boşluğu.</div>
-                </div>
-              </button>
-
-            </div>
-          </div>
-
-          {/* ========================================================================= */}
-          {/* MONTE CARLO CASINO & ÇİLEK/ANANAS SLOT ALGORİTMA KONTROL MASASI */}
-          {/* ========================================================================= */}
-          <div className="bg-gradient-to-b from-[#1b1033] to-[#120822] border-2 border-amber-500/50 rounded-xl p-5 shadow-[0_0_30px_rgba(245,158,11,0.2)] space-y-5">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-amber-500/30 pb-4">
-              <div className="flex items-center gap-3">
-                <span className="text-3xl">🎰</span>
-                <div>
-                  <h2 className="text-lg font-black text-amber-300 tracking-wide flex items-center gap-2">
-                    Monte Carlo Casino & Slot Penetrasyon Motoru
+                  <h2 className="text-base font-bold text-white flex items-center gap-2">
+                    <span>👥</span> Kayıtlı Kullanıcılar & ECN Hesapları
                   </h2>
-                  <p className="text-xs text-amber-200/70 font-mono">
-                    Provably Fair SHA-256 Algoritması • Çilek, Ananas, 777 ve Meyve Slotları
+                  <p className="text-[11px] text-gray-400 font-mono">
+                    Yönetmek istediğiniz kullanıcının üzerine tıklayınız.
                   </p>
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
-                  RTP: %{casinoCfg.rtpPercent}
-                </span>
-                {casinoCfg.forcedJackpotPending && (
-                  <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-rose-600 text-white font-black animate-pulse">
-                    JACKPOT KİLİTLİ!
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Kasa Finansal Telemetrisi */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
-              <div className="bg-[#0b0417] p-3 rounded-lg border border-amber-500/20">
-                <span className="text-[10px] text-gray-400 block">TOPLAM ÇEVİRME</span>
-                <span className="text-base font-bold text-white">{casinoCfg.totalSpins.toLocaleString()} Spin</span>
-              </div>
-              <div className="bg-[#0b0417] p-3 rounded-lg border border-amber-500/20">
-                <span className="text-[10px] text-gray-400 block">BAHİS HACMİ</span>
-                <span className="text-base font-bold text-amber-400">${casinoCfg.totalWagered.toLocaleString()}</span>
-              </div>
-              <div className="bg-[#0b0417] p-3 rounded-lg border border-amber-500/20">
-                <span className="text-[10px] text-gray-400 block">ÖDENEN KAZANÇ</span>
-                <span className="text-base font-bold text-rose-400">${casinoCfg.totalPayout.toLocaleString()}</span>
-              </div>
-              <div className="bg-[#0b0417] p-3 rounded-lg border border-amber-500/20">
-                <span className="text-[10px] text-gray-400 block">NET KASA KÂRI</span>
-                <span className="text-base font-bold text-emerald-400">
-                  +${(casinoCfg.totalWagered - casinoCfg.totalPayout).toLocaleString()}
+                <span className="text-xs font-mono font-bold text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-lg border border-blue-500/20">
+                  {users.length} Üye Aktif
                 </span>
               </div>
-            </div>
 
-            {/* Kasa RTP Slider'ı */}
-            <div className="space-y-2 bg-[#0b0417] p-4 rounded-xl border border-amber-500/20">
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-amber-200 font-bold">KASA AVANTAJI / OYUNCUYA GERİ DÖNÜŞ (RTP):</span>
-                <span className="text-emerald-400 font-black text-sm">%{casinoCfg.rtpPercent} (Kasa Kârı: %{(100 - casinoCfg.rtpPercent).toFixed(1)})</span>
-              </div>
-              <input 
-                type="range" 
-                min="75" 
-                max="99.5" 
-                step="0.5"
-                value={casinoCfg.rtpPercent}
-                onChange={(e) => handleUpdateCasinoRtp(parseFloat(e.target.value))}
-                className="w-full accent-amber-500 cursor-pointer"
-              />
-              <div className="flex justify-between text-[10px] text-gray-500 font-mono">
-                <span>%75 (Agresif Kasa)</span>
-                <span>%92 (Monte Carlo Standart)</span>
-                <span>%96.5 (Vegas VIP)</span>
-                <span>%99.5 (Neredeyse Başa Baş)</span>
-              </div>
-            </div>
-
-            {/* Penetrasyon ve Algoritma Rejimleri */}
-            <div className="space-y-2">
-              <span className="text-xs font-bold text-amber-200 font-mono uppercase block">
-                ALGORİTMA PENETRASYON VE KAZANÇ KADEMELERİ:
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                
-                <button
-                  onClick={() => handleUpdateCasinoMode('PURE_MONTE_CARLO', 'Saf Monte Carlo RNG (%96.5 RTP)')}
-                  className={`p-3 rounded-xl border text-left transition flex items-start gap-2.5 ${
-                    casinoCfg.penetrationMode === 'PURE_MONTE_CARLO'
-                      ? 'bg-amber-500/20 border-amber-400 text-white shadow'
-                      : 'bg-[#0d071a] border-[#30204d] hover:border-gray-500 text-gray-300'
-                  }`}
-                >
-                  <span className="text-xl">🎲</span>
-                  <div>
-                    <div className="font-bold text-amber-300">Saf Monte Carlo RNG</div>
-                    <div className="text-[11px] text-gray-400 mt-0.5">Monaco & Vegas matematiksel rastlantısallık kuralı. Tamamen hilesiz.</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleUpdateCasinoMode('SWEET_HOOK', 'Sweet Hook: Yeni Üye Bağlama (%98 RTP)')}
-                  className={`p-3 rounded-xl border text-left transition flex items-start gap-2.5 ${
-                    casinoCfg.penetrationMode === 'SWEET_HOOK'
-                      ? 'bg-emerald-500/20 border-emerald-400 text-white shadow'
-                      : 'bg-[#0d071a] border-[#30204d] hover:border-gray-500 text-gray-300'
-                  }`}
-                >
-                  <span className="text-xl">🍓</span>
-                  <div>
-                    <div className="font-bold text-emerald-400">Sweet Hook (Üye Bağlama)</div>
-                    <div className="text-[11px] text-gray-400 mt-0.5">Çilek ve Ananas kombinasyonlarını sıklaştırır, oyuncuya sürekli kazandırır.</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleUpdateCasinoMode('HOUSE_EDGE', 'House Edge: Kasa Doldurma (%82 RTP)')}
-                  className={`p-3 rounded-xl border text-left transition flex items-start gap-2.5 ${
-                    casinoCfg.penetrationMode === 'HOUSE_EDGE'
-                      ? 'bg-rose-500/20 border-rose-400 text-white shadow'
-                      : 'bg-[#0d071a] border-[#30204d] hover:border-gray-500 text-gray-300'
-                  }`}
-                >
-                  <span className="text-xl">🏦</span>
-                  <div>
-                    <div className="font-bold text-rose-400">House Edge (Kasa Doldurma)</div>
-                    <div className="text-[11px] text-gray-400 mt-0.5">Büyük ödüllerin çıkma sıklığını kısarak kasaya net sanal para biriktirir.</div>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => handleUpdateCasinoMode('JACKPOT_STORM', 'Jackpot Storm: x500 Volatilite Fırtınası')}
-                  className={`p-3 rounded-xl border text-left transition flex items-start gap-2.5 ${
-                    casinoCfg.penetrationMode === 'JACKPOT_STORM'
-                      ? 'bg-purple-500/20 border-purple-400 text-white shadow'
-                      : 'bg-[#0d071a] border-[#30204d] hover:border-gray-500 text-gray-300'
-                  }`}
-                >
-                  <span className="text-xl">⚡</span>
-                  <div>
-                    <div className="font-bold text-purple-300">Jackpot Storm (Fırtına)</div>
-                    <div className="text-[11px] text-gray-400 mt-0.5">Yüksek varyans: Birçok boş çevirme ardından aniden devasa x500 patlatır.</div>
-                  </div>
-                </button>
-
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs font-mono">
+                  <thead>
+                    <tr className="text-gray-400 border-b border-[#182130]">
+                      <th className="py-2.5 px-3">Hesap No</th>
+                      <th className="py-2.5 px-3">Kullanıcı</th>
+                      <th className="py-2.5 px-3 text-right">Bakiye</th>
+                      <th className="py-2.5 px-3 text-center">Kaldıraç</th>
+                      <th className="py-2.5 px-3 text-center">Durum</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#151d2b]">
+                    {users.map((u) => {
+                      const isSel = selectedUser?.id === u.id;
+                      return (
+                        <tr
+                          key={u.id}
+                          onClick={() => setSelectedUser(u)}
+                          className={`cursor-pointer transition ${
+                            isSel ? 'bg-blue-600/20 text-white font-bold' : 'hover:bg-[#121824] text-gray-300'
+                          }`}
+                        >
+                          <td className="py-3 px-3 text-blue-400 font-bold">#{u.accountNumber}</td>
+                          <td className="py-3 px-3">
+                            <span className="block text-white font-sans">{u.name}</span>
+                            <span className="text-[10px] text-gray-400">{u.email}</span>
+                          </td>
+                          <td className="py-3 px-3 text-right font-bold text-emerald-400">
+                            ${u.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          </td>
+                          <td className="py-3 px-3 text-center text-cyan-300">1:{u.leverage}</td>
+                          <td className="py-3 px-3 text-center">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                              u.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
+                            }`}>
+                              {u.status === 'active' ? 'Aktif' : 'Donduruldu'}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </div>
 
-            {/* Tek Tıkla Manuel Jackpot Zorlayıcı */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#0a0314] p-3 rounded-xl border border-amber-500/30">
-              <div className="text-xs font-mono">
-                <span className="text-amber-300 font-bold block">MANUEL MEGA JACKPOT TETİKLEME:</span>
-                <span className="text-gray-400 text-[11px]">Butona basıldığında herhangi bir üyenin bir sonraki çevirmesine 5x 777 ($x1000) gelir!</span>
-              </div>
-              <button
-                onClick={handleForceJackpot}
-                className="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-amber-500 via-rose-600 to-amber-500 hover:opacity-90 text-white font-black text-xs uppercase tracking-wider rounded-lg shadow-lg active:scale-95 transition"
-              >
-                🚨 Şimdiki Çevirmeye Jackpot Ver!
-              </button>
+            {/* Sağ: Seçili Kullanıcı Kontrol Paneli */}
+            <div className="lg:col-span-5 bg-[#0b0f17] border border-[#1c2638] rounded-2xl p-5 space-y-5 shadow-xl">
+              {selectedUser ? (
+                <>
+                  <div className="flex items-center justify-between pb-3 border-b border-[#182130]">
+                    <div>
+                      <span className="text-[10px] font-mono text-gray-400 block uppercase">SEÇİLİ HESAP</span>
+                      <h3 className="text-lg font-bold text-white font-sans">{selectedUser.name}</h3>
+                      <span className="text-xs font-mono text-blue-400">#{selectedUser.accountNumber} • {selectedUser.email}</span>
+                    </div>
+                    <button
+                      onClick={handleToggleUserStatus}
+                      className={`px-3 py-1.5 rounded-xl font-bold text-xs transition font-mono ${
+                        selectedUser.status === 'active'
+                          ? 'bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 border border-rose-500/30'
+                          : 'bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30'
+                      }`}
+                    >
+                      {selectedUser.status === 'active' ? 'Hesabı Dondur' : 'Hesabı Aç'}
+                    </button>
+                  </div>
+
+                  {/* Bakiye Bilgileri */}
+                  <div className="grid grid-cols-2 gap-3 text-center font-mono">
+                    <div className="bg-[#121824] p-3 rounded-xl border border-[#1d273a]">
+                      <span className="text-[10px] text-gray-400 block">KULLANILABİLİR BAKİYE</span>
+                      <span className="text-xl font-black text-emerald-400">
+                        ${selectedUser.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <div className="bg-[#121824] p-3 rounded-xl border border-[#1d273a]">
+                      <span className="text-[10px] text-gray-400 block">KREDİ / BONUS</span>
+                      <span className="text-xl font-black text-cyan-400">
+                        ${selectedUser.credit.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Hızlı Bakiye Ekleme / Çıkarma */}
+                  <div className="space-y-2">
+                    <span className="text-xs font-bold text-gray-300 font-mono block">Hızlı Bakiye Yükleme:</span>
+                    <div className="grid grid-cols-4 gap-2 font-mono">
+                      {[500, 1000, 2500, 5000].map(amt => (
+                        <button
+                          key={amt}
+                          onClick={() => handleModifyUserBalance(amt)}
+                          className="py-2 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-400 font-bold rounded-xl text-xs transition"
+                        >
+                          +${amt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Bakiye Azaltma / Özel Tutar */}
+                  <div className="space-y-2 pt-1">
+                    <span className="text-xs font-bold text-gray-300 font-mono block">Özel Tutar ile İşlem Yap:</span>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        value={customBalanceInput}
+                        onChange={(e) => setCustomBalanceInput(e.target.value)}
+                        placeholder="USD Tutarı"
+                        className="flex-1 bg-[#121824] border border-[#222e42] rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-blue-500"
+                      />
+                      <button
+                        onClick={() => handleModifyUserBalance(parseFloat(customBalanceInput) || 0)}
+                        className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition"
+                      >
+                        Bakiye Ekle
+                      </button>
+                      <button
+                        onClick={() => handleModifyUserBalance(-(parseFloat(customBalanceInput) || 0))}
+                        className="px-3.5 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl transition"
+                      >
+                        Bakiye Sil
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Kaldıraç Değiştirme */}
+                  <div className="space-y-2 pt-2 border-t border-[#182130]">
+                    <span className="text-xs font-bold text-gray-300 font-mono block">Hesap Kaldıracı (Dinamik):</span>
+                    <div className="grid grid-cols-4 gap-2 font-mono text-xs">
+                      {[100, 500, 1000, 2000].map(lev => (
+                        <button
+                          key={lev}
+                          onClick={() => handleUpdateUserLeverage(lev)}
+                          className={`py-2 rounded-xl border font-bold transition ${
+                            selectedUser.leverage === lev
+                              ? 'bg-blue-600 text-white border-blue-400'
+                              : 'bg-[#121824] text-gray-400 border-[#1d273a] hover:text-white'
+                          }`}
+                        >
+                          1:{lev}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Kredi Ekle */}
+                  <div className="flex items-center gap-2 pt-2">
+                    <button
+                      onClick={() => handleModifyUserCredit(1000)}
+                      className="flex-1 py-2 bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-500/30 text-cyan-300 font-bold text-xs rounded-xl transition font-mono"
+                    >
+                      +$1,000 Bonus Kredi Ekle
+                    </button>
+                    <button
+                      onClick={() => handleModifyUserCredit(-selectedUser.credit)}
+                      className="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-gray-400 font-bold text-xs rounded-xl transition font-mono"
+                    >
+                      Krediyi Sıfırla
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center py-16 text-gray-500 font-mono text-xs">
+                  Lütfen soldaki listeden bir kullanıcı seçiniz.
+                </div>
+              )}
             </div>
 
           </div>
+        )}
 
-          {/* Canlı Piyasa Fiyatları Tablosu */}
-          <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-5 shadow-lg">
-            <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-              <span>📊</span> Canlı Sembol Fiyatları
-            </h2>
+        {/* ----------------------------------------------------------------------- */}
+        {/* SEKME 2: FİNANS & PARA YATIRMA / ÇEKME ONAYLARI */}
+        {/* ----------------------------------------------------------------------- */}
+        {activeTab === 'FINANCE' && (
+          <div className="bg-[#0b0f17] border border-[#1c2638] rounded-2xl p-5 space-y-6 shadow-xl">
+            <div className="flex items-center justify-between pb-3 border-b border-[#182130]">
+              <div>
+                <h2 className="text-base font-bold text-white flex items-center gap-2">
+                  <span>💳</span> Para Yatırma & Çekme Onay Masası
+                </h2>
+                <p className="text-[11px] text-gray-400 font-mono">
+                  Bekleyen talepleri tek tıkla onaylayabilir veya reddedebilirsiniz.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 text-xs font-mono">
+                <span className="text-emerald-400">Bekleyen Yatırma: <strong>${totalPendingDeposits.toLocaleString()}</strong></span>
+                <span className="text-gray-600">|</span>
+                <span className="text-rose-400">Bekleyen Çekim: <strong>${totalPendingWithdraws.toLocaleString()}</strong></span>
+              </div>
+            </div>
+
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead>
-                  <tr className="border-b border-[#30363d] text-[#8b949e]">
-                    <th className="py-2.5 px-3">SEMBOL</th>
-                    <th className="py-2.5 px-3">BID (ALIŞ)</th>
-                    <th className="py-2.5 px-3">ASK (SATIŞ)</th>
-                    <th className="py-2.5 px-3">SPREAD</th>
-                    <th className="py-2.5 px-3">HIGH / LOW</th>
-                    <th className="py-2.5 px-3">GÜNCELLEME</th>
+                  <tr className="text-gray-400 border-b border-[#182130]">
+                    <th className="py-2.5 px-3">Talep No</th>
+                    <th className="py-2.5 px-3">Tarih</th>
+                    <th className="py-2.5 px-3">Kullanıcı</th>
+                    <th className="py-2.5 px-3">Tür</th>
+                    <th className="py-2.5 px-3">Yöntem / Detay</th>
+                    <th className="py-2.5 px-3 text-right">Tutar</th>
+                    <th className="py-2.5 px-3 text-center">Durum</th>
+                    <th className="py-2.5 px-3 text-center">Aksiyon</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#30363d]/50">
-                  {Object.entries(prices).map(([sym, cur]) => {
-                    const spec = SYMBOL_SPECS[sym];
-                    const spreadPips = spec ? (spec.spread / spec.pipSize).toFixed(1) : '-';
-                    return (
-                      <tr key={sym} className="hover:bg-[#21262d]/50">
-                        <td className="py-2.5 px-3 font-bold text-white">{sym}</td>
-                        <td className="py-2.5 px-3 text-blue-400 font-semibold">{cur.bid}</td>
-                        <td className="py-2.5 px-3 text-red-400 font-semibold">{cur.ask}</td>
-                        <td className="py-2.5 px-3 text-[#8b949e]">{spreadPips} pip</td>
-                        <td className="py-2.5 px-3 text-gray-400">{cur.high} / {cur.low}</td>
-                        <td className="py-2.5 px-3 text-[#8b949e]">{cur.time}</td>
-                      </tr>
-                    );
-                  })}
+                <tbody className="divide-y divide-[#151d2b]">
+                  {requests.map((r) => (
+                    <tr key={r.id} className="hover:bg-[#121824] transition">
+                      <td className="py-3 px-3 text-blue-400 font-bold">#{r.id}</td>
+                      <td className="py-3 px-3 text-gray-400">{r.createdAt}</td>
+                      <td className="py-3 px-3 text-white">{r.userEmail}</td>
+                      <td className="py-3 px-3">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          r.type === 'deposit' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
+                        }`}>
+                          {r.type === 'deposit' ? 'YATIRMA' : 'ÇEKME'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3">
+                        <span className="text-white block">{r.method}</span>
+                        <span className="text-[10px] text-gray-400">{r.details || '-'}</span>
+                      </td>
+                      <td className="py-3 px-3 text-right font-black text-white text-sm">
+                        ${r.amount.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          r.status === 'pending'
+                            ? 'bg-yellow-500/20 text-yellow-300'
+                            : r.status === 'approved'
+                            ? 'bg-emerald-500/20 text-emerald-400'
+                            : 'bg-rose-500/20 text-rose-400'
+                        }`}>
+                          {r.status === 'pending' ? 'BEKLİYOR' : r.status === 'approved' ? 'ONAYLANDI' : 'REDDEDİLDİ'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        {r.status === 'pending' ? (
+                          <div className="flex items-center justify-center gap-1.5">
+                            <button
+                              onClick={() => handleApproveRequest(r)}
+                              className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-[11px] transition shadow"
+                            >
+                              ✓ Onayla
+                            </button>
+                            <button
+                              onClick={() => handleRejectRequest(r)}
+                              className="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg text-[11px] transition"
+                            >
+                              ✕ Reddet
+                            </button>
+                          </div>
+                        ) : (
+                          <span className="text-[11px] text-gray-500">Tamamlandı</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
           </div>
+        )}
 
-        </div>
-
-        {/* SAĞ KOLON: ÜYE HESAP YÖNETİMİ & LOGLAR */}
-        <div className="space-y-6">
-          
-          {/* Müşteri Hesap Bilgisi & Müdahale */}
-          <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-5 shadow-lg">
-            <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <span>👤</span> Müşteri Hesabı: 20767
-            </h2>
-            <div className="text-xs text-[#8b949e] mb-3">Fetih Çetin (Exbina-Server)</div>
-
-            <div className="space-y-3 bg-[#0d1117] p-4 rounded-lg border border-[#30363d]">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-[#8b949e]">Bakiye (Balance):</span>
-                <span className="font-bold font-mono text-emerald-400">${userBalance.toFixed(2)} USD</span>
+        {/* ----------------------------------------------------------------------- */}
+        {/* SEKME 3: PİYASA & FİYAT MANİPÜLASYON MOTORU */}
+        {/* ----------------------------------------------------------------------- */}
+        {activeTab === 'MARKETS' && (
+          <div className="space-y-6">
+            
+            {/* Canlı Senaryo Seçici */}
+            <div className="bg-[#0b0f17] border border-[#1c2638] rounded-2xl p-5 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between pb-3 border-b border-[#182130]">
+                <div>
+                  <h2 className="text-base font-bold text-white flex items-center gap-2">
+                    <span>⚡</span> Canlı Piyasa Senaryo Motoru (Dealer Override)
+                  </h2>
+                  <p className="text-[11px] text-gray-400 font-mono">
+                    Tüm kullanıcılara yansıyan anlık piyasa trendini ve oynaklığını belirleyiniz.
+                  </p>
+                </div>
+                <div className="bg-[#121824] px-3 py-1 rounded-xl border border-[#1d273a] text-xs font-mono">
+                  Aktif Mod: <strong className="text-emerald-400">{config.customNote}</strong>
+                </div>
               </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-[#8b949e]">Kredi (Credit):</span>
-                <span className="font-bold font-mono text-blue-400">${userCredit.toFixed(2)} USD</span>
-              </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-[#8b949e]">Kaldıraç:</span>
-                <span className="font-bold font-mono text-yellow-400">1:{userLeverage}</span>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                
+                {/* 1. Standart Normal Dalgalanma */}
+                <button
+                  onClick={() => handleApplyScenario('NORMAL_WALK', 'Standart Piyasa Dalgalanması', 1.0, 0.0)}
+                  className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                    config.activeScenario === 'NORMAL_WALK'
+                      ? 'bg-blue-600/20 border-blue-500 text-white shadow-lg'
+                      : 'bg-[#121824] border-[#1d273a] text-gray-300 hover:border-gray-500'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs font-mono">STANDART MOD</span>
+                    <span>⚖️</span>
+                  </div>
+                  <div className="text-sm font-bold text-white">Normal Walk</div>
+                  <p className="text-[11px] text-gray-400 font-sans">1.0x Doğal Volatilite, Nötr Trend.</p>
+                </button>
+
+                {/* 2. Boğa Koşusu (Pump) */}
+                <button
+                  onClick={() => handleApplyScenario('BULL_TREND', 'Agresif Boğa Koşusu (Pump)', 2.2, 0.0035)}
+                  className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                    config.activeScenario === 'BULL_TREND'
+                      ? 'bg-emerald-600/20 border-emerald-500 text-white shadow-lg'
+                      : 'bg-[#121824] border-[#1d273a] text-gray-300 hover:border-emerald-500/50'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs font-mono text-emerald-400">BOĞA PUMP</span>
+                    <span>🚀</span>
+                  </div>
+                  <div className="text-sm font-bold text-emerald-400">Agresif Yükseliş</div>
+                  <p className="text-[11px] text-gray-400 font-sans">Sürekli yeşil mumlar, yukarı yönlü baskı.</p>
+                </button>
+
+                {/* 3. Ani Çöküş (Flash Crash) */}
+                <button
+                  onClick={() => handleApplyScenario('FLASH_CRASH_V_RECOVERY', 'Flash Crash (Ani Çöküş)', 3.5, -0.006)}
+                  className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                    config.activeScenario === 'FLASH_CRASH_V_RECOVERY'
+                      ? 'bg-rose-600/20 border-rose-500 text-white shadow-lg'
+                      : 'bg-[#121824] border-[#1d273a] text-gray-300 hover:border-rose-500/50'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs font-mono text-rose-400">FLASH CRASH</span>
+                    <span>📉</span>
+                  </div>
+                  <div className="text-sm font-bold text-rose-400">Sert Düşüş Dalgası</div>
+                  <p className="text-[11px] text-gray-400 font-sans">3.5x Volatilite, ardışık kırmızı mumlar.</p>
+                </button>
+
+                {/* 4. Stop Avı (Wick Spike) */}
+                <button
+                  onClick={() => handleApplyScenario('LIQUIDITY_HUNT', 'Stop-Loss Avcısı (İğne Atma)', 4.0, 0.0)}
+                  className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                    config.activeScenario === 'LIQUIDITY_HUNT'
+                      ? 'bg-purple-600/20 border-purple-500 text-white shadow-lg'
+                      : 'bg-[#121824] border-[#1d273a] text-gray-300 hover:border-purple-500/50'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs font-mono text-purple-400">STOP AVCISI</span>
+                    <span>⚡</span>
+                  </div>
+                  <div className="text-sm font-bold text-purple-300">Her İki Yöne İğne</div>
+                  <p className="text-[11px] text-gray-400 font-sans">Dar alanda sert yukarı ve aşağı iğneleme.</p>
+                </button>
+
               </div>
             </div>
 
-            {/* Bakiye Yükleme Butonları */}
-            <div className="mt-4 space-y-2">
-              <div className="text-xs text-[#8b949e] font-semibold">Bakiye & Kredi Müdahalesi:</div>
-              <div className="grid grid-cols-2 gap-2">
-                <button 
-                  onClick={() => handleUpdateBalance(1000)}
-                  className="bg-[#238636] hover:bg-[#2ea043] text-white text-xs font-semibold py-2 px-3 rounded transition"
-                >
-                  + $1,000 Deposit
-                </button>
-                <button 
-                  onClick={() => handleUpdateBalance(-1000)}
-                  className="bg-red-700 hover:bg-red-600 text-white text-xs font-semibold py-2 px-3 rounded transition"
-                >
-                  - $1,000 Çekim
-                </button>
-                <button 
-                  onClick={() => handleUpdateBalance(2000, true)}
-                  className="bg-blue-700 hover:bg-blue-600 text-white text-xs font-semibold py-2 px-3 rounded transition"
-                >
-                  + $2,000 Kredi Ekle
-                </button>
-                <button 
-                  onClick={() => handleUpdateBalance(-2000, true)}
-                  className="bg-gray-700 hover:bg-gray-600 text-white text-xs font-semibold py-2 px-3 rounded transition"
-                >
-                  - Kredi İptal
-                </button>
+            {/* Anlık Parite İzleme & Spread Tablosu */}
+            <div className="bg-[#0b0f17] border border-[#1c2638] rounded-2xl p-5 space-y-4 shadow-xl">
+              <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wide">
+                Canlı Parite Fiyatları & ECN Likidite Havuzu
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 font-mono text-xs">
+                {['EURUSD', 'XAUUSDX', 'NASDAQ.j', 'BTCUSD', 'BOOM1000', 'CRASH500'].map((sym) => {
+                  const p = prices[sym] || { bid: 100, ask: 100.1, high: 105, low: 95 };
+                  const sp = SYMBOL_SPECS[sym] || { digits: 2, name: sym };
+                  return (
+                    <div key={sym} className="bg-[#121824] p-3 rounded-xl border border-[#1d273a] space-y-1">
+                      <span className="text-white font-bold block">{sym}</span>
+                      <div className="text-blue-400 font-bold">{p.bid.toFixed(sp.digits)}</div>
+                      <div className="text-rose-400 font-bold">{p.ask.toFixed(sp.digits)}</div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Kaldıraç Değiştirme */}
-            <div className="mt-4">
-              <div className="text-xs text-[#8b949e] font-semibold mb-2">Kaldıraç Oranı:</div>
-              <div className="grid grid-cols-4 gap-1.5 font-mono text-xs">
-                {[50, 100, 200, 500].map((lev) => (
+          </div>
+        )}
+
+        {/* ----------------------------------------------------------------------- */}
+        {/* SEKME 4: MONTE CARLO KUMAR & PENETRASYON MOTORU */}
+        {/* ----------------------------------------------------------------------- */}
+        {activeTab === 'CASINO' && (
+          <div className="bg-[#0b0f17] border border-amber-500/30 rounded-2xl p-5 space-y-6 shadow-xl">
+            <div className="flex items-center justify-between pb-3 border-b border-amber-500/20">
+              <div>
+                <h2 className="text-base font-bold text-amber-300 flex items-center gap-2 font-serif">
+                  <span>🇲🇨</span> Monte Carlo Penetrasyon & Kasa Algoritması
+                </h2>
+                <p className="text-[11px] text-gray-400 font-mono">
+                  Rulet, Blackjack, Slot, Crash ve Mines oyunlarının kasa matematiğini belirleyiniz.
+                </p>
+              </div>
+
+              <div className="bg-[#181105] border border-amber-500/40 px-3 py-1 rounded-xl text-xs font-mono text-amber-300">
+                Aktif Kasa RTP: <strong>%{casinoCfg.rtpPercent}</strong>
+              </div>
+            </div>
+
+            {/* Penetrasyon Kademeleri */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
+              
+              {/* Normal */}
+              <button
+                onClick={() => handleUpdateCasinoPenetration('PURE_MONTE_CARLO')}
+                className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                  casinoCfg.penetrationMode === 'PURE_MONTE_CARLO'
+                    ? 'bg-amber-600/30 border-amber-400 text-white shadow-lg'
+                    : 'bg-[#121824] border-[#1d273a] text-gray-400 hover:text-white'
+                }`}
+              >
+                <div className="text-xs font-bold text-gray-400">KADEME 1</div>
+                <div className="text-sm font-bold text-amber-300">Saf Monte Carlo</div>
+                <p className="text-[11px] text-gray-400 font-sans">Monaco ve Vegas standartlarında bağımsız provably fair RNG.</p>
+              </button>
+
+              {/* Kazandır (Sweet Hook) */}
+              <button
+                onClick={() => handleUpdateCasinoPenetration('SWEET_HOOK')}
+                className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                  casinoCfg.penetrationMode === 'SWEET_HOOK'
+                    ? 'bg-emerald-600/30 border-emerald-400 text-white shadow-lg'
+                    : 'bg-[#121824] border-[#1d273a] text-gray-400 hover:text-emerald-400'
+                }`}
+              >
+                <div className="text-xs font-bold text-emerald-400">KADEME 2</div>
+                <div className="text-sm font-bold text-emerald-300">Kullanıcıyı Isıt (Hook)</div>
+                <p className="text-[11px] text-gray-400 font-sans">Kullanıcıya peş peşe 2x-20x kazanç vererek tutundur.</p>
+              </button>
+
+              {/* Kasa Kazanır (House Edge) */}
+              <button
+                onClick={() => handleUpdateCasinoPenetration('HOUSE_EDGE')}
+                className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                  casinoCfg.penetrationMode === 'HOUSE_EDGE'
+                    ? 'bg-rose-600/30 border-rose-400 text-white shadow-lg'
+                    : 'bg-[#121824] border-[#1d273a] text-gray-400 hover:text-rose-400'
+                }`}
+              >
+                <div className="text-xs font-bold text-rose-400">KADEME 3</div>
+                <div className="text-sm font-bold text-rose-300">Kasa Toplama Modu</div>
+                <p className="text-[11px] text-gray-400 font-sans">Büyük bahislerde kasa avantajını sertleştir.</p>
+              </button>
+
+              {/* Jackpot Tetikle (Force Jackpot) */}
+              <button
+                onClick={() => handleUpdateCasinoPenetration('FORCE_JACKPOT')}
+                className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                  casinoCfg.penetrationMode === 'FORCE_JACKPOT'
+                    ? 'bg-purple-600/30 border-purple-400 text-white shadow-lg'
+                    : 'bg-[#121824] border-[#1d273a] text-gray-400 hover:text-purple-400'
+                }`}
+              >
+                <div className="text-xs font-bold text-purple-400">KADEME 4</div>
+                <div className="text-sm font-bold text-purple-300">Kesin Jackpot Patlat!</div>
+                <p className="text-[11px] text-gray-400 font-sans">İlk çevirmede 5x Şanslı 777 Grand Jackpot patlatır.</p>
+              </button>
+
+            </div>
+
+            {/* RTP Ayarı */}
+            <div className="space-y-3 pt-2">
+              <span className="text-xs font-bold text-gray-300 font-mono block">RTP (Return to Player) Kademesi:</span>
+              <div className="grid grid-cols-4 gap-3 font-mono text-xs">
+                {[90, 94, 96.5, 98.5].map((rtp) => (
                   <button
-                    key={lev}
-                    onClick={() => handleUpdateLeverage(lev)}
-                    className={`py-1.5 rounded border transition font-bold ${
-                      userLeverage === lev 
-                        ? 'bg-blue-600 text-white border-blue-500' 
-                        : 'bg-[#0d1117] text-gray-300 border-[#30363d] hover:bg-[#21262d]'
+                    key={rtp}
+                    onClick={() => handleUpdateCasinoRTP(rtp)}
+                    className={`py-2.5 rounded-xl border font-bold transition ${
+                      casinoCfg.rtpPercent === rtp
+                        ? 'bg-amber-500 text-black border-yellow-300 shadow-md'
+                        : 'bg-[#121824] text-gray-300 border-[#1d273a] hover:text-white'
                     }`}
                   >
-                    1:{lev}
+                    %{rtp} RTP
                   </button>
                 ))}
               </div>
             </div>
-          </div>
 
-          {/* Canlı Konsol Logları */}
-          <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-5 shadow-lg">
-            <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-              <span>📜</span> Olay Günlüğü (Audit Log)
-            </h2>
-            <div className="bg-[#0d1117] p-3 rounded-lg border border-[#30363d] font-mono text-[11px] text-gray-400 space-y-1.5 max-h-56 overflow-y-auto">
-              {logMessages.map((msg, idx) => (
-                <div key={idx} className="leading-tight border-b border-[#30363d]/30 pb-1">
+          </div>
+        )}
+
+        {/* ----------------------------------------------------------------------- */}
+        {/* SEKME 5: SİSTEM DENETİM LOGLARI */}
+        {/* ----------------------------------------------------------------------- */}
+        {activeTab === 'LOGS' && (
+          <div className="bg-[#0b0f17] border border-[#1c2638] rounded-2xl p-5 space-y-4 shadow-xl font-mono text-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-[#182130]">
+              <h2 className="text-base font-bold text-white flex items-center gap-2">
+                <span>📋</span> Gerçek Zamanlı Denetim & İşlem Günlüğü
+              </h2>
+              <button
+                onClick={() => setLogMessages([])}
+                className="px-3 py-1 bg-[#161d2b] hover:bg-[#202a3d] text-gray-400 hover:text-white rounded-lg text-[11px] transition"
+              >
+                Logları Temizle
+              </button>
+            </div>
+
+            <div className="bg-[#06080d] p-4 rounded-xl border border-[#141b27] space-y-1.5 max-h-[450px] overflow-y-auto">
+              {logMessages.map((msg, i) => (
+                <div key={i} className="text-gray-300 leading-relaxed font-mono">
                   {msg}
                 </div>
               ))}
             </div>
           </div>
+        )}
 
-          {/* Stratejik Özet Kartı */}
-          <div className="bg-gradient-to-br from-[#161b22] to-[#1f2937] border border-blue-500/30 rounded-xl p-5 shadow-lg">
-            <h3 className="text-sm font-bold text-blue-400 mb-2 flex items-center gap-2">
-              <span>💡</span> Yeni FinTech Trendi: Prop Firm
-            </h3>
-            <p className="text-xs text-gray-300 leading-relaxed">
-              Dünyadaki en karlı model, kullanıcıya doğrudan sanal sınav açmaktır:
-              <strong> %10 Kâr Hedefi</strong>, <strong>%5 Max Drawdown</strong>. 
-              Sınavı geçen üyeye sanal 100.000$ bakiye tanımlanır ve kârından komisyon ödenir. Sıfır yasal risk, maksimum bağlılık!
-            </p>
-          </div>
+      </main>
 
-        </div>
-
-      </div>
     </div>
   );
 }

@@ -10,11 +10,23 @@ import MonteCarloSlotGame from '@/components/MonteCarloSlotGame';
 import NextGenArcadeHubModal from '@/components/NextGenArcadeHubModal';
 import MonteCarloGrandCasinoModal from '@/components/MonteCarloGrandCasinoModal';
 import GameTacticsGuideModal from '@/components/GameTacticsGuideModal';
+import AuthModal from '@/components/AuthModal';
+import { AuthStore, AuthUser } from '@/lib/authStore';
 import Decimal from 'decimal.js';
 import Link from 'next/link';
 import { calculateNextPrice, updateScenarioConfig } from '@/lib/scenarioEngine';
 
 export default function Home() {
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const u = AuthStore.getCurrentUser();
+      setCurrentUser(u);
+    }
+  }, []);
+
   const [account, setAccount] = useState<UserAccount>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('mt5_user_account');
@@ -264,6 +276,16 @@ export default function Home() {
 
   // Para Yatırma
   const handleDeposit = (amount: number) => {
+    // Admin Finans Kuyruğuna Bildir
+    AuthStore.addFinancialRequest({
+      userId: currentUser?.id || account.id,
+      userEmail: currentUser?.email || 'trader@exbina.com',
+      type: 'deposit',
+      amount,
+      method: depositMethod,
+      details: `${depositMethod} Hızlı Yatırım`
+    });
+
     setAccount((prev) => {
       const cloned: UserAccount = JSON.parse(JSON.stringify(prev));
       cloned.balance = new Decimal(cloned.balance).plus(amount).toNumber();
@@ -288,6 +310,16 @@ export default function Home() {
       alert(`Yetersiz serbest bakiye! Maksimum çekilebilir: $${account.freeMargin.toFixed(2)}`);
       return;
     }
+
+    // Admin Finans Masasına Çekim Bildirimi
+    AuthStore.addFinancialRequest({
+      userId: currentUser?.id || account.id,
+      userEmail: currentUser?.email || 'trader@exbina.com',
+      type: 'withdraw',
+      amount: val,
+      method: withdrawIban ? 'Banka Transferi' : 'USDT TRC20',
+      details: withdrawIban || 'TRC20 Kripto Cüzdanı'
+    });
 
     setAccount((prev) => {
       const cloned: UserAccount = JSON.parse(JSON.stringify(prev));
@@ -363,6 +395,14 @@ export default function Home() {
           </div>
 
           <button 
+            onClick={() => setIsAuthModalOpen(true)}
+            className="bg-[#121824] hover:bg-[#1a2335] border border-[#232c3d] text-gray-200 hover:text-white px-2.5 py-1 rounded text-[11px] transition flex items-center gap-1.5 font-mono"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            <span>{currentUser ? currentUser.name.split(' ')[0] : 'Giriş Yap'}</span>
+          </button>
+
+          <button 
             onClick={() => setActiveModal('deposit')}
             className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1 rounded transition text-[11px] shadow flex items-center gap-1"
           >
@@ -394,6 +434,8 @@ export default function Home() {
           onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
           onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
           onOpenTacticsGuide={() => setIsTacticsGuideOpen(true)}
+          currentUser={currentUser}
+          onOpenAuth={() => setIsAuthModalOpen(true)}
         />
       ) : (
         <div className="w-full h-[calc(100vh-37px)]">
@@ -617,6 +659,22 @@ export default function Home() {
         onOpenMines={() => {
           setIsTacticsGuideOpen(false);
           setIsArcadeHubOpen(true);
+        }}
+      />
+
+      {/* 8. KULLANICI DOSTU HIZLI ÜYELİK VE GİRİŞ MODALI */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onSuccess={(user) => {
+          setCurrentUser(user);
+          setAccount(prev => ({
+            ...prev,
+            id: user.id,
+            balance: user.balance,
+            credit: user.credit,
+            leverage: user.leverage
+          }));
         }}
       />
 
