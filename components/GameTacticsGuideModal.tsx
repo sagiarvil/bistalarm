@@ -29,55 +29,64 @@ export default function GameTacticsGuideModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-3 sm:p-6 overflow-y-auto animate-fadeIn select-none">
-      <div className="relative w-full max-w-4xl bg-gradient-to-b from-[#1c1206] via-[#101e14] to-[#07130b] border-4 border-[#d4af37] rounded-3xl shadow-[0_0_80px_rgba(212,175,55,0.4)] overflow-hidden flex flex-col my-auto text-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-2 sm:p-4 overflow-y-auto animate-fadeIn select-none">
+      <div className="relative w-full max-w-4xl max-h-[94vh] bg-gradient-to-b from-[#1c1206] via-[#101e14] to-[#07130b] border-4 border-[#d4af37] rounded-2xl sm:rounded-3xl shadow-[0_0_80px_rgba(212,175,55,0.4)] overflow-hidden flex flex-col my-auto text-white">
         
         {/* Üst Bar: Monte Carlo VIP Taktik ve Kazanç Manifestosu */}
-        <div className="bg-gradient-to-r from-[#2c1408] via-[#4d260c] to-[#2c1408] border-b-2 border-[#d4af37] p-5 flex items-center justify-between">
-          <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-600 border-2 border-yellow-200 flex items-center justify-center shadow-lg text-2xl">
+        <div className="bg-gradient-to-r from-[#2c1408] via-[#4d260c] to-[#2c1408] border-b-2 border-[#d4af37] p-3 sm:p-4 flex items-center justify-between gap-3 shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3.5">
+            <button
+              onClick={onClose}
+              className="px-2.5 sm:px-3 py-1.5 bg-[#3d1a0b] hover:bg-[#5a250e] border border-[#d4af37] text-yellow-300 hover:text-white rounded-xl text-xs font-bold font-serif transition flex items-center gap-1.5 shadow"
+              title="Rehberden Çıkış Yap"
+            >
+              <span>←</span>
+              <span>Geri Dön</span>
+            </button>
+
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-600 border-2 border-yellow-200 flex items-center justify-center shadow-lg text-xl">
               ⚡
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 font-serif tracking-wide">
-                  VIP KAZANMA MANİFESTOSU & TAKTİKLER
+                <h2 className="text-base sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 font-serif tracking-wide">
+                  VIP KAZANMA MANİFESTOSU
                 </h2>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-yellow-300 border border-yellow-400/50 uppercase tracking-widest font-mono">
-                  MONACO & VEGAS SIRLARI
+                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 text-yellow-300 border border-yellow-400/50 uppercase tracking-widest font-mono hidden sm:inline">
+                  MONACO SIRLARI
                 </span>
               </div>
-              <p className="text-xs text-amber-200/80 font-sans mt-0.5">
-                Burada Şans Değil; Cesaret, Hız ve Soğukkanlılık Konuşur! Bakiyeni Katlama Sanatı.
+              <p className="text-[11px] text-amber-200/80 font-sans hidden sm:block">
+                Şans Değil; Cesaret, Hız ve Soğukkanlılık! Bakiyeni Katlama Sanatı.
               </p>
             </div>
           </div>
 
           <button 
             onClick={onClose}
-            className="w-10 h-10 rounded-full bg-[#3d1a0b] hover:bg-rose-900 border border-[#d4af37] text-amber-200 flex items-center justify-center font-bold text-lg transition shadow"
+            className="w-8 h-8 rounded-full bg-[#3d1a0b] hover:bg-rose-900 border border-[#d4af37] text-amber-200 flex items-center justify-center font-bold text-sm transition shadow"
           >
             ✕
           </button>
         </div>
 
-        {/* Sekmeler */}
-        <div className="flex border-b border-[#d4af37]/30 bg-[#071a0e] px-4 pt-2.5 gap-2 text-xs font-serif overflow-x-auto">
+        {/* Sekmeler - KAYDIRMASIZ TEK EKRAN GRİD */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-b border-[#d4af37]/30 bg-[#071a0e] p-1.5 gap-1.5 text-xs font-serif shrink-0">
           {[
-            { id: 'ALL', label: '🌟 Tüm Oyunlar' },
-            { id: 'CRASH', label: '🚀 Rocket Crash' },
-            { id: 'MINES', label: '💎 Diamond Mines' },
-            { id: 'ROULETTE', label: '🎡 Avrupa Ruleti' },
-            { id: 'BLACKJACK', label: '♠️ VIP Blackjack' },
-            { id: 'SLOTS', label: '🍓 Vegas Fruit Slot' }
+            { id: 'ALL', label: '🌟 Tümü' },
+            { id: 'CRASH', label: '🚀 Rocket' },
+            { id: 'MINES', label: '💎 Mines' },
+            { id: 'ROULETTE', label: '🎡 Rulet' },
+            { id: 'BLACKJACK', label: '♠️ 21 VIP' },
+            { id: 'SLOTS', label: '🍓 Slots' }
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as GuideTab)}
-              className={`px-4 py-2.5 rounded-t-xl font-bold transition whitespace-nowrap tracking-wide ${
+              className={`px-2 py-2 rounded-lg font-bold transition flex items-center justify-center text-center tracking-wide ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-t from-[#0e3b22] to-[#165a34] text-yellow-300 border-t-2 border-x-2 border-[#d4af37] shadow-lg'
-                  : 'text-gray-400 hover:text-amber-200'
+                  ? 'bg-gradient-to-t from-[#0e3b22] to-[#165a34] text-yellow-300 border border-[#d4af37] shadow-lg'
+                  : 'text-gray-400 hover:text-amber-200 bg-[#05140b]'
               }`}
             >
               {tab.label}
@@ -85,8 +94,8 @@ export default function GameTacticsGuideModal({
           ))}
         </div>
 
-        {/* Ana İçerik Alanı */}
-        <div className="p-4 sm:p-6 space-y-6 max-h-[70vh] overflow-y-auto bg-[#051c0f]">
+        {/* Ana İçerik Alanı - Dikey Scroll Destekli */}
+        <div className="p-3 sm:p-5 space-y-5 overflow-y-auto flex-1 bg-[#051c0f]">
           
           {/* Üst Vurgulu İlham Kartı */}
           <div className="bg-gradient-to-r from-amber-600/30 via-yellow-500/20 to-amber-700/30 border-2 border-amber-400/50 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">

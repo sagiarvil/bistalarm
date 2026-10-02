@@ -489,55 +489,64 @@ export default function MonteCarloGrandCasinoModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-md p-2 sm:p-4 overflow-y-auto animate-fadeIn select-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-md p-2 sm:p-3 overflow-y-auto animate-fadeIn select-none">
       
-      {/* Monte Carlo Salle Garnier Ana Muhafaza Kutusu */}
-      <div className={`relative w-full max-w-5xl bg-gradient-to-b from-[#1b1008] via-[#0d1e12] to-[#051109] border-4 border-[#d4af37] rounded-3xl shadow-[0_0_80px_rgba(212,175,55,0.4)] overflow-hidden flex flex-col my-auto text-white transition-transform duration-200 ${
+      {/* Monte Carlo Salle Garnier Ana Muhafaza Kutusu - Ekrana Tam Dinamik Uyum */}
+      <div className={`relative w-full max-w-5xl max-h-[94vh] bg-gradient-to-b from-[#1b1008] via-[#0d1e12] to-[#051109] border-4 border-[#d4af37] rounded-2xl sm:rounded-3xl shadow-[0_0_80px_rgba(212,175,55,0.4)] overflow-hidden flex flex-col my-auto text-white transition-transform duration-200 ${
         screenShake ? 'scale-[1.01] translate-y-[-2px] ring-4 ring-yellow-400' : ''
       }`}>
         
         {/* Lüks Maun Ağacı ve Altın Barok Başlık */}
-        <div className="relative bg-gradient-to-r from-[#2a1408] via-[#4a240c] to-[#2a1408] border-b-2 border-[#d4af37] p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
+        <div className="relative bg-gradient-to-r from-[#2a1408] via-[#4a240c] to-[#2a1408] border-b-2 border-[#d4af37] p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full border-2 border-[#d4af37] bg-gradient-to-tr from-amber-700 to-yellow-300 flex items-center justify-center shadow-lg">
-              <span className="text-2xl">⚜️</span>
+            <button
+              onClick={onClose}
+              className="px-3 py-1.5 bg-[#3d1a0b] hover:bg-[#5a250e] border border-[#d4af37] text-yellow-300 hover:text-white rounded-xl text-xs font-bold font-serif transition flex items-center gap-1.5 shadow"
+              title="Salondan Çıkış Yap"
+            >
+              <span>←</span>
+              <span>Geri Dön</span>
+            </button>
+
+            <div className="w-10 h-10 rounded-full border-2 border-[#d4af37] bg-gradient-to-tr from-amber-700 to-yellow-300 flex items-center justify-center shadow-lg">
+              <span className="text-xl">⚜️</span>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-lg sm:text-2xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 font-serif">
+                <h1 className="text-base sm:text-xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 font-serif">
                   CASINO DE MONTE-CARLO
                 </h1>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-yellow-300 border border-yellow-400/50 uppercase tracking-widest font-mono">
-                  Fondé en 1863 • Monaco
+                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 text-yellow-300 border border-yellow-400/50 uppercase tracking-widest font-mono hidden sm:inline">
+                  Monaco
                 </span>
               </div>
-              <p className="text-xs text-amber-200/80 font-serif italic">
-                Salle Médecin & Salle Garnier VIP • Hautes Mises (High Roller)
+              <p className="text-[11px] text-amber-200/80 font-serif italic hidden sm:block">
+                Salle Médecin & Salle Garnier VIP • Hautes Mises
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="bg-[#062414] border-2 border-[#d4af37]/60 px-4 py-2 rounded-xl text-right font-mono shadow-inner">
-              <span className="text-[10px] text-amber-300/80 block uppercase tracking-wider">Crédit VIP</span>
-              <span className="text-lg font-black text-emerald-300">
+          <div className="flex items-center gap-3">
+            <div className="bg-[#062414] border-2 border-[#d4af37]/60 px-3 py-1.5 rounded-xl text-right font-mono shadow-inner">
+              <span className="text-[9px] text-amber-300/80 block uppercase tracking-wider">Crédit VIP</span>
+              <span className="text-sm sm:text-base font-black text-emerald-300">
                 ${userBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
 
             <button 
               onClick={onClose}
-              className="w-10 h-10 rounded-full bg-[#3d1a0b] hover:bg-rose-900 border border-[#d4af37] text-amber-200 flex items-center justify-center font-bold text-lg transition shadow"
+              className="w-8 h-8 rounded-full bg-[#3d1a0b] hover:bg-rose-900 border border-[#d4af37] text-amber-200 flex items-center justify-center font-bold text-sm transition shadow"
             >
               ✕
             </button>
           </div>
         </div>
 
-        {/* Canlı VIP Salon Akışı (Live Casino Atmosphere Broadcast) */}
-        <div className="bg-gradient-to-r from-[#140b05] via-[#241306] to-[#140b05] border-b border-[#d4af37]/30 px-4 py-1.5 flex items-center justify-between text-[11px] font-mono">
+        {/* Canlı VIP Salon Akışı */}
+        <div className="bg-gradient-to-r from-[#140b05] via-[#241306] to-[#140b05] border-b border-[#d4af37]/30 px-3 py-1 flex items-center justify-between text-[10px] font-mono shrink-0">
           <div className="flex items-center gap-2 overflow-hidden">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping shrink-0" />
             <span className="text-yellow-400 font-bold uppercase shrink-0 font-serif">
               [{MONTE_CARLO_VIP_MOCK_FEED[activeFeedIdx].salon}]
             </span>
@@ -548,73 +557,76 @@ export default function MonteCarloGrandCasinoModal({
               +${MONTE_CARLO_VIP_MOCK_FEED[activeFeedIdx].amount.toLocaleString()} ({MONTE_CARLO_VIP_MOCK_FEED[activeFeedIdx].multiplier})
             </span>
           </div>
-          <span className="text-gray-500 text-[10px] shrink-0 hidden sm:inline">
+          <span className="text-gray-500 text-[9px] shrink-0 hidden sm:inline">
             Canlı Monaco Yayını
           </span>
         </div>
 
-        {/* Oyun Seçim Menüsü (Salle Garnier Salonları) */}
-        <div className="flex border-b border-[#d4af37]/40 bg-[#071b10] px-4 pt-2 gap-2 text-xs font-serif overflow-x-auto">
+        {/* Oyun Seçim Menüsü - KAYDIRMASIZ TEK EKRAN GRİD (6'LI DİNAMİK BUTONLAR) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-b border-[#d4af37]/40 bg-[#071b10] p-1.5 gap-1.5 text-xs font-serif shrink-0">
           <button
             onClick={() => setActiveTab('ROULETTE')}
-            className={`px-6 py-3 rounded-t-xl font-bold transition flex items-center gap-2 whitespace-nowrap tracking-wide ${
+            className={`px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-center tracking-wide ${
               activeTab === 'ROULETTE'
-                ? 'bg-gradient-to-t from-[#0e3b22] to-[#165a34] text-yellow-300 border-t-2 border-x-2 border-[#d4af37] shadow-[0_-5px_15px_rgba(0,0,0,0.6)]'
-                : 'text-gray-400 hover:text-amber-200'
+                ? 'bg-gradient-to-t from-[#0e3b22] to-[#165a34] text-yellow-300 border border-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.3)]'
+                : 'text-gray-400 hover:text-amber-200 bg-[#05140b]'
             }`}
           >
-            <span className="text-base">🎡</span> Roulette Européenne (Tek Sıfır)
+            <span>🎡</span> Rulet (Tek 0)
           </button>
 
           <button
             onClick={() => setActiveTab('BLACKJACK')}
-            className={`px-6 py-3 rounded-t-xl font-bold transition flex items-center gap-2 whitespace-nowrap tracking-wide ${
+            className={`px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-center tracking-wide ${
               activeTab === 'BLACKJACK'
-                ? 'bg-gradient-to-t from-[#0e3b22] to-[#165a34] text-yellow-300 border-t-2 border-x-2 border-[#d4af37] shadow-[0_-5px_15px_rgba(0,0,0,0.6)]'
-                : 'text-gray-400 hover:text-amber-200'
+                ? 'bg-gradient-to-t from-[#0e3b22] to-[#165a34] text-yellow-300 border border-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.3)]'
+                : 'text-gray-400 hover:text-amber-200 bg-[#05140b]'
             }`}
           >
-            <span className="text-base">♠️</span> Blackjack VIP Monaco 21
+            <span>♠️</span> Blackjack 21
           </button>
 
           <button
             onClick={() => setActiveTab('BACCARAT')}
-            className={`px-6 py-3 rounded-t-xl font-bold transition flex items-center gap-2 whitespace-nowrap tracking-wide ${
+            className={`px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-center tracking-wide ${
               activeTab === 'BACCARAT'
-                ? 'bg-gradient-to-t from-[#0e3b22] to-[#165a34] text-yellow-300 border-t-2 border-x-2 border-[#d4af37] shadow-[0_-5px_15px_rgba(0,0,0,0.6)]'
-                : 'text-gray-400 hover:text-amber-200'
+                ? 'bg-gradient-to-t from-[#0e3b22] to-[#165a34] text-yellow-300 border border-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.3)]'
+                : 'text-gray-400 hover:text-amber-200 bg-[#05140b]'
             }`}
           >
-            <span className="text-base">👑</span> Baccarat Punto Banco
+            <span>👑</span> Baccarat Banco
           </button>
 
           {onOpenTacticsGuide && (
             <button
               onClick={() => { onClose(); onOpenTacticsGuide(); }}
-              className="px-4 py-3 rounded-t-xl font-bold transition flex items-center gap-1.5 whitespace-nowrap text-yellow-300 hover:text-yellow-100 hover:bg-yellow-500/20 border border-yellow-500/40 bg-yellow-950/40 ml-auto"
+              className="px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1 text-yellow-300 hover:text-yellow-100 hover:bg-yellow-500/20 border border-yellow-500/40 bg-yellow-950/40 text-center"
             >
-              <span>⚡</span> VIP Taktik Manifestosu
+              <span>⚡</span> Taktik Manifestosu
             </button>
           )}
 
           {onOpenSlots && (
             <button
               onClick={() => { onClose(); onOpenSlots(); }}
-              className={`px-5 py-3 rounded-t-xl font-bold transition flex items-center gap-1.5 whitespace-nowrap text-amber-400 hover:text-amber-200 hover:bg-amber-500/10 border border-amber-500/30 ${!onOpenTacticsGuide ? 'ml-auto' : ''}`}
+              className="px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1 text-amber-400 hover:text-amber-200 hover:bg-amber-500/10 border border-amber-500/30 bg-[#05140b] text-center"
             >
-              <span>🍓</span> Vegas VIP Slots
+              <span>🍓</span> Vegas Slots
             </button>
           )}
 
           {onOpenArcade && (
             <button
               onClick={() => { onClose(); onOpenArcade(); }}
-              className="px-5 py-3 rounded-t-xl font-bold transition flex items-center gap-1.5 whitespace-nowrap text-cyan-400 hover:text-cyan-200 hover:bg-cyan-500/10 border border-cyan-500/30"
+              className="px-2 py-2 rounded-lg font-bold transition flex items-center justify-center gap-1 text-cyan-400 hover:text-cyan-200 hover:bg-cyan-500/10 border border-cyan-500/30 bg-[#05140b] text-center"
             >
               <span>🎮</span> Nova Arcade
             </button>
           )}
         </div>
+
+        {/* İÇ OYUN ALANI - DİKEYDE SERBEST KAYDIRILABİLİR (FLEX-1 OVERFLOW-Y-AUTO) */}
+        <div className="flex-1 overflow-y-auto">
 
         {/* ================================================================== */}
         {/* 1. SEKME: MONTE CARLO AVRUPA RULETİ (CANVAS ÇARK & FİLDİŞİ TOP) */}
@@ -1157,6 +1169,7 @@ export default function MonteCarloGrandCasinoModal({
           </div>
         )}
 
+        </div>
       </div>
     </div>
   );

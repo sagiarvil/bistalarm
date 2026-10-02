@@ -294,28 +294,37 @@ export default function MonteCarloSlotGame({
   const cfg = loadCasinoConfig();
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-2 sm:p-4 overflow-y-auto select-none">
       
-      {/* Oyun Konsolu */}
-      <div className="relative w-full max-w-4xl bg-gradient-to-b from-[#150d2a] via-[#0d071a] to-[#080410] border-2 border-amber-500/40 rounded-3xl shadow-[0_0_60px_rgba(245,158,11,0.25)] overflow-hidden flex flex-col my-auto">
+      {/* Oyun Konsolu - Ekrana Tam Dinamik Uyum */}
+      <div className="relative w-full max-w-4xl max-h-[94vh] bg-gradient-to-b from-[#150d2a] via-[#0d071a] to-[#080410] border-2 border-amber-500/40 rounded-2xl sm:rounded-3xl shadow-[0_0_60px_rgba(245,158,11,0.25)] overflow-hidden flex flex-col my-auto">
         
         {/* Üst Bar */}
-        <div className="flex items-center justify-between px-5 py-3.5 bg-gradient-to-r from-amber-600/20 via-purple-600/20 to-amber-600/20 border-b border-amber-500/30">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-xl shadow-lg animate-pulse">
+        <div className="flex items-center justify-between px-3 sm:px-5 py-3 bg-gradient-to-r from-amber-600/20 via-purple-600/20 to-amber-600/20 border-b border-amber-500/30 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => { setAutoSpin(false); onClose(); }}
+              className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-amber-950/60 hover:bg-amber-900 border border-amber-500/40 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition shadow"
+              title="Slot Oyunundan Çıkış Yap"
+            >
+              <span>←</span>
+              <span>Geri Dön</span>
+            </button>
+
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-lg shadow-lg animate-pulse">
               🍓
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-lg font-black text-amber-300 tracking-wider">
-                  MONTE CARLO • ÇİLEK & ANANAS VIP SLOTS
+                <h2 className="text-sm sm:text-base font-black text-amber-300 tracking-wider">
+                  ÇİLEK & ANANAS VIP SLOTS
                 </h2>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
+                <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30 hidden sm:inline">
                   RTP %{cfg.rtpPercent}
                 </span>
               </div>
-              <span className="text-[10px] text-gray-400 font-mono">
-                Provably Fair SHA-256 Kriptografik Kasa Motoru
+              <span className="text-[9px] text-gray-400 font-mono hidden sm:inline">
+                Provably Fair SHA-256 Kriptografik Kasa
               </span>
             </div>
           </div>
@@ -324,15 +333,15 @@ export default function MonteCarloSlotGame({
             {onOpenTacticsGuide && (
               <button
                 onClick={() => { setAutoSpin(false); onClose(); onOpenTacticsGuide(); }}
-                className="px-3 py-1.5 rounded-xl bg-amber-950/60 hover:bg-amber-900 border border-yellow-500/50 text-yellow-300 font-bold text-xs flex items-center gap-1 transition shadow"
+                className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-amber-950/60 hover:bg-amber-900 border border-yellow-500/50 text-yellow-300 font-bold text-xs flex items-center gap-1 transition shadow"
               >
-                <span>⚡</span> Taktikler
+                <span>⚡</span> <span className="hidden sm:inline">Taktikler</span>
               </button>
             )}
 
             <button
               onClick={() => { setAutoSpin(false); onClose(); }}
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center font-bold text-sm transition"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center font-bold text-xs sm:text-sm transition"
             >
               ✕
             </button>
@@ -340,9 +349,9 @@ export default function MonteCarloSlotGame({
         </div>
 
         {/* Canlı VIP Kazanç Yayını (Monte Carlo Slot Hub) */}
-        <div className="bg-[#0b0416] border-b border-amber-500/20 px-4 py-1.5 flex items-center justify-between text-[11px] font-mono">
+        <div className="bg-[#0b0416] border-b border-amber-500/20 px-3 py-1 flex items-center justify-between text-[10px] font-mono shrink-0">
           <div className="flex items-center gap-2 overflow-hidden">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping shrink-0" />
             <span className="text-yellow-400 font-bold uppercase font-serif shrink-0">
               [{MONTE_CARLO_VIP_MOCK_FEED[vipFeedIdx].salon}]
             </span>
@@ -353,13 +362,13 @@ export default function MonteCarloSlotGame({
               +${MONTE_CARLO_VIP_MOCK_FEED[vipFeedIdx].amount.toLocaleString()} ({MONTE_CARLO_VIP_MOCK_FEED[vipFeedIdx].multiplier})
             </span>
           </div>
-          <span className="text-gray-500 text-[10px] shrink-0 hidden sm:inline">
+          <span className="text-gray-500 text-[9px] shrink-0 hidden sm:inline">
             Canlı Casino Yayını
           </span>
         </div>
 
-        {/* Ana Makine Gövdesi */}
-        <div className="p-4 sm:p-6 space-y-5">
+        {/* Ana Makine Gövdesi - Dikey Taşmayı Önleyen Scroll Alanı */}
+        <div className="p-3 sm:p-5 space-y-4 overflow-y-auto flex-1">
           
           {/* Jackpot Paneli */}
           <div className="bg-gradient-to-r from-rose-900/40 via-amber-900/40 to-purple-900/40 border border-amber-500/40 rounded-2xl p-3 flex items-center justify-between text-center font-mono">

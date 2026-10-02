@@ -453,6 +453,7 @@ export default function Home() {
             onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
             onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
             onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
+            onBackToPortal={() => setMainView('portal')}
           />
         </div>
       )}

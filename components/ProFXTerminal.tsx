@@ -35,6 +35,7 @@ interface ProFXTerminalProps {
   onOpenCasinoSlot?: () => void;
   onOpenArcadeHub?: () => void;
   onOpenGrandCasino?: () => void;
+  onBackToPortal?: () => void;
 }
 
 interface Candle {
@@ -59,7 +60,8 @@ export default function ProFXTerminal({
   onOpenNextGenHub,
   onOpenCasinoSlot,
   onOpenArcadeHub,
-  onOpenGrandCasino
+  onOpenGrandCasino,
+  onBackToPortal
 }: ProFXTerminalProps) {
   // Seçili Sembol & Kategori
   const [selectedSymbol, setSelectedSymbol] = useState<string>('NASDAQ.j');
@@ -428,8 +430,19 @@ export default function ProFXTerminal({
       {/* ========================================================================= */}
       <header className="h-12 bg-[#0b0e14] border-b border-[#1b2230] px-3 flex items-center justify-between z-30 shrink-0">
         
-        {/* Sol Logo & Sembol Seçici (Mobilde tıklayınca parite listesini açar) */}
-        <div className="flex items-center gap-3">
+        {/* Sol Logo, Geri Dön & Sembol Seçici */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {onBackToPortal && (
+            <button
+              onClick={onBackToPortal}
+              className="flex items-center gap-1 px-2.5 py-1 bg-[#141b27] hover:bg-[#1d2738] border border-[#263449] text-emerald-400 hover:text-white rounded-lg text-xs font-bold transition shadow-sm"
+              title="Kurumsal Portala Geri Dön"
+            >
+              <span>←</span>
+              <span className="hidden sm:inline">Portala Dön</span>
+            </button>
+          )}
+
           <div 
             onClick={() => setMobileTab('quotes')}
             className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition"

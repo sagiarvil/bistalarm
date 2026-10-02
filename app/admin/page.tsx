@@ -164,7 +164,15 @@ export default function AdminPage() {
       {/* 1. ÜST DEALER YÖNETİM ÇUBUĞU */}
       {/* ========================================================================= */}
       <header className="sticky top-0 z-50 bg-[#090d14]/95 backdrop-blur-md border-b border-[#1b2434] px-4 lg:px-8 py-3 flex items-center justify-between shadow-xl">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/"
+            className="px-3 py-1.5 bg-[#141b27] hover:bg-[#1d2738] border border-[#263449] text-emerald-400 hover:text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm"
+          >
+            <span>←</span>
+            <span>Geri Dön</span>
+          </Link>
+
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center font-black text-white text-sm shadow-[0_0_15px_rgba(41,121,255,0.4)]">
               ⚙️
@@ -176,7 +184,7 @@ export default function AdminPage() {
                   MASTER DEALER & CRM
                 </span>
               </div>
-              <span className="text-[10px] text-gray-400 font-mono">
+              <span className="text-[10px] text-gray-400 font-mono hidden sm:inline">
                 Tier-1 Banka Likidite Masası & Risk Yönetim Konsolu
               </span>
             </div>
@@ -210,58 +218,58 @@ export default function AdminPage() {
       )}
 
       {/* ========================================================================= */}
-      {/* 2. YÖNETİM SEKMELERİ */}
+      {/* 2. YÖNETİM SEKMELERİ - KAYDIRMASIZ DİNAMİK GRİD */}
       {/* ========================================================================= */}
-      <div className="bg-[#0b0f17] border-b border-[#182232] px-4 lg:px-8 py-2">
-        <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto text-xs font-mono font-bold">
+      <div className="bg-[#0b0f17] border-b border-[#182232] px-3 lg:px-8 py-2">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-xs font-mono font-bold">
           
           <button
             onClick={() => setActiveTab('USERS')}
-            className={`px-4 py-2 rounded-xl transition flex items-center gap-2 whitespace-nowrap ${
+            className={`px-3 py-2 rounded-xl transition flex items-center justify-center gap-1.5 text-center ${
               activeTab === 'USERS'
                 ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
                 : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'
             }`}
           >
-            <span>👥</span> Üye & Hesap Yönetimi ({users.length})
+            <span>👥</span> Üye Yönetimi ({users.length})
           </button>
 
           <button
             onClick={() => setActiveTab('FINANCE')}
-            className={`px-4 py-2 rounded-xl transition flex items-center gap-2 whitespace-nowrap ${
+            className={`px-3 py-2 rounded-xl transition flex items-center justify-center gap-1.5 text-center ${
               activeTab === 'FINANCE'
                 ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
                 : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'
             }`}
           >
-            <span>💳</span> Para Yatırma / Çekme ({requests.filter(r => r.status === 'pending').length})
+            <span>💳</span> Finans Onay ({requests.filter(r => r.status === 'pending').length})
           </button>
 
           <button
             onClick={() => setActiveTab('MARKETS')}
-            className={`px-4 py-2 rounded-xl transition flex items-center gap-2 whitespace-nowrap ${
+            className={`px-3 py-2 rounded-xl transition flex items-center justify-center gap-1.5 text-center ${
               activeTab === 'MARKETS'
                 ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
                 : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'
             }`}
           >
-            <span>📈</span> Fiyat & Senaryo Motoru
+            <span>📈</span> Fiyat & Senaryo
           </button>
 
           <button
             onClick={() => setActiveTab('CASINO')}
-            className={`px-4 py-2 rounded-xl transition flex items-center gap-2 whitespace-nowrap ${
+            className={`px-3 py-2 rounded-xl transition flex items-center justify-center gap-1.5 text-center ${
               activeTab === 'CASINO'
                 ? 'bg-amber-600 text-white shadow-[0_0_15px_rgba(245,158,11,0.35)]'
                 : 'bg-[#121722] text-amber-400 hover:text-white border border-amber-500/20'
             }`}
           >
-            <span>🎰</span> Monte Carlo Penetrasyon
+            <span>🎰</span> Monte Carlo
           </button>
 
           <button
             onClick={() => setActiveTab('LOGS')}
-            className={`px-4 py-2 rounded-xl transition flex items-center gap-2 whitespace-nowrap ${
+            className={`px-3 py-2 rounded-xl transition flex items-center justify-center gap-1.5 text-center col-span-2 sm:col-span-1 ${
               activeTab === 'LOGS'
                 ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
                 : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'

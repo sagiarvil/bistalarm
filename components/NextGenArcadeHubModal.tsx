@@ -226,52 +226,70 @@ export default function NextGenArcadeHubModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-2 sm:p-4 overflow-y-auto select-none">
       
-      <div className="relative w-full max-w-4xl bg-gradient-to-b from-[#101424] via-[#090c17] to-[#05070e] border-2 border-indigo-500/40 rounded-3xl shadow-[0_0_60px_rgba(99,102,241,0.25)] overflow-hidden flex flex-col my-auto">
+      <div className="relative w-full max-w-4xl max-h-[94vh] bg-gradient-to-b from-[#101424] via-[#090c17] to-[#05070e] border-2 border-indigo-500/40 rounded-2xl sm:rounded-3xl shadow-[0_0_60px_rgba(99,102,241,0.25)] overflow-hidden flex flex-col my-auto">
         
         {/* Üst Başlık & Oyun Seçici Sekmeler */}
-        <div className="flex flex-col sm:flex-row items-center justify-between px-5 py-4 bg-[#070913]/90 border-b border-indigo-500/30 gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-xl shadow-lg">
-              🚀
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-lg font-black text-white tracking-wide">
-                  NOVA ARCADE • YENİ NESİL MİNİ OYUNLAR
-                </h2>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
-                  7/24 SANAL OYNA
+        <div className="flex flex-col sm:flex-row items-center justify-between px-3 sm:px-5 py-3 bg-[#070913]/90 border-b border-indigo-500/30 gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-start">
+            <button
+              onClick={onClose}
+              className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-indigo-950/60 hover:bg-indigo-900 border border-indigo-500/40 text-indigo-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition shadow"
+              title="Arcade Salonundan Çıkış Yap"
+            >
+              <span>←</span>
+              <span>Geri Dön</span>
+            </button>
+
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-lg shadow-lg">
+                🚀
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-sm sm:text-base font-black text-white tracking-wide">
+                    NOVA ARCADE
+                  </h2>
+                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30 hidden sm:inline">
+                    7/24 SANAL
+                  </span>
+                </div>
+                <span className="text-[9px] text-gray-400 font-mono hidden sm:inline">
+                  Bakiye: ${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </div>
-              <span className="text-[10px] text-gray-400 font-mono">
-                Bakiye: ${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })} • Provably Fair RNG
-              </span>
             </div>
+
+            <button
+              onClick={onClose}
+              className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center font-bold text-xs transition sm:hidden"
+            >
+              ✕
+            </button>
           </div>
 
-          {/* Sekmeler */}
-          <div className="flex items-center gap-1.5 bg-[#141a2e] p-1 rounded-xl border border-indigo-500/30 text-xs font-bold">
+          {/* Sekmeler - KAYDIRMASIZ TEK EKRAN GRİD */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-[#141a2e] p-1 rounded-xl border border-indigo-500/30 text-xs font-bold w-full sm:w-auto">
             <button
               onClick={() => setActiveTab('CRASH_ROCKET')}
-              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
                 activeTab === 'CRASH_ROCKET' ? 'bg-gradient-to-r from-rose-600 to-orange-500 text-white shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
-              <span>🚀</span> Roket Crash
+              <span>🚀</span> Roket
             </button>
             <button
               onClick={() => setActiveTab('CRYPTO_MINES')}
-              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
                 activeTab === 'CRYPTO_MINES' ? 'bg-gradient-to-r from-cyan-600 to-blue-500 text-white shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
-              <span>💎</span> Elmas Mayın
+              <span>💎</span> Mayın
             </button>
             <button
               onClick={() => setActiveTab('PLINKO_PIN')}
-              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
                 activeTab === 'PLINKO_PIN' ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-black shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
@@ -280,25 +298,25 @@ export default function NextGenArcadeHubModal({
             {onOpenSlotGame && (
               <button
                 onClick={() => { onClose(); onOpenSlotGame(); }}
-                className="px-3 py-1.5 rounded-lg text-amber-300 hover:text-white transition flex items-center gap-1"
+                className="px-3 py-1.5 rounded-lg text-amber-300 hover:text-white transition flex items-center justify-center gap-1 text-center"
               >
-                <span>🍓</span> Çilek Slot
+                <span>🍓</span> Çilek
               </button>
             )}
           </div>
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center font-bold text-sm transition"
+            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white hidden sm:flex items-center justify-center font-bold text-sm transition"
           >
             ✕
           </button>
         </div>
 
         {/* ========================================================================= */}
-        {/* OYUN ALANI GÖVDESİ */}
+        {/* OYUN ALANI GÖVDESİ - DİKEY SCROLL DESTEKLİ */}
         {/* ========================================================================= */}
-        <div className="p-4 sm:p-6 space-y-5">
+        <div className="p-3 sm:p-5 space-y-4 overflow-y-auto flex-1">
           
           {/* 1. OYUN: ROKET CRASH (AVIATOR STİLİ) */}
           {activeTab === 'CRASH_ROCKET' && (
