@@ -315,7 +315,7 @@ export default function GlobalFXPortal({
                 Küresel Piyasalara Tek Platformdan Erişin
               </h2>
               <p className="text-xs text-gray-400 mt-1">
-                Tüm kategoriler kendi bağımsız fiyat akışına, canlı sinyal algoritmasına ve ECN likiditesine bağlıdır.
+                Tüm kategoriler kendi bağımsız canlı piyasa derinliğine, teknik fiyat analitiğine ve doğrudan ECN likiditesine bağlıdır.
               </p>
             </div>
 
@@ -473,7 +473,7 @@ export default function GlobalFXPortal({
               <ul className="text-xs text-gray-300 space-y-1.5 font-mono border-t border-[#182030] pt-2.5">
                 <li>✓ $5 ile Büyük Pozisyon</li>
                 <li>✓ Kademeli Teminat Koruması</li>
-                <li>✓ Hızlı Scalp Robotları</li>
+                <li>✓ Profesyonel Hızlı Scalp Emirleri</li>
                 <li>✓ Sıfır Negatif Bakiye</li>
               </ul>
             </div>
@@ -785,7 +785,7 @@ export default function GlobalFXPortal({
                 Otomatik ve Kesintisiz Finansal Ağlar
               </h2>
               <p className="text-xs text-gray-400 mt-1">
-                İnsan onayı beklemeden, bot doğrulamasıyla anında para yatırma ve 7/24 otomatik çekim.
+                Kuyruk beklemeden, bankacılık ve blokzincir API mutabakatıyla anında para yatırma ve 7/24 kesintisiz çekim.
               </p>
             </div>
             <div className="flex items-center gap-2">

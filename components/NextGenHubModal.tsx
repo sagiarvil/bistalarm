@@ -332,9 +332,9 @@ export default function NextGenHubModal({
           {activeTab === 'copy' && (
             <div className="space-y-4">
               <div className="bg-gradient-to-r from-emerald-900/20 to-teal-900/20 border border-emerald-500/30 rounded-xl p-4">
-                <h3 className="font-bold text-white text-sm mb-1">Yapay Zeka & Usta Trader Kopya Ticareti</h3>
+                <h3 className="font-bold text-white text-sm mb-1">Kıdemli Portföy Yöneticileri & Kopya Ticareti</h3>
                 <p className="text-xs text-gray-300 leading-relaxed">
-                  Piyasayı analiz etmeye vaktiniz yok mu? Platformumuzun en yüksek kârlılığa sahip otomatik algoritmalarını ve profesyonel fon yöneticilerini tek tıkla kopyalayın.
+                  Piyasayı analiz etmeye vaktiniz yok mu? Platformumuzun en yüksek getiri sağlayan lisanslı fon yöneticilerini ve tecrübeli trader&apos;larını tek tıkla kopyalayın.
                 </p>
               </div>
 
@@ -348,8 +348,8 @@ export default function NextGenHubModal({
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-white text-sm">Quant Alpha (HFT Algo)</span>
-                        <span className="bg-blue-500/20 text-blue-400 text-[10px] px-1.5 py-0.2 rounded">BOT</span>
+                        <span className="font-bold text-white text-sm">Quant Alpha (Hedge Fund Desk)</span>
+                        <span className="bg-blue-500/20 text-blue-400 text-[10px] px-1.5 py-0.2 rounded font-bold">FON</span>
                       </div>
                       <span className="text-[11px] text-gray-400 font-sans">Kazanma Oranı: %94.2 • 30G Kâr: +$42,800 • 1,420 Takipçi</span>
                     </div>
