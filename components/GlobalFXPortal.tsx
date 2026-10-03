@@ -534,10 +534,46 @@ export default function GlobalFXPortal({
             </div>
           </div>
 
-          {/* 4 Ana Oyun Kartı */}
+          {/* 4 Ana Oyun Kartı - En Çok Oynanandan En Az Oynanana Göre Sıralı */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             
-            {/* 1. Monte Carlo Rulet */}
+            {/* 1. Çilek & Ananas VIP Slots (EN ÇOK OYNANAN - 1. SIRA) */}
+            <div className="bg-[#140e06]/80 border border-rose-500/50 hover:border-yellow-400 rounded-2xl p-5 space-y-3 flex flex-col justify-between transition-all hover:scale-[1.02] shadow-[0_0_20px_rgba(244,63,94,0.15)] group relative">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-2xl">🍓</span>
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40">🔥 500x JACKPOT • #1 POPÜLER</span>
+                </div>
+                <h3 className="text-base font-black text-amber-200 font-serif">Çilek & Ananas VIP Slot</h3>
+                <p className="text-[11px] text-gray-300 leading-relaxed">
+                  Retro mekanik makara fiziği, Golden Tension gerilim dönüşü, anında durdurma ve scatter ödülü.
+                </p>
+                <div className="text-[11px] font-mono text-amber-400/90 pt-1">
+                  Strateji: <span className="text-yellow-200">Dinamik Bahis & Auto Limiti</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 pt-2">
+                {onOpenCasinoSlot && (
+                  <button
+                    onClick={onOpenCasinoSlot}
+                    className="flex-1 py-2 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-black rounded-xl text-xs transition shadow-lg active:scale-95"
+                  >
+                    🎰 Makarayı Çevir
+                  </button>
+                )}
+                {onOpenTacticsGuide && (
+                  <button
+                    onClick={onOpenTacticsGuide}
+                    className="p-2 bg-amber-950/60 hover:bg-amber-900 border border-yellow-500/40 text-yellow-300 rounded-xl text-xs transition"
+                    title="Slot Taktikleri"
+                  >
+                    ⚡
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* 2. Monte Carlo Rulet (2. SIRA) */}
             <div className="bg-[#140e06]/80 border border-amber-500/30 hover:border-yellow-400 rounded-2xl p-5 space-y-3 flex flex-col justify-between transition-all hover:scale-[1.02] shadow-lg group">
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
@@ -556,7 +592,7 @@ export default function GlobalFXPortal({
                 {onOpenGrandCasino && (
                   <button
                     onClick={onOpenGrandCasino}
-                    className="flex-1 py-2 bg-amber-600 hover:bg-amber-500 text-black font-black rounded-xl text-xs transition shadow"
+                    className="flex-1 py-2 bg-amber-600 hover:bg-amber-500 text-black font-black rounded-xl text-xs transition shadow active:scale-95"
                   >
                     Masaya Otur
                   </button>
@@ -573,7 +609,7 @@ export default function GlobalFXPortal({
               </div>
             </div>
 
-            {/* 2. Monaco VIP Blackjack 21 */}
+            {/* 3. Monaco VIP Blackjack 21 (3. SIRA) */}
             <div className="bg-[#140e06]/80 border border-amber-500/30 hover:border-yellow-400 rounded-2xl p-5 space-y-3 flex flex-col justify-between transition-all hover:scale-[1.02] shadow-lg group">
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
@@ -592,7 +628,7 @@ export default function GlobalFXPortal({
                 {onOpenGrandCasino && (
                   <button
                     onClick={onOpenGrandCasino}
-                    className="flex-1 py-2 bg-amber-600 hover:bg-amber-500 text-black font-black rounded-xl text-xs transition shadow"
+                    className="flex-1 py-2 bg-amber-600 hover:bg-amber-500 text-black font-black rounded-xl text-xs transition shadow active:scale-95"
                   >
                     Dağıtımı Başlat
                   </button>
@@ -602,42 +638,6 @@ export default function GlobalFXPortal({
                     onClick={onOpenTacticsGuide}
                     className="p-2 bg-amber-950/60 hover:bg-amber-900 border border-yellow-500/40 text-yellow-300 rounded-xl text-xs transition"
                     title="Blackjack Taktikleri"
-                  >
-                    ⚡
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* 3. Çilek & Ananas VIP Slots */}
-            <div className="bg-[#140e06]/80 border border-amber-500/30 hover:border-yellow-400 rounded-2xl p-5 space-y-3 flex flex-col justify-between transition-all hover:scale-[1.02] shadow-lg group">
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-2xl">🍓</span>
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40">500x JACKPOT</span>
-                </div>
-                <h3 className="text-base font-black text-amber-200 font-serif">Çilek & Ananas VIP Slot</h3>
-                <p className="text-[11px] text-gray-300 leading-relaxed">
-                  Retro mekanik makara fiziği, Golden Tension gerilim dönüşü, anında durdurma ve scatter ödülü.
-                </p>
-                <div className="text-[11px] font-mono text-amber-400/90 pt-1">
-                  Strateji: <span className="text-yellow-200">Dinamik Bahis & Auto Limiti</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 pt-2">
-                {onOpenCasinoSlot && (
-                  <button
-                    onClick={onOpenCasinoSlot}
-                    className="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-xl text-xs transition shadow"
-                  >
-                    Makarayı Çevir
-                  </button>
-                )}
-                {onOpenTacticsGuide && (
-                  <button
-                    onClick={onOpenTacticsGuide}
-                    className="p-2 bg-amber-950/60 hover:bg-amber-900 border border-yellow-500/40 text-yellow-300 rounded-xl text-xs transition"
-                    title="Slot Taktikleri"
                   >
                     ⚡
                   </button>

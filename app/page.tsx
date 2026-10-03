@@ -434,7 +434,7 @@ export default function Home() {
           onOpenNextGen={() => setIsNextGenOpen(true)}
           onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
           onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
-          onOpenGrandCasino={() => setIsCasinoSlotOpen(true)}
+          onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
           onOpenTacticsGuide={() => setIsTacticsGuideOpen(true)}
           currentUser={currentUser}
           onOpenAuth={() => setIsAuthModalOpen(true)}
@@ -459,7 +459,7 @@ export default function Home() {
               onOpenNextGenHub={() => setIsNextGenOpen(true)}
               onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
               onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
-              onOpenGrandCasino={() => setIsCasinoSlotOpen(true)}
+              onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
               onBackToPortal={() => setMainView('portal')}
             />
           </div>
