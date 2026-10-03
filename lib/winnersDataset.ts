@@ -563,10 +563,18 @@ export const CASINO_GAMES_POOL = [
 
 export const WINNERS_SCENARIOS_500: WinnerItem[] = Array.from({ length: 50 }, (_, i) => {
   const game = CASINO_GAMES_POOL[i % CASINO_GAMES_POOL.length];
-  const mult = Math.floor(game.minM + Math.random() * (game.maxM - game.minM));
-  const bet = [100, 200, 500, 1000][Math.floor(Math.random() * 4)];
+  
+  // DETERMINISTIC VALUES FOR SSR HYDRATION MATCH
+  // Instead of Math.random(), we use pseudo-random logic based on index 'i'
+  const pseudoRandom1 = ((i * 13) % 100) / 100;
+  const pseudoRandom2 = ((i * 17) % 100) / 100;
+  
+  const mult = Math.floor(game.minM + pseudoRandom1 * (game.maxM - game.minM));
+  const betOptions = [100, 200, 500, 1000];
+  const bet = betOptions[i % 4];
+  
   return {
-    id: `w-${i}-${Date.now()}`,
+    id: `w-${i}-static`,
     user: MASKED_TURKISH_NAMES_500[i % MASKED_TURKISH_NAMES_500.length],
     avatar: AVATARS_POOL[i % AVATARS_POOL.length],
     game: game.game,

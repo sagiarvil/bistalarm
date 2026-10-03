@@ -1,4 +1,5 @@
-'use client';
+file_path = "components/AuthModal.tsx"
+new_content = """'use client';
 
 import React, { useState } from 'react';
 import { auth, googleProvider, signInWithPopup } from '../lib/firebase';
@@ -263,3 +264,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
     </div>
   );
 }
+"""
+
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(new_content)
+
