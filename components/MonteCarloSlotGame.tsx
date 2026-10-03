@@ -40,6 +40,21 @@ export default function MonteCarloSlotGame({
   const [rulesOpen, setRulesOpen] = useState<boolean>(false);
   const [vipFeedIdx, setVipFeedIdx] = useState<number>(0);
 
+  
+  const renderSymbol = (sym: any) => {
+    // Elegant, glowing CSS styling for emojis instead of plain text
+    return (
+      <div className="relative flex items-center justify-center w-full h-full">
+        {/* Glow behind the symbol */}
+        <div className="absolute inset-0 bg-yellow-400/10 blur-xl rounded-full"></div>
+        {/* Inner symbol styling */}
+        <span className="text-6xl sm:text-8xl drop-shadow-[0_10px_15px_rgba(0,0,0,0.7)] z-10 hover:scale-110 transition-transform duration-300" style={{ textShadow: '0 5px 10px rgba(0,0,0,0.6), 0 0 40px rgba(255,215,0,0.4)' }}>
+          {sym.icon}
+        </span>
+      </div>
+    );
+  };
+
   useEffect(() => {
     const timer = setInterval(() => {
       setVipFeedIdx(prev => (prev + 1) % MONTE_CARLO_VIP_MOCK_FEED.length);
@@ -364,19 +379,19 @@ export default function MonteCarloSlotGame({
               <span>Geri Dön</span>
             </button>
 
-            <div className="w-7 h-7 rounded-lg  flex items-center justify-center text-base shadow animate-pulse">
-              🍓
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#d4af37] to-[#8a681c] flex items-center justify-center text-lg shadow-[0_0_15px_rgba(212,175,55,0.6)] border border-yellow-200">
+              🎰
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-sm sm:text-base font-black text-amber-300 tracking-wider">
-                  ÇİLEK & ANANAS VIP SLOTS
+                <h2 className="text-sm sm:text-base font-black text-amber-300 tracking-widest font-serif drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                  MONTE CARLO GRAND VIP
                 </h2>
                 <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30 hidden sm:inline">
                   RTP %{cfg.rtpPercent}
                 </span>
               </div>
-              <span className="text-[9px] text-gray-400 font-mono hidden sm:inline">
+              <span className="text-[9px] text-gray-400 font-mono hidden sm:inline tracking-wider">
                 Provably Fair SHA-256 Kriptografik Kasa
               </span>
             </div>
@@ -488,7 +503,7 @@ export default function MonteCarloSlotGame({
                   return (
                     <div 
                       key={colIdx} 
-                      className={`flex flex-col bg-gradient-to-b from-[#e8e6df] via-white to-[#e8e6df] border-x-[8px] border-[#d4af37] rounded-sm relative overflow-hidden shadow-[inset_0_0_30px_rgba(0,0,0,0.4)] transition-all duration-300 ${
+                      className={`flex flex-col bg-gradient-to-b from-[#cfc3ad] via-[#f7f2e1] to-[#cfc3ad] border-x-[2px] border-black/80 rounded-sm relative overflow-hidden shadow-[inset_0_0_60px_rgba(0,0,0,0.9),inset_0_0_20px_rgba(0,0,0,0.6)] transition-all duration-300 ${
                         isSpinningThis ? 'border-[#f3d56a]' : 'border-[#d4af37]'
                       }`}
                     >
@@ -503,9 +518,7 @@ export default function MonteCarloSlotGame({
                                 key={idx} 
                                 className="h-1/3 w-full border-b border-[#d4af37]/30 shadow-[0_2px_5px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center filter blur-[1.5px] scale-[0.98]"
                               >
-                                <span className="text-5xl sm:text-7xl filter drop-shadow-[0_4px_6px_rgba(0,0,0,0.5)]">
-                                  {sym.icon}
-                                </span>
+                                {renderSymbol(sym)}
                               </div>
                             );
                           })}
@@ -516,7 +529,7 @@ export default function MonteCarloSlotGame({
                             const sym = getSymbol(symId);
                             return (
                               <div key={`fake-${rowIdx}`} className="h-1/3 w-full border-b border-[#d4af37]/30 shadow-[0_2px_5px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center filter blur-[2px] opacity-50 hidden sm:flex">
-                                <span className="text-5xl sm:text-7xl filter drop-shadow">{sym.icon}</span>
+                                {renderSymbol(sym)}
                               </div>
                             );
                           })}
@@ -527,9 +540,7 @@ export default function MonteCarloSlotGame({
                                 key={rowIdx} 
                                 className="h-1/3 w-full border-b border-[#d4af37]/30 shadow-[0_2px_5px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center relative overflow-hidden transition-all duration-200"
                               >
-                                <span className="text-5xl sm:text-7xl filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
-                                  {sym.icon}
-                                </span>
+                                {renderSymbol(sym)}
                               </div>
                             );
                           })}
@@ -546,15 +557,17 @@ export default function MonteCarloSlotGame({
                 className="hidden sm:flex flex-col items-center justify-center cursor-pointer group select-none pl-1 shrink-0"
                 title="Kolu Çekerek Çevirin!"
               >
-                <div className={`w-7 h-7 rounded-full  border-2 border-yellow-200  transition-transform duration-300 ${
-                  leverPulling ? 'translate-y-12 scale-90' : 'group-hover:scale-110'
+                <div className={`w-10 h-10 rounded-full bg-gradient-to-tr from-red-800 via-red-500 to-red-400 border-2 border-red-950 shadow-[inset_-4px_-4px_10px_rgba(0,0,0,0.5),0_10px_20px_rgba(0,0,0,0.6)] transition-transform duration-300 ${
+                  leverPulling ? 'translate-y-16 scale-90' : 'group-hover:scale-110'
+                }`}>
+                  {/* Gloss highlight */}
+                  <div className="absolute top-1 left-2 w-4 h-2 bg-white/40 rounded-full rotate-45 blur-[1px]"></div>
+                </div>
+                <div className={`w-3.5 bg-gradient-to-r from-zinc-400 via-zinc-200 to-zinc-500 rounded-full border border-zinc-800 shadow-[inset_2px_0_5px_rgba(255,255,255,0.8),inset_-2px_0_5px_rgba(0,0,0,0.6)] transition-all duration-300 ${
+                  leverPulling ? 'h-8 mt-0.5' : 'h-24'
                 }`}>
                 </div>
-                <div className={`w-2.5  rounded-full border border-zinc-600 shadow-inner transition-all duration-300 ${
-                  leverPulling ? 'h-8 mt-0.5' : 'h-16'
-                }`}>
-                </div>
-                <div className="w-5 h-5 rounded-md bg-zinc-800 border border-amber-500/60 shadow flex items-center justify-center text-[9px] text-amber-300">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-zinc-900 to-zinc-700 border-2 border-amber-600/80 shadow-[0_5px_15px_rgba(0,0,0,0.8)] flex items-center justify-center text-[11px] text-amber-400">
                   ⚙️
                 </div>
                 <span className="text-[8px] font-serif text-amber-300/80 mt-0.5 uppercase tracking-tighter">
@@ -636,9 +649,12 @@ export default function MonteCarloSlotGame({
               <button
                 disabled={isSpinning}
                 onClick={handleSpin}
-                className="flex-1 sm:flex-none px-6 py-3 bg-gradient-to-b from-[#d4af37] to-[#997a15] border border-[#ffdf73] shadow-[0_0_20px_rgba(212,175,55,0.4),inset_0_1px_3px_rgba(255,255,255,0.6)] hover:from-[#ffdf73] hover:to-[#d4af37] text-[#2a0808] font-black text-base sm:text-xl tracking-widest uppercase rounded-xl transition active:scale-95 disabled:opacity-50"
+                className="relative flex-1 sm:flex-none px-8 py-3 bg-gradient-to-b from-red-600 via-red-700 to-red-900 border-2 border-[#d4af37] shadow-[0_0_30px_rgba(255,0,0,0.6),inset_0_2px_10px_rgba(255,255,255,0.4)] hover:shadow-[0_0_50px_rgba(255,50,50,0.9),inset_0_2px_10px_rgba(255,255,255,0.6)] hover:from-red-500 hover:to-red-800 text-white font-black text-base sm:text-xl tracking-widest uppercase rounded-xl transition-all duration-300 active:scale-95 disabled:opacity-70 disabled:grayscale-[0.5]"
               >
-                {isSpinning ? 'ÇEVRİLİYOR...' : '🎰 ÇEVİR (SPIN)'}
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay rounded-xl"></div>
+                <span className="relative z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                  {isSpinning ? 'ÇEVRİLİYOR...' : '🎰 SPIN'}
+                </span>
               </button>
 
             </div>

@@ -9,7 +9,6 @@ import ProFXTerminal from '@/components/ProFXTerminal';
 import GlobalFXPortal from '@/components/GlobalFXPortal';
 import NextGenHubModal from '@/components/NextGenHubModal';
 import MonteCarloSlotGame from '@/components/MonteCarloSlotGame';
-import NextGenArcadeHubModal from '@/components/NextGenArcadeHubModal';
 import MonteCarloGrandCasinoModal from '@/components/MonteCarloGrandCasinoModal';
 import GameTacticsGuideModal from '@/components/GameTacticsGuideModal';
 import AuthModal from '@/components/AuthModal';
@@ -53,7 +52,7 @@ export default function Home() {
   const [isCasinoSlotOpen, setIsCasinoSlotOpen] = useState(false);
 
   // Yeni Nesil Mini Oyunlar (Crash, Mines, Plinko) Modalı
-  const [isArcadeHubOpen, setIsArcadeHubOpen] = useState(false);
+  
 
   // Monte Carlo Grand Casino (Avrupa Ruleti, VIP Blackjack, Baccarat) Modalı
   const [isGrandCasinoOpen, setIsGrandCasinoOpen] = useState(false);
@@ -435,7 +434,7 @@ export default function Home() {
           onOpenWithdraw={() => setActiveModal('withdraw')}
           onOpenNextGen={() => setIsNextGenOpen(true)}
           onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
-          onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
+          
           onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
           onOpenTacticsGuide={() => setIsTacticsGuideOpen(true)}
           currentUser={currentUser}
@@ -460,7 +459,7 @@ export default function Home() {
               onOpenModal={(m) => setActiveModal(m)}
               onOpenNextGenHub={() => setIsNextGenOpen(true)}
               onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
-              onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
+              
               onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
               onBackToPortal={() => setMainView('portal')}
             />
@@ -629,18 +628,7 @@ export default function Home() {
       )}
 
       {/* 5. NOVA ARCADE: YENİ NESİL MOBİL MİNİ OYUNLAR (CRASH, MINES, PLINKO) */}
-      <NextGenArcadeHubModal
-        isOpen={isArcadeHubOpen}
-        onClose={() => setIsArcadeHubOpen(false)}
-        onBackToMonteCarlo={() => {
-          setIsArcadeHubOpen(false);
-          setIsGrandCasinoOpen(true);
-        }}
-        account={account}
-        onUpdateBalance={handleUpdateCasinoBalance}
-        onOpenSlotGame={() => setIsCasinoSlotOpen(true)}
-      />
-
+      
       {/* 6. MONTE CARLO GRAND CASINO (AVRUPA RULETİ, MONACO BLACKJACK 21, BACCARAT) */}
       <MonteCarloGrandCasinoModal
         isOpen={isGrandCasinoOpen}
@@ -648,7 +636,7 @@ export default function Home() {
         userBalance={account.balance}
         onUpdateBalance={handleUpdateCasinoBalance}
         onOpenSlots={() => setIsCasinoSlotOpen(true)}
-        onOpenArcade={() => setIsArcadeHubOpen(true)}
+        
         onOpenTacticsGuide={() => {
           setIsGrandCasinoOpen(false);
           setIsTacticsGuideOpen(true);
@@ -671,14 +659,8 @@ export default function Home() {
           setIsTacticsGuideOpen(false);
           setIsCasinoSlotOpen(true);
         }}
-        onOpenCrash={() => {
-          setIsTacticsGuideOpen(false);
-          setIsArcadeHubOpen(true);
-        }}
-        onOpenMines={() => {
-          setIsTacticsGuideOpen(false);
-          setIsArcadeHubOpen(true);
-        }}
+        onOpenCrash={() => {}}
+        onOpenMines={() => {}}
       />
 
       {/* 8. KULLANICI DOSTU HIZLI ÜYELİK VE GİRİŞ MODALI */}

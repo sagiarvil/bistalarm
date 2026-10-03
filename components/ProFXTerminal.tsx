@@ -926,7 +926,7 @@ export default function ProFXTerminal({
                   <span className="text-base">🚀</span>
                   <div>
                     <span className="block text-white">Yeni Nesil Kazanç Kapıları</span>
-                    <span className="text-[10px] text-purple-300 font-normal">1:2000 Kaldıraç • Boom/Crash • Arbitraj • Prop</span>
+                    <span className="text-[10px] text-purple-300 font-normal">Institutional ECN • Direct Market Access • Zero Spread</span>
                   </div>
                 </div>
                 <span className="text-purple-400">›</span>
