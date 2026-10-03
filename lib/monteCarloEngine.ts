@@ -90,14 +90,14 @@ export const PAYLINES: number[][] = [
 export function updateCasinoConfig(newConfig: Partial<CasinoEngineConfig>) {
   currentCasinoConfig = { ...currentCasinoConfig, ...newConfig };
   if (typeof window !== 'undefined') {
-    localStorage.setItem('mt5_casino_config_v2', JSON.stringify(currentCasinoConfig));
+    localStorage.setItem('mt5_casino_config_v3', JSON.stringify(currentCasinoConfig));
   }
   return currentCasinoConfig;
 }
 
 export function loadCasinoConfig() {
   if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem('mt5_casino_config_v2');
+    const saved = localStorage.getItem('mt5_casino_config_v3');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -113,7 +113,7 @@ export function loadCasinoConfig() {
         currentCasinoConfig = { ...currentCasinoConfig, ...parsed };
         
         // Save back the sanitized version immediately
-        localStorage.setItem('mt5_casino_config_v2', JSON.stringify(currentCasinoConfig));
+        localStorage.setItem('mt5_casino_config_v3', JSON.stringify(currentCasinoConfig));
       } catch (e) {}
     }
   }
@@ -178,8 +178,8 @@ export function executeSlotSpin(betAmount: number, userId?: string): SpinResult 
     const willWin = (Math.random() * 100) < forcedWinTarget;
     
     if (willWin) {
-      const sym = Math.random() > 0.8 ? 'diamond' : (Math.random() > 0.5 ? 'seven' : 'gold');
-      const payoutMult = sym === 'diamond' ? 10 : (sym === 'seven' ? 5 : 3);
+      const sym = Math.random() > 0.8 ? 'diamond' : (Math.random() > 0.5 ? 'scorching_seven' : 'double_bar');
+      const payoutMult = sym === 'diamond' ? 10 : (sym === 'scorching_seven' ? 5 : 3);
       const totalWin = betAmount * payoutMult;
       return {
         grid: [[sym, sym, sym], [sym, sym, sym], [sym, sym, sym]],
@@ -194,12 +194,12 @@ export function executeSlotSpin(betAmount: number, userId?: string): SpinResult 
       const isNearMiss = Math.random() < 0.5;
       if (isNearMiss) {
          return {
-           grid: [['seven', 'seven', 'lemon'], ['cherry', 'grape', 'plum'], ['plum', 'cherry', 'grape']],
+           grid: [['scorching_seven', 'scorching_seven', 'bar'], ['cherry', 'bell', 'double_bar'], ['double_bar', 'cherry', 'bell']],
            winningLines: [], totalWin: 0, multiplier: 0, isJackpot: false, serverSeed, clientSeed, nonce
          };
       } else {
          return {
-           grid: [['lemon', 'cherry', 'grape'], ['grape', 'plum', 'lemon'], ['cherry', 'lemon', 'plum']],
+           grid: [['bar', 'cherry', 'bell'], ['bell', 'double_bar', 'bar'], ['cherry', 'bar', 'double_bar']],
            winningLines: [], totalWin: 0, multiplier: 0, isJackpot: false, serverSeed, clientSeed, nonce
          };
       }
