@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { auth, googleProvider, signInWithPopup } from '../lib/firebase';
 import { AuthStore, AuthUser } from '@/lib/authStore';
 
 interface AuthModalProps {
@@ -59,10 +60,30 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
     }
   };
 
-  const handleGoogleLogin = () => {
-    const user = AuthStore.loginWithGoogle();
-    onSuccess(user);
-    onClose();
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      
+      // Update our local state based on Firebase User
+      const localUser = {
+        id: user.uid,
+        name: user.displayName || "Google User",
+        email: user.email || "",
+        balance: 10000,
+        credit: 0,
+        leverage: 100
+      };
+      
+      // We merge with local AuthStore to maintain compatibility with the rest of the app's local storage approach
+      const finalUser = AuthStore.loginWithGoogle(localUser.name, localUser.email, localUser.id);
+      
+      onSuccess(finalUser);
+      onClose();
+    } catch (error: any) {
+      console.error("Google Auth Error:", error);
+      setNotification("Google ile giriş başarısız oldu: " + error.message);
+    }
   };
 
   return (

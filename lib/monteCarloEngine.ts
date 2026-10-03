@@ -90,14 +90,14 @@ export const PAYLINES: number[][] = [
 export function updateCasinoConfig(newConfig: Partial<CasinoEngineConfig>) {
   currentCasinoConfig = { ...currentCasinoConfig, ...newConfig };
   if (typeof window !== 'undefined') {
-    localStorage.setItem('mt5_casino_config_v3', JSON.stringify(currentCasinoConfig));
+    localStorage.setItem('mt5_casino_config_v4', JSON.stringify(currentCasinoConfig));
   }
   return currentCasinoConfig;
 }
 
 export function loadCasinoConfig() {
   if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem('mt5_casino_config_v3');
+    const saved = localStorage.getItem('mt5_casino_config_v4');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -113,7 +113,7 @@ export function loadCasinoConfig() {
         currentCasinoConfig = { ...currentCasinoConfig, ...parsed };
         
         // Save back the sanitized version immediately
-        localStorage.setItem('mt5_casino_config_v3', JSON.stringify(currentCasinoConfig));
+        localStorage.setItem('mt5_casino_config_v4', JSON.stringify(currentCasinoConfig));
       } catch (e) {}
     }
   }
@@ -160,65 +160,22 @@ export function executeSlotSpin(betAmount: number, userId?: string): SpinResult 
   }
 
   // ============================================================================
-  // CAESARS / PLAYTIKA SOSYAL CASINO DİNAMİK ALGORİTMASI (SOCIAL_CASINO_AI)
+  // SAFKAN CAESARS 85% RTP DİNAMİK ALGORİTMASI (BRUTAL)
   // ============================================================================
   
-  // -- ÖZEL KAZANDIRMA POLİTİKASI KONTROLÜ (Yüzdesel) --
-  let forcedWinTarget = -1;
-  if (cfg.penetrationMode === 'SOCIAL_CASINO_AI') {
-    if (userId && cfg.userWinRateTargets && cfg.userWinRateTargets[userId] !== undefined) {
-      forcedWinTarget = cfg.userWinRateTargets[userId];
-    } else if (cfg.globalWinRateTarget !== undefined && cfg.globalWinRateTarget >= 0) {
-      forcedWinTarget = cfg.globalWinRateTarget;
-    }
-  }
-
-  // Eğer yüzde bazlı bir hedef belirlendiyse, matematiği ezip bu ihtimale göre kazandır/kaybettir:
-  if (forcedWinTarget >= 0 && forcedWinTarget <= 100) {
-    const willWin = (Math.random() * 100) < forcedWinTarget;
-    
-    if (willWin) {
-      const sym = Math.random() > 0.8 ? 'diamond' : (Math.random() > 0.5 ? 'scorching_seven' : 'double_bar');
-      const payoutMult = sym === 'diamond' ? 10 : (sym === 'scorching_seven' ? 5 : 3);
-      const totalWin = betAmount * payoutMult;
-      return {
-        grid: [[sym, sym, sym], [sym, sym, sym], [sym, sym, sym]],
-        winningLines: [{ lineIndex: 1, symbolId: sym, matchCount: 3, payout: totalWin }],
-        totalWin,
-        multiplier: payoutMult,
-        isJackpot: payoutMult >= 10,
-        serverSeed, clientSeed, nonce
-      };
-    } else {
-      // Kesin kaybettir (Boş çark veya Near Miss)
-      const isNearMiss = Math.random() < 0.5;
-      if (isNearMiss) {
-         return {
-           grid: [['scorching_seven', 'scorching_seven', 'bar'], ['cherry', 'bell', 'double_bar'], ['double_bar', 'cherry', 'bell']],
-           winningLines: [], totalWin: 0, multiplier: 0, isJackpot: false, serverSeed, clientSeed, nonce
-         };
-      } else {
-         return {
-           grid: [['bar', 'cherry', 'bell'], ['bell', 'double_bar', 'bar'], ['cherry', 'bar', 'double_bar']],
-           winningLines: [], totalWin: 0, multiplier: 0, isJackpot: false, serverSeed, clientSeed, nonce
-         };
-      }
-    }
-  }
-
-  // 1. Churn Prediction & Rescue Win (Kurtarma Algoritması)
   const losses = cfg.consecutiveLosses || 0;
-  // KASAYI KORU (CAESARS 92% RTP MANTIĞI): Asla 5x verme! Sadece batmayı geciktir.
-  // 6 veya daha fazla kayıptan sonra sadece %30 ihtimalle küçük bir 1.2x - 2x can simidi.
-  const isRescueWin = losses >= 6 && Math.random() < 0.3; 
+  
+  // 1. Churn Prediction & Rescue Win (Kurtarma Algoritması)
+  // KASAYI KORU: 8 veya daha fazla kayıptan sonra sadece %15 ihtimalle küçük bir 1.5x can simidi.
+  const isRescueWin = losses >= 8 && Math.random() < 0.15; 
 
   // 2. LDW (Loss Disguised as a Win - Kazanç Gibi Görünen Kayıp)
-  // Bahsin sadece %30'u kazanılır. Kasa %70 kâr eder.
-  const isLDW = !isRescueWin && Math.random() < 0.30; 
+  // Bahsin sadece %20-30'u kazanılır. Kasa net kâr eder. %40 ihtimalle olur.
+  const isLDW = !isRescueWin && Math.random() < 0.40; 
 
   // 3. Near-Miss (Teğet Geçme / Kıl Payı Kaçırma)
   // Dopamin tetiklenir, "Neredeyse kazanıyordum!" hissi.
-  const isNearMiss = !isRescueWin && !isLDW && Math.random() < 0.45; 
+  const isNearMiss = !isRescueWin && !isLDW && Math.random() < 0.40; 
 
   let finalGrid: string[][] = [];
   let winningLines: SpinResult['winningLines'] = [];
@@ -226,7 +183,6 @@ export function executeSlotSpin(betAmount: number, userId?: string): SpinResult 
   let multiplier = 0;
   let isJackpot = false;
 
-  // Gerçek RTP ağırlıklı sembol seçici
   const getRandomSymbol = () => {
     const rand = Math.random() * 100;
     let acc = 0;
@@ -238,17 +194,15 @@ export function executeSlotSpin(betAmount: number, userId?: string): SpinResult 
   };
 
   if (isRescueWin) {
-    // Kurtarma Kazancı: Düşük çarpan (1x - 2x)
-    const sym = 'bar'; // Bar sembolü (örneğin 1.5x)
+    const sym = 'bar'; // 1.5x payout
     finalGrid = [[sym, 'bell', 'cherry'], [sym, 'double_bar', 'bell'], [sym, 'diamond', 'cherry']];
     totalWin = betAmount * 1.5;
     multiplier = 1.5;
     winningLines.push({ lineIndex: 0, symbolId: sym, matchCount: 3, payout: totalWin });
-    updateCasinoConfig({ consecutiveLosses: 0 }); // Kayıp sıfırlandı
+    updateCasinoConfig({ consecutiveLosses: 0 });
   } 
   else if (isLDW) {
-    // LDW: Bahsin %30'unu ver. (Cherry)
-    const sym = 'cherry';
+    const sym = 'cherry'; // 0.3x payout
     finalGrid = [['cherry', 'cherry', 'bell'], ['cherry', 'bar', 'bell'], ['cherry', 'diamond', 'double_bar']];
     totalWin = betAmount * 0.3;
     multiplier = 0.3;
@@ -256,7 +210,6 @@ export function executeSlotSpin(betAmount: number, userId?: string): SpinResult 
     updateCasinoConfig({ consecutiveLosses: losses + 1 }); 
   }
   else if (isNearMiss) {
-    // Kıl payı kaçırma (Makaralar: Jackpot - Jackpot - Boş)
     const bait = Math.random() > 0.5 ? 'scorching_seven' : 'wild';
     finalGrid = [[bait, bait, 'bar'], ['double_bar', 'bell', 'cherry'], ['cherry', 'bar', 'bell']];
     totalWin = 0;
@@ -264,12 +217,11 @@ export function executeSlotSpin(betAmount: number, userId?: string): SpinResult 
     updateCasinoConfig({ consecutiveLosses: losses + 1 });
   }
   else {
-    // Normal Rastgele Spin (Tamamen Şans)
+    // Normal Rastgele Spin (Matematiksel Olasılık - Genelde Kayıp)
     for (let c = 0; c < 3; c++) {
       finalGrid.push([getRandomSymbol(), getRandomSymbol(), getRandomSymbol()]);
     }
     
-    // 3x3 Klasik Slot Çizgileri Kontrolü (3 yatay çizgi)
     for (let row = 0; row < 3; row++) {
       const s1 = finalGrid[0][row];
       const s2 = finalGrid[1][row];

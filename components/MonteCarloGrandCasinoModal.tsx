@@ -626,12 +626,12 @@ export default function MonteCarloGrandCasinoModal({
         </div>
 
         {/* Oyun Seçim Menüsü - KAYDIRMASIZ TEK EKRAN GRİD (6'LI DİNAMİK BUTONLAR) */}
-        <div className="grid grid-cols-3 sm:grid-cols-6 border-b border-[#d4af37]/60 bg-gradient-to-r from-[#030905] via-[#081f10] to-[#030905] p-1.5 sm:p-2 gap-1.5 sm:gap-2 text-[11px] sm:text-[13px] font-serif shrink-0 shadow-[0_5px_15px_rgba(0,0,0,0.8)] z-10 relative">
+        <div className="flex items-center overflow-x-auto hide-scrollbar border-b border-[#d4af37]/60 bg-gradient-to-r from-[#030905] via-[#081f10] to-[#030905] p-1.5 sm:p-2 gap-1.5 sm:gap-2 text-[11px] sm:text-[13px] font-serif shrink-0 shadow-[0_5px_15px_rgba(0,0,0,0.8)] z-10 relative">
           
           {onOpenSlots && (
             <button
               onClick={() => { onClose(); onOpenSlots(); }}
-              className="px-2 py-2 rounded-xl font-bold transition flex items-center justify-center gap-1.5 text-amber-400 hover:text-amber-200 hover:bg-amber-500/10 border border-amber-500/30 bg-[#0a0514] text-center shadow-inner hover:shadow-[0_0_15px_rgba(245,158,11,0.3)]"
+              className="whitespace-nowrap flex-shrink-0 px-3 py-2 rounded-xl font-bold transition flex items-center justify-center gap-1.5 text-amber-400 hover:text-amber-200 hover:bg-amber-500/10 border border-amber-500/30 bg-[#0a0514] text-center shadow-inner hover:shadow-[0_0_15px_rgba(245,158,11,0.3)]"
             >
               <span className="text-lg">🎰</span> Vegas Slots
             </button>
@@ -662,7 +662,7 @@ export default function MonteCarloGrandCasinoModal({
           {onOpenArcade && (
             <button
               onClick={() => { onClose(); onOpenArcade(); }}
-              className="px-2 py-2 rounded-xl font-bold transition flex items-center justify-center gap-1.5 text-cyan-400 hover:text-cyan-200 hover:bg-cyan-500/10 border border-cyan-500/30 bg-[#040b14] text-center shadow-inner hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+              className="whitespace-nowrap flex-shrink-0 px-3 py-2 rounded-xl font-bold transition flex items-center justify-center gap-1.5 text-cyan-400 hover:text-cyan-200 hover:bg-cyan-500/10 border border-cyan-500/30 bg-[#040b14] text-center shadow-inner hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]"
             >
               <span className="text-lg">🎲</span> Barbut & Crash
             </button>
@@ -682,7 +682,7 @@ export default function MonteCarloGrandCasinoModal({
           {onOpenTacticsGuide && (
             <button
               onClick={() => { onClose(); onOpenTacticsGuide(); }}
-              className="px-2 py-2 rounded-xl font-bold transition flex items-center justify-center gap-1.5 text-rose-400 hover:text-rose-200 hover:bg-rose-500/10 border border-rose-500/30 bg-[#140505] text-center shadow-inner hover:shadow-[0_0_15px_rgba(244,63,94,0.3)]"
+              className="whitespace-nowrap flex-shrink-0 px-3 py-2 rounded-xl font-bold transition flex items-center justify-center gap-1.5 text-rose-400 hover:text-rose-200 hover:bg-rose-500/10 border border-rose-500/30 bg-[#140505] text-center shadow-inner hover:shadow-[0_0_15px_rgba(244,63,94,0.3)]"
             >
               <span className="text-lg">🧠</span> Taktik
             </button>

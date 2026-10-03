@@ -88,7 +88,7 @@ export default function GlobalFXPortal({
                 <span>🚀</span> Prop Fonu ($100K)
               </button>
               {onOpenGrandCasino && (
-                <button onClick={onOpenGrandCasino} className="flex items-center gap-1.5 text-amber-300 hover:text-amber-100 font-serif font-black tracking-wide transition px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 ">
+                <button onClick={onOpenCasinoSlot} className="flex items-center gap-1.5 text-amber-300 hover:text-amber-100 font-serif font-black tracking-wide transition px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 ">
                   <span>🇲🇨</span> Monte Carlo VIP
                 </button>
               )}
@@ -191,7 +191,7 @@ export default function GlobalFXPortal({
 
             {onOpenGrandCasino && (
               <button
-                onClick={onOpenGrandCasino}
+                onClick={onOpenCasinoSlot}
                 className="w-full sm:w-auto px-7 py-3.5 bg-amber-600 hover:bg-amber-500 text-black font-black text-sm rounded-xl transition  border border-amber-300 flex items-center justify-center gap-2 active:scale-95 font-serif"
               >
                 <span>🇲🇨</span> Casino de Monte-Carlo VIP
@@ -327,7 +327,8 @@ export default function GlobalFXPortal({
 
           {/* Piyasa Tablosu */}
           <div className="bg-[#0c1017] border border-[#1b2332] rounded-2xl overflow-hidden shadow-xl">
-            <div className="overflow-x-auto">
+            {/* Responsive Piyasa Tablosu/Kartları */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead className="bg-[#0f141f] text-gray-500 text-[11px] uppercase border-b border-[#1b2332]">
                   <tr>
@@ -346,47 +347,45 @@ export default function GlobalFXPortal({
                     const p = currentPrices[sym] || { bid: sp.basePrice, ask: sp.basePrice + sp.spread, high: sp.basePrice * 1.005, low: sp.basePrice * 0.995 };
                     const spreadPips = (sp.spread / sp.pipSize).toFixed(1);
                     
-                    // Sembole göre teknik sinyal belirleme (RSI & Trend bazlı)
                     const getSignal = (symbol: string) => {
                       if (symbol.includes('BOOM') || symbol.includes('BTC') || symbol === 'XAUUSDX') {
-                        return { text: 'GÜÇLÜ AL', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' };
+                        return { text: 'GÜÇLÜ AL', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' };
+                      } else if (symbol.includes('CRASH') || symbol === 'EURUSDX') {
+                        return { text: 'GÜÇLÜ SAT', color: 'text-red-400 bg-red-500/10 border-red-500/20' };
                       }
-                      if (symbol.includes('CRASH') || symbol === 'DXY.j') {
-                        return { text: 'GÜÇLÜ SAT', color: 'bg-rose-500/20 text-rose-400 border-rose-500/30' };
-                      }
-                      if (symbol === 'EURUSD' || symbol.includes('NASDAQ')) {
-                        return { text: 'AL', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' };
-                      }
-                      return { text: 'NÖTR', color: 'bg-gray-500/20 text-gray-300 border-gray-500/30' };
+                      return { text: 'NÖTR', color: 'text-gray-400 bg-gray-500/10 border-gray-500/20' };
                     };
-                    const sig = getSignal(sym);
+                    const signal = getSignal(sym);
 
                     return (
-                      <tr key={sym} className="hover:bg-[#121721] transition">
+                      <tr key={sym} className="hover:bg-[#121824] transition group cursor-pointer" onClick={() => onOpenTerminal(sym)}>
                         <td className="py-3 px-4">
-                          <div className="flex items-center gap-2.5">
-                            <div className="w-7 h-7 rounded bg-[#161c28] border border-[#232c3d] flex items-center justify-center font-bold text-white text-[11px]">
-                              {sym.slice(0, 3)}
-                            </div>
-                            <div>
-                              <span className="font-bold text-white text-xs block">{sym}</span>
-                              <span className="text-[10px] text-gray-400 font-sans block">{sp.name}</span>
-                            </div>
+                          <div className="flex items-center gap-2">
+                            <span className={`w-2 h-2 rounded-full ${sp.category === 'Crypto' ? 'bg-orange-500' : sp.category === 'Synthetic' ? 'bg-purple-500' : 'bg-blue-500'}`}></span>
+                            <span className="font-bold text-white text-sm">{sym}</span>
                           </div>
                         </td>
-                        <td className="py-3 px-4 text-gray-400 font-sans">{sp.category}</td>
-                        <td className="py-3 px-4 text-right font-bold text-[#d4af37]">{p.bid.toFixed(sp.digits)}</td>
-                        <td className="py-3 px-4 text-right font-bold text-rose-400">{p.ask.toFixed(sp.digits)}</td>
-                        <td className="py-3 px-4 text-right text-gray-300 font-semibold">{spreadPips} pip</td>
+                        <td className="py-3 px-4">
+                          <span className="text-[10px] text-gray-400 border border-[#222c3d] px-1.5 py-0.5 rounded">{sp.category}</span>
+                        </td>
+                        <td className="py-3 px-4 text-right">
+                          <span className="text-emerald-400 font-bold">{p.bid.toFixed(sp.digits)}</span>
+                        </td>
+                        <td className="py-3 px-4 text-right">
+                          <span className="text-red-400 font-bold">{p.ask.toFixed(sp.digits)}</span>
+                        </td>
+                        <td className="py-3 px-4 text-right">
+                          <span className="text-gray-300">{spreadPips}</span>
+                        </td>
                         <td className="py-3 px-4 text-center">
-                          <span className={`inline-block px-2.5 py-0.5 rounded text-[10px] font-bold border ${sig.color}`}>
-                            {sig.text}
+                          <span className={`text-[10px] px-2 py-1 rounded border font-bold ${signal.color}`}>
+                            {signal.text}
                           </span>
                         </td>
                         <td className="py-3 px-4 text-center">
-                          <button
-                            onClick={() => onOpenTerminal(sym)}
-                            className="px-3.5 py-1.5 bg-red-800 hover:bg-red-700 border border-[#d4af37] text-white font-bold rounded-lg text-xs transition active:scale-95 shadow"
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); onOpenTerminal(sym); }}
+                            className="bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/30 px-3 py-1 rounded text-xs transition"
                           >
                             Grafik & İşlem
                           </button>
@@ -396,6 +395,63 @@ export default function GlobalFXPortal({
                   })}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobil Kart Görünümü */}
+            <div className="md:hidden divide-y divide-[#161c28]">
+              {getSymbolsByCategory().map(sym => {
+                const sp = SYMBOL_SPECS[sym] || { name: sym, category: 'Indices', digits: 2, spread: 0.5, pipSize: 0.01, basePrice: 100 };
+                const p = currentPrices[sym] || { bid: sp.basePrice, ask: sp.basePrice + sp.spread, high: sp.basePrice * 1.005, low: sp.basePrice * 0.995 };
+                const spreadPips = (sp.spread / sp.pipSize).toFixed(1);
+                
+                const getSignal = (symbol: string) => {
+                  if (symbol.includes('BOOM') || symbol.includes('BTC') || symbol === 'XAUUSDX') {
+                    return { text: 'GÜÇLÜ AL', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' };
+                  } else if (symbol.includes('CRASH') || symbol === 'EURUSDX') {
+                    return { text: 'GÜÇLÜ SAT', color: 'text-red-400 bg-red-500/10 border-red-500/20' };
+                  }
+                  return { text: 'NÖTR', color: 'text-gray-400 bg-gray-500/10 border-gray-500/20' };
+                };
+                const signal = getSignal(sym);
+
+                return (
+                  <div key={sym} className="p-4 hover:bg-[#121824] transition cursor-pointer space-y-3" onClick={() => onOpenTerminal(sym)}>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2 h-2 rounded-full ${sp.category === 'Crypto' ? 'bg-orange-500' : sp.category === 'Synthetic' ? 'bg-purple-500' : 'bg-blue-500'}`}></span>
+                        <span className="font-bold text-white text-base">{sym}</span>
+                        <span className="text-[10px] text-gray-400 border border-[#222c3d] px-1.5 py-0.5 rounded ml-1">{sp.category}</span>
+                      </div>
+                      <span className={`text-[9px] px-1.5 py-0.5 rounded border font-bold ${signal.color}`}>
+                        {signal.text}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 text-xs font-mono text-center bg-[#0a0d14] p-2 rounded-lg border border-[#1b2332]">
+                      <div>
+                        <div className="text-[9px] text-gray-500 mb-0.5 uppercase">Alış</div>
+                        <div className="text-emerald-400 font-bold">{p.bid.toFixed(sp.digits)}</div>
+                      </div>
+                      <div className="border-x border-[#1b2332]">
+                        <div className="text-[9px] text-gray-500 mb-0.5 uppercase">Spread</div>
+                        <div className="text-gray-300 font-bold">{spreadPips}</div>
+                      </div>
+                      <div>
+                        <div className="text-[9px] text-gray-500 mb-0.5 uppercase">Satış</div>
+                        <div className="text-red-400 font-bold">{p.ask.toFixed(sp.digits)}</div>
+                      </div>
+                    </div>
+
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); onOpenTerminal(sym); }}
+                      className="w-full bg-blue-600/20 active:bg-blue-600/40 text-blue-400 border border-blue-500/30 py-2 rounded-lg text-xs font-bold transition flex justify-center items-center gap-2"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+                      Grafik & İşlem Ekranını Aç
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -525,7 +581,7 @@ export default function GlobalFXPortal({
               )}
               {onOpenGrandCasino && (
                 <button
-                  onClick={onOpenGrandCasino}
+                  onClick={onOpenCasinoSlot}
                   className="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-black font-black text-xs rounded-xl transition  border border-amber-300 flex items-center gap-1.5 active:scale-95 font-serif"
                 >
                   <span>👑</span> Salona Giriş Yap
@@ -591,7 +647,7 @@ export default function GlobalFXPortal({
               <div className="flex items-center gap-2 pt-2">
                 {onOpenGrandCasino && (
                   <button
-                    onClick={onOpenGrandCasino}
+                    onClick={onOpenCasinoSlot}
                     className="flex-1 py-2 bg-amber-600 hover:bg-amber-500 text-black font-black rounded-xl text-xs transition shadow active:scale-95"
                   >
                     Masaya Otur
@@ -627,7 +683,7 @@ export default function GlobalFXPortal({
               <div className="flex items-center gap-2 pt-2">
                 {onOpenGrandCasino && (
                   <button
-                    onClick={onOpenGrandCasino}
+                    onClick={onOpenCasinoSlot}
                     className="flex-1 py-2 bg-amber-600 hover:bg-amber-500 text-black font-black rounded-xl text-xs transition shadow active:scale-95"
                   >
                     Dağıtımı Başlat

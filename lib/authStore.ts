@@ -233,30 +233,29 @@ export class AuthStore {
     return newUser;
   }
 
-  static loginWithGoogle(): AuthUser {
+  static loginWithGoogle(name: string = 'Google Trader', email: string = 'google@gmail.com', uid?: string): AuthUser {
     const users = this.getUsers();
-    const googleEmail = 'google.trader@gmail.com';
-    let user = users.find(u => u.email === googleEmail);
+    let user = users.find(u => u.email === email);
     if (!user) {
       user = {
-        id: `usr-google-${Date.now()}`,
-        email: googleEmail,
-        name: 'Google Trader (Verified)',
+        id: uid || `usr-google-${Date.now()}`,
+        email: email,
+        name: name,
         avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop',
         role: 'user',
-        createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
-        accountNumber: Math.floor(9480000 + Math.random() * 9000),
-        balance: 10000.00,
-        credit: 2000.00,
-        leverage: 1000,
+        balance: 10000,
+        credit: 0,
+        leverage: 100,
+        createdAt: new Date().toISOString(),
+        accountNumber: Math.floor(Math.random() * 90000) + 10000,
         status: 'active',
         verified: true
-      };
+      } as AuthUser;
       users.push(user);
       this.saveUsers(users);
     }
-    this.setCurrentUser(user);
-    return user;
+    this.setCurrentUser(user as AuthUser);
+    return user as AuthUser;
   }
 
   static updateUser(id: string, partial: Partial<AuthUser>): void {

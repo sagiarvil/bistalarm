@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { auth, googleProvider, signInWithPopup, signOut } from '@/lib/firebase';
+import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { UserAccount, Position, TradingEngine, SYMBOL_SPECS, OrderSide, OrderType } from '@/lib/tradingEngine';
 import { INITIAL_ACCOUNT, CURRENT_PRICES } from '@/lib/store';
 import ProFXTerminal from '@/components/ProFXTerminal';
