@@ -67,16 +67,16 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-fadeIn select-none">
-      <div className="relative w-full max-w-md bg-[#0d121c] border-2 border-blue-500/40 rounded-3xl shadow-[0_0_60px_rgba(41,121,255,0.25)] overflow-hidden flex flex-col text-white">
+      <div className="relative w-full max-w-md bg-[#0d121c] border-2 border-blue-500/40 rounded-3xl  overflow-hidden flex flex-col text-white">
         
         {/* Üst Logo & Kapatma */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#1b2434] bg-[#090d15]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center font-black text-white text-sm shadow-md">
-              ⚡
+            <div className="w-8 h-8 rounded bg-[#e51a22] flex items-center justify-center font-serif font-bold text-white text-xs tracking-tighter shadow-md">
+              FxPro
             </div>
             <div>
-              <span className="font-black text-sm text-white tracking-wide block">EXBINA PRIME</span>
+              <span className="font-serif font-bold text-sm text-white block">FxPro <span className="font-sans font-normal text-[10px] ml-1">Trade Like a Pro</span></span>
               <span className="text-[10px] text-gray-400 font-mono">Hızlı & Güvenli Üyelik</span>
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="trader@exbina.com"
+                  placeholder="trader@fxpro.com"
                   className="w-full bg-[#121824] border border-[#222e42] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 font-sans"
                 />
               </div>
@@ -182,7 +182,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
               <button
                 type="submit"
-                className="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-black text-xs rounded-xl transition shadow-[0_0_20px_rgba(41,121,255,0.4)] active:scale-95 uppercase tracking-wider font-mono mt-2"
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs rounded-xl transition  active:scale-95 uppercase tracking-wider font-mono mt-2"
               >
                 {tab === 'LOGIN' ? 'Giriş Yap & İşleme Başla' : 'Hesabı Oluştur ($10,000 Bakiye)'}
               </button>
@@ -220,7 +220,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:opacity-95 text-white font-black text-xs rounded-xl transition shadow active:scale-95 font-mono"
+                  className="flex-1 py-2.5  hover:opacity-95 text-white font-black text-xs rounded-xl transition shadow active:scale-95 font-mono"
                 >
                   Doğrula & Başla
                 </button>

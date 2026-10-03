@@ -32,8 +32,8 @@ export interface FinancialRequest {
 const DEFAULT_USERS: AuthUser[] = [
   {
     id: 'usr-admin-1',
-    email: 'admin@exbina.com',
-    name: 'Exbina Master Dealer',
+    email: 'admin@fxpro.com',
+    name: 'FxPro Master Dealer',
     password: 'admin',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop',
     role: 'admin',
@@ -47,8 +47,8 @@ const DEFAULT_USERS: AuthUser[] = [
   },
   {
     id: 'usr-demo-1',
-    email: 'trader@exbina.com',
-    name: 'Barış B. (VIP Trader)',
+    email: 'trader@fxpro.com',
+    name: 'Kurumsal (VIP Trader)',
     password: '123',
     avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop',
     role: 'user',
@@ -63,7 +63,7 @@ const DEFAULT_USERS: AuthUser[] = [
   {
     id: 'usr-demo-2',
     email: 'selin.kaya@gmail.com',
-    name: 'Selin Kaya',
+    name: 'Kurumsal Yatırımcı 2',
     avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
     role: 'user',
     createdAt: '2026-03-20 09:12:00',
@@ -80,7 +80,7 @@ const DEFAULT_REQUESTS: FinancialRequest[] = [
   {
     id: 'req-101',
     userId: 'usr-demo-1',
-    userEmail: 'trader@exbina.com',
+    userEmail: 'trader@fxpro.com',
     type: 'deposit',
     amount: 2500,
     method: 'USDT (TRC20)',

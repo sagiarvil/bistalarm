@@ -7,24 +7,24 @@ export interface MT5AccountItem {
   currency: string;
   type: string; // 'Hedge'
   badge?: 'Demo' | 'Master';
-  logoType: 'exbina' | 'xm' | 'raxon' | 'metaquotes';
+  logoType: 'fxpro' | 'xm' | 'raxon' | 'metaquotes';
 }
 
 export const INITIAL_ACCOUNTS_LIST: MT5AccountItem[] = [
   {
     id: 'acc-1',
-    name: 'Fetih Çetin',
+    name: 'VIP Trader',
     login: 20767,
-    server: 'Exbina-Server',
+    server: 'FXPro-Server',
     balance: 9746.60,
     currency: 'USD',
     type: 'Hedge',
     badge: 'Master',
-    logoType: 'exbina'
+    logoType: 'fxpro'
   },
   {
     id: 'acc-2',
-    name: 'Fetih Çetin',
+    name: 'VIP Trader',
     login: 382049711,
     server: 'XMGlobal-MT5 13',
     balance: 0.00,
@@ -34,7 +34,7 @@ export const INITIAL_ACCOUNTS_LIST: MT5AccountItem[] = [
   },
   {
     id: 'acc-3',
-    name: 'Fetih Çetin',
+    name: 'VIP Trader',
     login: 521124,
     server: 'RaxonMarkets-Server',
     balance: 0.00,
@@ -44,7 +44,7 @@ export const INITIAL_ACCOUNTS_LIST: MT5AccountItem[] = [
   },
   {
     id: 'acc-4',
-    name: 'Fethi Çetin',
+    name: 'VIP Trader',
     login: 113044428,
     server: 'MetaQuotes-Demo',
     balance: 22.75,
@@ -55,7 +55,7 @@ export const INITIAL_ACCOUNTS_LIST: MT5AccountItem[] = [
   },
   {
     id: 'acc-5',
-    name: 'LJajksjs KKskskdkd',
+    name: 'VIP Trader',
     login: 113036031,
     server: 'MetaQuotes-Demo',
     balance: 3711.78,

@@ -28,11 +28,14 @@ export default function AdminPage() {
   const [requests, setRequests] = useState<FinancialRequest[]>([]);
   const [config, setConfig] = useState<ScenarioConfig>(currentScenarioConfig);
   const [casinoCfg, setCasinoCfg] = useState<CasinoEngineConfig>(() => loadCasinoConfig());
+  const [globalWinRateInput, setGlobalWinRateInput] = useState<string>(casinoCfg.globalWinRateTarget?.toString() || '40');
+  const [specificUserId, setSpecificUserId] = useState('');
+  const [specificWinRate, setSpecificWinRate] = useState('100');
   const [prices, setPrices] = useState(CURRENT_PRICES);
   const [customBalanceInput, setCustomBalanceInput] = useState<string>('1000');
   const [notification, setNotification] = useState<string | null>(null);
   const [logMessages, setLogMessages] = useState<string[]>([
-    'Exbina Prime Dealer & Risk Yönetim Konsolu başlatıldı.',
+    'FxPro Dealer & Risk Yönetim Konsolu başlatıldı.',
     'Equinix LD4 Londra Likidite Köprüsü: Çevrimiçi (0.01ms)',
     'Monte Carlo Kriptografik Kasa Motoru: Aktif (Provably Fair)'
   ]);
@@ -225,12 +228,12 @@ export default function AdminPage() {
           </Link>
 
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center font-black text-white text-sm shadow-[0_0_15px_rgba(41,121,255,0.4)]">
+            <div className="w-8 h-8 rounded-xl  flex items-center justify-center font-black text-white text-sm ">
               ⚙️
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-black text-base tracking-wider text-white">EXBINA PRIME</span>
+                <span className="font-black text-base tracking-wider text-white">FxPro</span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-bold border border-blue-500/30 uppercase">
                   MASTER DEALER & CRM
                 </span>
@@ -263,7 +266,7 @@ export default function AdminPage() {
 
       {/* Bildirim Barı */}
       {notification && (
-        <div className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-mono text-xs py-2 px-4 text-center font-bold shadow-lg animate-pulse">
+        <div className=" text-white font-mono text-xs py-2 px-4 text-center font-bold shadow-lg animate-pulse">
           ⚡ {notification}
         </div>
       )}
@@ -278,7 +281,7 @@ export default function AdminPage() {
             onClick={() => setActiveTab('USERS')}
             className={`px-3 py-2 rounded-xl transition flex items-center justify-center gap-1.5 text-center ${
               activeTab === 'USERS'
-                ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
+                ? 'bg-blue-600 text-white '
                 : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'
             }`}
           >
@@ -289,7 +292,7 @@ export default function AdminPage() {
             onClick={() => setActiveTab('FINANCE')}
             className={`px-3 py-2 rounded-xl transition flex items-center justify-center gap-1.5 text-center ${
               activeTab === 'FINANCE'
-                ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
+                ? 'bg-blue-600 text-white '
                 : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'
             }`}
           >
@@ -300,7 +303,7 @@ export default function AdminPage() {
             onClick={() => setActiveTab('MARKETS')}
             className={`px-3 py-2 rounded-xl transition flex items-center justify-center gap-1.5 text-center ${
               activeTab === 'MARKETS'
-                ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
+                ? 'bg-blue-600 text-white '
                 : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'
             }`}
           >
@@ -311,7 +314,7 @@ export default function AdminPage() {
             onClick={() => setActiveTab('CASINO')}
             className={`px-3 py-2 rounded-xl transition flex items-center justify-center gap-1.5 text-center ${
               activeTab === 'CASINO'
-                ? 'bg-amber-600 text-white shadow-[0_0_15px_rgba(245,158,11,0.35)]'
+                ? 'bg-amber-600 text-white '
                 : 'bg-[#121722] text-amber-400 hover:text-white border border-amber-500/20'
             }`}
           >
@@ -322,7 +325,7 @@ export default function AdminPage() {
             onClick={() => setActiveTab('LOGS')}
             className={`px-3 py-2 rounded-xl transition flex items-center justify-center gap-1.5 text-center col-span-2 sm:col-span-1 ${
               activeTab === 'LOGS'
-                ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(41,121,255,0.35)]'
+                ? 'bg-blue-600 text-white '
                 : 'bg-[#121722] text-gray-400 hover:text-white border border-[#1b2332]'
             }`}
           >
@@ -357,7 +360,7 @@ export default function AdminPage() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setShowAddUserModal(true)}
-                    className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-xs font-bold font-mono rounded-xl transition shadow flex items-center gap-1.5 active:scale-95"
+                    className="px-3 py-1.5  bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold font-mono rounded-xl transition shadow flex items-center gap-1.5 active:scale-95"
                   >
                     <span>➕</span>
                     <span>Kullanıcı Ekle</span>
@@ -701,7 +704,7 @@ export default function AdminPage() {
                   onClick={() => handleApplyScenario('KARMA_CYCLE', 'Otonom Karma Döngüsü', 2.5, 0.0)}
                   className={`p-4 rounded-xl border text-left space-y-2 transition relative overflow-hidden group ${
                     config.activeScenario === 'KARMA_CYCLE'
-                      ? 'bg-gradient-to-br from-amber-600/30 via-yellow-600/20 to-emerald-600/30 border-yellow-400 text-white shadow-[0_0_25px_rgba(245,158,11,0.4)] ring-2 ring-yellow-400/50'
+                      ? 'bg-gradient-to-br from-amber-600/30 via-yellow-600/20 to-emerald-600/30 border-yellow-400 text-white  ring-2 ring-yellow-400/50'
                       : 'bg-gradient-to-br from-[#181a28] to-[#121420] border-amber-500/40 text-amber-200 hover:border-amber-400'
                   }`}
                 >
@@ -712,7 +715,7 @@ export default function AdminPage() {
                     </span>
                     <span className="text-base">🌀</span>
                   </div>
-                  <div className="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-amber-400">
+                  <div className="text-sm font-black  ">
                     Otonom Karma Motor
                   </div>
                   <p className="text-[11px] text-gray-300 font-sans">
@@ -924,57 +927,21 @@ export default function AdminPage() {
               </div>
             </div>
 
-            {/* %100 KESİNTİSİZ KAZANMA & GOD MODE ÇUBUĞU */}
-            <div className={`p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 transition shadow-2xl ${
-              casinoCfg.penetrationMode === 'GOD_WIN_100'
-                ? 'bg-gradient-to-r from-emerald-950 via-green-900/60 to-emerald-950 border-2 border-emerald-400 shadow-[0_0_40px_rgba(16,185,129,0.4)]'
-                : 'bg-gradient-to-r from-amber-950/70 via-yellow-900/50 to-amber-950/70 border-2 border-yellow-400/60 shadow-[0_0_30px_rgba(234,179,8,0.2)]'
-            }`}>
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">{casinoCfg.penetrationMode === 'GOD_WIN_100' ? '👑' : '🔥'}</span>
-                  <span className="text-lg font-black text-yellow-300 font-serif tracking-wide">
-                    TÜM KULLANICILARA %100 KOŞULSUZ KAZANDIR (GOD WIN 100)
-                  </span>
-                  <span className={`px-2.5 py-0.5 rounded font-mono text-[10px] font-bold border ${
-                    casinoCfg.penetrationMode === 'GOD_WIN_100'
-                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400 animate-pulse'
-                      : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'
-                  }`}>
-                    {casinoCfg.penetrationMode === 'GOD_WIN_100' ? '● ŞU AN AKTİF' : '○ PASİF'}
-                  </span>
-                </div>
-                <p className="text-xs text-amber-200/90 font-sans leading-relaxed">
-                  Tüm oyunlar (Slot, Rulet, Blackjack, Baccarat, Roket Crash, Mayınlar, Plinko) istisnasız %100 koşulsuz kazandırır.
-                  Slotlarda garanti 500x-1000x Mega Win, Rulette basılan sayıya/renge düşüş, Blackjack Doğal 21, Crash 88x, Mayınlarda tüm kutular elmas!
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2 shrink-0">
-                {casinoCfg.penetrationMode === 'GOD_WIN_100' ? (
-                  <button
-                    onClick={() => handleUpdateCasinoPenetration('PURE_MONTE_CARLO')}
-                    className="px-5 py-3 rounded-xl font-black text-xs font-mono transition bg-[#181105] text-amber-400 border border-amber-500/50 hover:bg-amber-900/40 shadow-lg"
-                  >
-                    ⚖️ Normal Monte Carlo&apos;ya Dön
-                  </button>
-                ) : null}
-
-                <button
-                  onClick={() => handleUpdateCasinoPenetration(casinoCfg.penetrationMode === 'GOD_WIN_100' ? 'PURE_MONTE_CARLO' : 'GOD_WIN_100')}
-                  className={`px-6 py-3 rounded-xl font-black text-xs font-mono transition shadow-lg shrink-0 ${
-                    casinoCfg.penetrationMode === 'GOD_WIN_100'
-                      ? 'bg-gradient-to-r from-emerald-400 via-green-300 to-emerald-500 text-black ring-4 ring-emerald-400/50 animate-pulse'
-                      : 'bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 text-black hover:scale-105 ring-2 ring-yellow-400/80 shadow-[0_0_20px_rgba(234,179,8,0.5)]'
-                  }`}
-                >
-                  {casinoCfg.penetrationMode === 'GOD_WIN_100' ? '👑 %100 KAZANMA AKTİF (KAPAT)' : '👑 %100 KAZANMAYI AÇ'}
-                </button>
-              </div>
-            </div>
-
-            {/* Penetrasyon Kademeleri */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono">
+              
+              {/* Caesars Sosyal AI (Ana Mod) */}
+              <button
+                onClick={() => handleUpdateCasinoPenetration('SOCIAL_CASINO_AI')}
+                className={`p-4 rounded-xl border text-left space-y-2 transition ${
+                  casinoCfg.penetrationMode === 'SOCIAL_CASINO_AI'
+                    ? 'bg-blue-600/30 border-blue-400 text-white shadow-lg'
+                    : 'bg-[#121824] border-[#1d273a] text-gray-400 hover:text-white'
+                }`}
+              >
+                <div className="text-xs font-bold text-blue-400">KADEME 1 (VARSAYILAN)</div>
+                <div className="text-sm font-bold text-blue-300">Caesars / Playtika AI</div>
+                <p className="text-[11px] text-gray-400 font-sans">Kullanıcıyı sistemde tutar, teğet geçer (near-miss), kurtarma kazancı verir.</p>
+              </button>
               
               {/* Normal */}
               <button
@@ -985,7 +952,7 @@ export default function AdminPage() {
                     : 'bg-[#121824] border-[#1d273a] text-gray-400 hover:text-white'
                 }`}
               >
-                <div className="text-xs font-bold text-gray-400">KADEME 1</div>
+                <div className="text-xs font-bold text-gray-400">KADEME 2</div>
                 <div className="text-sm font-bold text-amber-300">Saf Monte Carlo</div>
                 <p className="text-[11px] text-gray-400 font-sans">Monaco ve Vegas standartlarında bağımsız provably fair RNG.</p>
               </button>
@@ -999,7 +966,7 @@ export default function AdminPage() {
                     : 'bg-[#121824] border-[#1d273a] text-gray-400 hover:text-emerald-400'
                 }`}
               >
-                <div className="text-xs font-bold text-emerald-400">KADEME 2</div>
+                <div className="text-xs font-bold text-emerald-400">KADEME 3</div>
                 <div className="text-sm font-bold text-emerald-300">Kullanıcıyı Isıt (Hook)</div>
                 <p className="text-[11px] text-gray-400 font-sans">Kullanıcıya peş peşe 2x-20x kazanç vererek tutundur.</p>
               </button>
@@ -1013,7 +980,7 @@ export default function AdminPage() {
                     : 'bg-[#121824] border-[#1d273a] text-gray-400 hover:text-rose-400'
                 }`}
               >
-                <div className="text-xs font-bold text-rose-400">KADEME 3</div>
+                <div className="text-xs font-bold text-rose-400">KADEME 4</div>
                 <div className="text-sm font-bold text-rose-300">Kasa Toplama Modu</div>
                 <p className="text-[11px] text-gray-400 font-sans">Büyük bahislerde kasa avantajını sertleştir.</p>
               </button>
@@ -1027,7 +994,7 @@ export default function AdminPage() {
                     : 'bg-[#121824] border-[#1d273a] text-gray-400 hover:text-purple-400'
                 }`}
               >
-                <div className="text-xs font-bold text-purple-400">KADEME 4</div>
+                <div className="text-xs font-bold text-purple-400">KADEME 5</div>
                 <div className="text-sm font-bold text-purple-300">Kesin Jackpot Patlat!</div>
                 <p className="text-[11px] text-gray-400 font-sans">İlk çevirmede 5x Şanslı 777 Grand Jackpot patlatır.</p>
               </button>
@@ -1091,7 +1058,7 @@ export default function AdminPage() {
       {/* ========================================================================= */}
       {showAddUserModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn select-none">
-          <div className="relative w-full max-w-md bg-[#0d121c] border-2 border-blue-500/40 rounded-3xl shadow-[0_0_50px_rgba(41,121,255,0.3)] overflow-hidden flex flex-col text-white">
+          <div className="relative w-full max-w-md bg-[#0d121c] border-2 border-blue-500/40 rounded-3xl  overflow-hidden flex flex-col text-white">
             
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#1b2434] bg-[#090d15]">
               <div className="flex items-center gap-2">
@@ -1183,7 +1150,7 @@ export default function AdminPage() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-black rounded-xl transition shadow-lg active:scale-95"
+                  className="flex-1 py-3  bg-blue-600 hover:bg-blue-700 text-white font-black rounded-xl transition shadow-lg active:scale-95"
                 >
                   ✅ Kullanıcıyı Oluştur
                 </button>

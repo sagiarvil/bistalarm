@@ -5,6 +5,15 @@ export const metadata: Metadata = {
   title: "MetaTrader 5",
   description: "MetaTrader 5 Mobil Kaldıraçlı Forex & CFD İşlem Terminali",
   manifest: "/manifest.json",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+    }
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

@@ -30,7 +30,7 @@ export default function GameTacticsGuideModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-2 sm:p-4 overflow-y-auto animate-fadeIn select-none">
-      <div className="relative w-full max-w-4xl max-h-[94vh] bg-gradient-to-b from-[#1c1206] via-[#101e14] to-[#07130b] border-4 border-[#d4af37] rounded-2xl sm:rounded-3xl shadow-[0_0_80px_rgba(212,175,55,0.4)] overflow-hidden flex flex-col my-auto text-white">
+      <div className="relative w-full max-w-4xl max-h-[94vh] bg-gradient-to-b from-[#1c1206] via-[#101e14] to-[#07130b] border-4 border-[#d4af37] rounded-2xl sm:rounded-3xl  overflow-hidden flex flex-col my-auto text-white">
         
         {/* Üst Bar: Monte Carlo VIP Taktik ve Kazanç Manifestosu */}
         <div className="bg-gradient-to-r from-[#2c1408] via-[#4d260c] to-[#2c1408] border-b-2 border-[#d4af37] p-3 sm:p-4 flex items-center justify-between gap-3 shrink-0">
@@ -44,12 +44,12 @@ export default function GameTacticsGuideModal({
               <span>Geri Dön</span>
             </button>
 
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-600 border-2 border-yellow-200 flex items-center justify-center shadow-lg text-xl">
+            <div className="w-10 h-10 rounded-2xl  border-2 border-yellow-200 flex items-center justify-center shadow-lg text-xl">
               ⚡
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 font-serif tracking-wide">
+                <h2 className="text-base sm:text-xl font-black   font-serif tracking-wide">
                   VIP KAZANMA MANİFESTOSU
                 </h2>
                 <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 text-yellow-300 border border-yellow-400/50 uppercase tracking-widest font-mono hidden sm:inline">
@@ -112,7 +112,7 @@ export default function GameTacticsGuideModal({
             </div>
             <button
               onClick={() => { onClose(); onOpenCrash(); }}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-black font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/30 shrink-0 font-serif active:scale-95"
+              className="px-6 py-3 rounded-xl  bg-blue-600 hover:bg-blue-700 text-black font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/30 shrink-0 font-serif active:scale-95"
             >
               Hemen Şansını Dene ↗
             </button>
@@ -151,7 +151,7 @@ export default function GameTacticsGuideModal({
 
                 <button
                   onClick={() => { onClose(); onOpenCrash(); }}
-                  className="w-full py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs rounded-xl shadow transition"
+                  className="w-full py-2.5  bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition"
                 >
                   🚀 Roketi Ateşle (Crash Oyna)
                 </button>
@@ -188,7 +188,7 @@ export default function GameTacticsGuideModal({
 
                 <button
                   onClick={() => { onClose(); onOpenMines(); }}
-                  className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-bold text-xs rounded-xl shadow transition"
+                  className="w-full py-2.5  bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition"
                 >
                   💎 Elmasları Çıkart (Mines Oyna)
                 </button>
@@ -225,7 +225,7 @@ export default function GameTacticsGuideModal({
 
                 <button
                   onClick={() => { onClose(); onOpenRoulette(); }}
-                  className="w-full py-2.5 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-black font-black text-xs rounded-xl shadow transition font-serif"
+                  className="w-full py-2.5  bg-blue-600 hover:bg-blue-700 text-black font-black text-xs rounded-xl shadow transition font-serif"
                 >
                   🎡 Rulet Masasına Otur (Çevir)
                 </button>
@@ -262,7 +262,7 @@ export default function GameTacticsGuideModal({
 
                 <button
                   onClick={() => { onClose(); onOpenBlackjack(); }}
-                  className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs rounded-xl shadow transition"
+                  className="w-full py-2.5  bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition"
                 >
                   ♠️ 21 Masasına Geç (Kart İste)
                 </button>
@@ -299,7 +299,7 @@ export default function GameTacticsGuideModal({
 
                 <button
                   onClick={() => { onClose(); onOpenSlots(); }}
-                  className="w-full py-3 bg-gradient-to-r from-amber-500 via-rose-600 to-amber-500 hover:opacity-95 text-black font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-rose-600/30 transition"
+                  className="w-full py-3  hover:opacity-95 text-black font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-rose-600/30 transition"
                 >
                   🎰 Kolu Çek & Mega Jackpot Patlat!
                 </button>

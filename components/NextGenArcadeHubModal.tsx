@@ -68,7 +68,7 @@ export default function NextGenArcadeHubModal({
     } catch (e) {}
   };
 
-  // Caesars & Monte Carlo Tarzı Görkemli Zafer Fanfarı & Para Yağmuru
+  // VIP & Monte Carlo Tarzı Görkemli Zafer Fanfarı & Para Yağmuru
   const playArcadeGrandFanfare = () => {
     playSound(523.25, 'triangle', 0.25); // C5
     setTimeout(() => playSound(659.25, 'triangle', 0.25), 140); // E5
@@ -101,7 +101,7 @@ export default function NextGenArcadeHubModal({
     onUpdateBalance(account.balance - bet);
     playSound(350, 'triangle', 0.2);
 
-    const generated = generateCrashPoint();
+    const generated = generateCrashPoint(account.id);
     const cfg = loadCasinoConfig();
     crashPointRef.current = cfg.penetrationMode === 'GOD_WIN_100' ? 88.88 : generated.crashPoint;
     setCrashState('FLYING');
@@ -486,7 +486,7 @@ export default function NextGenArcadeHubModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-2 sm:p-4 overflow-y-auto select-none">
       
-      <div className="relative w-full max-w-4xl max-h-[94vh] bg-gradient-to-b from-[#101424] via-[#090c17] to-[#05070e] border-2 border-indigo-500/40 rounded-2xl sm:rounded-3xl shadow-[0_0_60px_rgba(99,102,241,0.25)] overflow-hidden flex flex-col my-auto">
+      <div className="relative w-full h-full sm:w-[98vw] sm:h-[98vh] max-w-none max-h-none bg-gradient-to-b from-[#0d101d] via-[#060912] to-[#03050a] sm:border-2 border-indigo-500/40 sm:rounded-2xl overflow-hidden flex flex-col my-auto shadow-[0_0_50px_rgba(99,102,241,0.15)]">
         
         {/* Üst Başlık & Oyun Seçici Sekmeler */}
         <div className="flex flex-col sm:flex-row items-center justify-between px-3 sm:px-5 py-3 bg-[#070913]/90 border-b border-indigo-500/30 gap-3 shrink-0">
@@ -507,7 +507,7 @@ export default function NextGenArcadeHubModal({
             </button>
 
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-lg shadow-lg">
+              <div className="w-8 h-8 rounded-xl  flex items-center justify-center text-lg shadow-lg">
                 🚀
               </div>
               <div>
@@ -534,11 +534,11 @@ export default function NextGenArcadeHubModal({
           </div>
 
           {/* Sekmeler - KAYDIRMASIZ DİNAMİK GRİD */}
-          <div className="grid grid-cols-4 sm:grid-cols-7 gap-1 bg-[#141a2e] p-1 rounded-xl border border-indigo-500/30 text-xs font-bold w-full sm:w-auto">
+          <div className="grid grid-cols-4 sm:grid-cols-7 gap-1 bg-black p-1.5 rounded-xl border-2 border-[#d4af37]/40 shadow-inner text-xs font-bold w-full sm:w-auto">
             <button
               onClick={() => setActiveTab('CRASH_ROCKET')}
               className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
-                activeTab === 'CRASH_ROCKET' ? 'bg-gradient-to-r from-rose-600 to-orange-500 text-white shadow' : 'text-gray-400 hover:text-white'
+                activeTab === 'CRASH_ROCKET' ? ' bg-[#d4af37] text-black shadow-[0_0_10px_rgba(212,175,55,0.6)] border border-yellow-200' : 'text-gray-400 hover:text-white'
               }`}
             >
               <span>🚀</span> Roket
@@ -546,7 +546,7 @@ export default function NextGenArcadeHubModal({
             <button
               onClick={() => setActiveTab('CRYPTO_MINES')}
               className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
-                activeTab === 'CRYPTO_MINES' ? 'bg-gradient-to-r from-cyan-600 to-blue-500 text-white shadow' : 'text-gray-400 hover:text-white'
+                activeTab === 'CRYPTO_MINES' ? ' bg-[#d4af37] text-black shadow-[0_0_10px_rgba(212,175,55,0.6)] border border-yellow-200' : 'text-gray-400 hover:text-white'
               }`}
             >
               <span>💎</span> Mayın
@@ -554,7 +554,7 @@ export default function NextGenArcadeHubModal({
             <button
               onClick={() => setActiveTab('PLINKO_PIN')}
               className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
-                activeTab === 'PLINKO_PIN' ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-black shadow' : 'text-gray-400 hover:text-white'
+                activeTab === 'PLINKO_PIN' ? ' text-black shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
               <span>🟡</span> Plinko
@@ -562,7 +562,7 @@ export default function NextGenArcadeHubModal({
             <button
               onClick={() => setActiveTab('WHEEL_FORTUNE')}
               className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
-                activeTab === 'WHEEL_FORTUNE' ? 'bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow' : 'text-gray-400 hover:text-white'
+                activeTab === 'WHEEL_FORTUNE' ? ' bg-[#d4af37] text-black shadow-[0_0_10px_rgba(212,175,55,0.6)] border border-yellow-200' : 'text-gray-400 hover:text-white'
               }`}
             >
               <span>🎡</span> Çark
@@ -570,7 +570,7 @@ export default function NextGenArcadeHubModal({
             <button
               onClick={() => setActiveTab('COIN_FLIP_STREAK')}
               className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
-                activeTab === 'COIN_FLIP_STREAK' ? 'bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow' : 'text-gray-400 hover:text-white'
+                activeTab === 'COIN_FLIP_STREAK' ? ' bg-[#d4af37] text-black shadow-[0_0_10px_rgba(212,175,55,0.6)] border border-yellow-200' : 'text-gray-400 hover:text-white'
               }`}
             >
               <span>🪙</span> Yazı-Tura
@@ -578,7 +578,7 @@ export default function NextGenArcadeHubModal({
             <button
               onClick={() => setActiveTab('TURKISH_BARBUT')}
               className={`px-2 py-1.5 rounded-lg transition flex items-center justify-center gap-1 text-center ${
-                activeTab === 'TURKISH_BARBUT' ? 'bg-gradient-to-r from-red-600 via-amber-600 to-yellow-500 text-white shadow ring-1 ring-yellow-400' : 'text-amber-400 hover:text-white'
+                activeTab === 'TURKISH_BARBUT' ? ' bg-[#d4af37] text-black shadow-[0_0_10px_rgba(212,175,55,0.6)] border border-yellow-200 ring-1 ring-yellow-400' : 'text-amber-400 hover:text-white'
               }`}
             >
               <span>🎲</span> Barbut
@@ -610,7 +610,7 @@ export default function NextGenArcadeHubModal({
           {activeTab === 'CRASH_ROCKET' && (
             <div className="space-y-4">
               
-              {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
+              {/* YÖNLENDİRİCİ ADIM ETİKETLERİ */}
               <div className="bg-gradient-to-r from-rose-950/60 via-orange-950/50 to-rose-950/60 border border-rose-500/30 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
                 <div className="flex items-center gap-2">
                   <span className="px-2 py-0.5 rounded bg-orange-500 text-black font-black text-[10px] uppercase">1. ADIM</span>
@@ -679,14 +679,14 @@ export default function NextGenArcadeHubModal({
                 {crashState === 'FLYING' ? (
                   <button
                     onClick={handleCashout}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-black font-black text-sm rounded-xl shadow-[0_0_25px_rgba(16,185,129,0.5)] active:scale-95 animate-pulse"
+                    className="w-full sm:w-auto px-8 py-3.5  bg-blue-600 hover:bg-blue-700 text-black font-black text-sm rounded-xl  active:scale-95 animate-pulse"
                   >
                     💰 KÂRI AL (${(bet * currentMultiplier).toFixed(2)})
                   </button>
                 ) : (
                   <button
                     onClick={startCrashGame}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-rose-600 to-orange-500 hover:from-rose-500 hover:to-orange-400 text-white font-black text-sm rounded-xl shadow-lg active:scale-95"
+                    className="w-full sm:w-auto px-8 py-3.5  bg-blue-600 hover:bg-blue-700 text-white font-black text-sm rounded-xl shadow-lg active:scale-95"
                   >
                     🚀 FIRLAT (${bet})
                   </button>
@@ -699,7 +699,7 @@ export default function NextGenArcadeHubModal({
           {activeTab === 'CRYPTO_MINES' && (
             <div className="space-y-4">
               
-              {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
+              {/* YÖNLENDİRİCİ ADIM ETİKETLERİ */}
               <div className="bg-gradient-to-r from-cyan-950/60 via-blue-950/50 to-cyan-950/60 border border-cyan-500/30 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
                 <div className="flex items-center gap-2">
                   <span className="px-2 py-0.5 rounded bg-cyan-500 text-black font-black text-[10px] uppercase">1. ADIM</span>
@@ -728,7 +728,7 @@ export default function NextGenArcadeHubModal({
                           onClick={() => handleCellClick(idx)}
                           className={`h-12 sm:h-14 rounded-xl flex items-center justify-center text-2xl font-bold transition-all ${
                             status === 'GEM' 
-                              ? 'bg-gradient-to-tr from-cyan-600 to-emerald-500 shadow-[0_0_15px_rgba(6,182,212,0.6)] animate-bounce'
+                              ? '  animate-bounce'
                               : status === 'MINE'
                               ? 'bg-rose-900 border-2 border-rose-500'
                               : 'bg-[#12192d] hover:bg-[#1a233d] border border-cyan-500/20 active:scale-95'
@@ -773,7 +773,7 @@ export default function NextGenArcadeHubModal({
                           onClick={() => setSelectedTargetStep(tier.step)}
                           className={`p-2 rounded-xl border text-left flex flex-col justify-between transition ${
                             selectedTargetStep === tier.step
-                              ? 'bg-cyan-500/20 border-cyan-400 text-white shadow-[0_0_10px_rgba(6,182,212,0.3)]'
+                              ? 'bg-cyan-500/20 border-cyan-400 text-white '
                               : 'bg-[#141b2d] border-[#1d273a] text-gray-400 hover:text-white'
                           }`}
                         >
@@ -810,14 +810,14 @@ export default function NextGenArcadeHubModal({
                     <button
                       disabled={diamondsFound === 0}
                       onClick={handleMinesCashout}
-                      className="w-full py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-black text-xs rounded-xl shadow-lg active:scale-95 disabled:opacity-40"
+                      className="w-full py-3  text-black font-black text-xs rounded-xl shadow-lg active:scale-95 disabled:opacity-40"
                     >
                       💰 KÂRI AL (${(bet * getMinesMultiplier(minesCount, diamondsFound)).toFixed(2)})
                     </button>
                   ) : (
                     <button
                       onClick={startMinesGame}
-                      className="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-black text-xs rounded-xl shadow-lg active:scale-95"
+                      className="w-full py-3  text-white font-black text-xs rounded-xl shadow-lg active:scale-95"
                     >
                       💎 OYUNA BAŞLA (${bet})
                     </button>
@@ -832,7 +832,7 @@ export default function NextGenArcadeHubModal({
           {activeTab === 'PLINKO_PIN' && (
             <div className="space-y-4">
               
-              {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ */}
+              {/* YÖNLENDİRİCİ ADIM ETİKETLERİ */}
               <div className="bg-gradient-to-r from-yellow-950/60 via-amber-950/50 to-yellow-950/60 border border-yellow-500/30 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
                 <div className="flex items-center gap-2">
                   <span className="px-2 py-0.5 rounded bg-amber-500 text-black font-black text-[10px] uppercase">1. ADIM</span>
@@ -849,7 +849,7 @@ export default function NextGenArcadeHubModal({
                 {/* Düşen Top */}
                 {plinkoBallPos && (
                   <div
-                    className="absolute w-4 h-4 bg-yellow-400 rounded-full shadow-[0_0_12px_rgba(250,204,21,1)] z-20 transition-all duration-75"
+                    className="absolute w-4 h-4 bg-yellow-400 rounded-full  z-20 transition-all duration-75"
                     style={{ left: `${plinkoBallPos.x}%`, top: `${plinkoBallPos.y}%` }}
                   ></div>
                 )}
@@ -906,7 +906,7 @@ export default function NextGenArcadeHubModal({
                   <button
                     disabled={plinkoActive}
                     onClick={dropPlinkoBall}
-                    className="px-8 py-3 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-sm rounded-xl shadow-lg active:scale-95 disabled:opacity-50"
+                    className="px-8 py-3  bg-blue-600 hover:bg-blue-700 text-black font-black text-sm rounded-xl shadow-lg active:scale-95 disabled:opacity-50"
                   >
                     {plinkoActive ? 'DÜŞÜYOR...' : '🟡 TOPU BIRAK ($' + bet + ')'}
                   </button>
@@ -918,7 +918,7 @@ export default function NextGenArcadeHubModal({
           {/* 4. OYUN: VIRAL WHEEL OF FORTUNE (ŞANS ÇARKI) */}
           {activeTab === 'WHEEL_FORTUNE' && (
             <div className="space-y-4">
-              {/* AKILLI YÖNLENDİRİCİ ETİKETLER */}
+              {/* YÖNLENDİRİCİ ETİKETLER */}
               <div className="bg-gradient-to-r from-purple-950/60 via-pink-950/50 to-purple-950/60 border border-purple-500/30 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
                 <div className="flex items-center gap-2">
                   <span className="px-2 py-0.5 rounded bg-purple-500 text-white font-black text-[10px] uppercase">1. ADIM</span>
@@ -939,7 +939,7 @@ export default function NextGenArcadeHubModal({
 
                 {/* Dönen Çark */}
                 <div
-                  className="w-56 h-56 sm:w-64 sm:h-64 rounded-full border-4 border-yellow-400 shadow-[0_0_40px_rgba(168,85,247,0.4)] relative flex items-center justify-center transition-transform ease-out"
+                  className="w-56 h-56 sm:w-64 sm:h-64 rounded-full border-4 border-yellow-400  relative flex items-center justify-center transition-transform ease-out"
                   style={{
                     transform: `rotate(${wheelRotation}deg)`,
                     transitionDuration: wheelSpinning ? '3.2s' : '0s',
@@ -947,7 +947,7 @@ export default function NextGenArcadeHubModal({
                   }}
                 >
                   {/* Merkez Altın Göbek */}
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-yellow-500 via-amber-300 to-yellow-600 border-2 border-white shadow-xl flex items-center justify-center text-xl">
+                  <div className="w-14 h-14 rounded-full  border-2 border-white shadow-xl flex items-center justify-center text-xl">
                     👑
                   </div>
                 </div>
@@ -979,7 +979,7 @@ export default function NextGenArcadeHubModal({
                 <button
                   disabled={wheelSpinning}
                   onClick={spinWheel}
-                  className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:scale-105 text-white font-black text-sm rounded-xl shadow-lg active:scale-95 disabled:opacity-50"
+                  className="w-full sm:w-auto px-8 py-3  hover:scale-105 text-white font-black text-sm rounded-xl shadow-lg active:scale-95 disabled:opacity-50"
                 >
                   {wheelSpinning ? 'ÇEVRİLİYOR...' : `🎡 ÇARKI ÇEVİR ($${bet})`}
                 </button>
@@ -990,7 +990,7 @@ export default function NextGenArcadeHubModal({
           {/* 5. OYUN: COIN FLIP STREAK (SERİ YAZI-TURA) */}
           {activeTab === 'COIN_FLIP_STREAK' && (
             <div className="space-y-3">
-              {/* AKILLI YÖNLENDİRİCİ ETİKETLER & KAZANMA KURALLARI REHBERİ */}
+              {/* YÖNLENDİRİCİ ETİKETLER & KAZANMA KURALLARI REHBERİ */}
               <div className="bg-gradient-to-r from-emerald-950/80 via-teal-950/60 to-emerald-950/80 border border-emerald-500/40 rounded-xl p-3 space-y-2 text-xs font-mono">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
@@ -1023,10 +1023,10 @@ export default function NextGenArcadeHubModal({
                   }`}>
                     
                     {/* Metalik Altın Dış Çerçeve ve Yivler */}
-                    <div className="w-full h-full rounded-full border-4 border-yellow-200 bg-gradient-to-tr from-amber-600 via-yellow-400 to-yellow-200 shadow-[0_0_35px_rgba(245,158,11,0.6)] flex items-center justify-center p-1.5 relative overflow-hidden">
+                    <div className="w-full h-full rounded-full border-4 border-yellow-200   flex items-center justify-center p-1.5 relative overflow-hidden">
                       
                       {/* İç Pirinç Halka & Mikro Gravür */}
-                      <div className="w-full h-full rounded-full border-2 border-dashed border-amber-900/60 bg-gradient-to-b from-yellow-300 via-amber-400 to-yellow-500 flex flex-col items-center justify-center shadow-inner relative">
+                      <div className="w-full h-full rounded-full border-2 border-dashed border-amber-900/60  flex flex-col items-center justify-center shadow-inner relative">
                         
                         {/* Işık Parıltısı Refleksi */}
                         <div className="absolute inset-0 bg-gradient-to-tr from-white/30 via-transparent to-black/20 pointer-events-none rounded-full" />
@@ -1097,7 +1097,7 @@ export default function NextGenArcadeHubModal({
                       key={amt}
                       disabled={coinGameActive}
                       onClick={() => setBet(amt)}
-                      className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition ${bet === amt ? 'bg-emerald-600 text-white shadow ring-2 ring-emerald-400' : 'bg-[#182035] text-gray-300 hover:text-white'}`}
+                      className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition ${bet === amt ? 'bg-emerald-600 bg-[#d4af37] text-black shadow-[0_0_10px_rgba(212,175,55,0.6)] border border-yellow-200 ring-2 ring-emerald-400' : 'bg-[#182035] text-gray-300 hover:text-white'}`}
                     >
                       ${amt}
                     </button>
@@ -1108,7 +1108,7 @@ export default function NextGenArcadeHubModal({
                   {coinGameActive && coinStreak > 0 && (
                     <button
                       onClick={handleCoinCashout}
-                      className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 text-black font-black text-xs sm:text-sm rounded-xl shadow-lg active:scale-95 animate-pulse"
+                      className="px-5 py-2.5  text-black font-black text-xs sm:text-sm rounded-xl shadow-lg active:scale-95 animate-pulse"
                       title="Biriken kazancı anında hesabınıza aktarır"
                     >
                       💰 KÂRI AL (${(bet * getCoinStreakMultiplier(coinStreak)).toFixed(2)})
@@ -1159,66 +1159,67 @@ export default function NextGenArcadeHubModal({
               </div>
 
               {/* Barbut Kemik Zarlar Arenası */}
-              <div className="relative h-64 sm:h-72 bg-gradient-to-b from-[#140608] via-[#220a0d] to-[#0d0305] border-2 border-red-500/40 rounded-2xl flex flex-col items-center justify-center p-4 overflow-hidden shadow-inner space-y-3">
+              <div className="relative h-64 sm:h-72 bg-[radial-gradient(ellipse_at_center,_#0b381a,_#021207)] border-[12px] border-[#3e1f02] rounded-3xl flex flex-col items-center justify-center p-4 overflow-hidden shadow-[inset_0_0_50px_rgba(0,0,0,1)] space-y-3">
+                <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
                 
                 {/* 2 Adet 3D Kemik Zar Görseli */}
                 <div className="flex items-center justify-center gap-6 sm:gap-10 h-32 select-none">
                   {[barbutDice[0], barbutDice[1]].map((val, idx) => (
                     <div 
                       key={idx}
-                      className={`w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-amber-50 via-white to-amber-100 border-4 border-amber-300 shadow-[0_10px_25px_rgba(0,0,0,0.6)] flex items-center justify-center relative transition-transform duration-200 ${
-                        barbutRolling ? 'animate-bounce scale-105 rotate-12' : 'hover:scale-105'
+                      className={`w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-red-600 via-red-700 to-red-900 border-[3px] border-red-500 shadow-[inset_0_-8px_15px_rgba(0,0,0,0.6),_0_15px_30px_rgba(0,0,0,0.8)] flex items-center justify-center relative transition-transform duration-200 ${
+                        barbutRolling ? 'animate-dice-roll' : 'hover:scale-110 hover:-translate-y-2'
                       }`}
                     >
                       {/* Gerçekçi Kemik Zar Noktaları (Pips) */}
                       <div className="grid grid-cols-3 grid-rows-3 w-14 h-14 sm:w-16 sm:h-16 gap-1 items-center justify-items-center">
                         {/* 1 */}
                         {val === 1 && (
-                          <div className="col-start-2 row-start-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-rose-600 shadow-inner" />
+                          <div className="col-start-2 row-start-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
                         )}
                         {/* 2 */}
                         {val === 2 && (
                           <>
-                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
-                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
                           </>
                         )}
                         {/* 3 */}
                         {val === 3 && (
                           <>
-                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
-                            <div className="col-start-2 row-start-2 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
-                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-2 row-start-2 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
                           </>
                         )}
                         {/* 4 */}
                         {val === 4 && (
                           <>
-                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
-                            <div className="col-start-3 row-start-1 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
-                            <div className="col-start-1 row-start-3 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
-                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
+                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-3 row-start-1 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-1 row-start-3 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
                           </>
                         )}
                         {/* 5 */}
                         {val === 5 && (
                           <>
-                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
-                            <div className="col-start-3 row-start-1 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
-                            <div className="col-start-2 row-start-2 w-3.5 h-3.5 rounded-full bg-rose-600 shadow-inner" />
-                            <div className="col-start-1 row-start-3 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
-                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-1 row-start-1 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-3 row-start-1 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-2 row-start-2 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-1 row-start-3 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-3 row-start-3 w-3.5 h-3.5 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
                           </>
                         )}
                         {/* 6 */}
                         {val === 6 && (
                           <>
-                            <div className="col-start-1 row-start-1 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
-                            <div className="col-start-3 row-start-1 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
-                            <div className="col-start-1 row-start-2 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
-                            <div className="col-start-3 row-start-2 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
-                            <div className="col-start-1 row-start-3 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
-                            <div className="col-start-3 row-start-3 w-3 h-3 rounded-full bg-zinc-900 shadow-inner" />
+                            <div className="col-start-1 row-start-1 w-3 h-3 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-3 row-start-1 w-3 h-3 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-1 row-start-2 w-3 h-3 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-3 row-start-2 w-3 h-3 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-1 row-start-3 w-3 h-3 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
+                            <div className="col-start-3 row-start-3 w-3 h-3 rounded-full bg-white shadow-[inset_0_3px_6px_rgba(0,0,0,0.7)]" />
                           </>
                         )}
                       </div>
@@ -1270,7 +1271,7 @@ export default function NextGenArcadeHubModal({
                       key={amt}
                       disabled={barbutRolling}
                       onClick={() => setBet(amt)}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${bet === amt ? 'bg-red-600 text-white shadow ring-2 ring-red-400' : 'bg-[#182035] text-gray-300 hover:text-white'}`}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${bet === amt ? 'bg-red-600 bg-[#d4af37] text-black shadow-[0_0_10px_rgba(212,175,55,0.6)] border border-yellow-200 ring-2 ring-red-400' : 'bg-[#182035] text-gray-300 hover:text-white'}`}
                     >
                       ${amt}
                     </button>
@@ -1286,7 +1287,7 @@ export default function NextGenArcadeHubModal({
                 <button
                   disabled={barbutRolling}
                   onClick={() => handleRollBarbut('BARBUT_WIN')}
-                  className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-red-800 to-amber-700 hover:from-red-700 hover:to-amber-600 border border-amber-400/50 text-white transition active:scale-95 shadow text-left disabled:opacity-50"
+                  className="py-2.5 px-3 rounded-xl  bg-[radial-gradient(ellipse_at_center,_#7f1d1d,_#450a0a)] border-2 border-[#d4af37] shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] text-white transition active:scale-95 shadow text-left disabled:opacity-50"
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-xs sm:text-sm text-yellow-200">BARBUT ZAFERİ</span>
@@ -1298,7 +1299,7 @@ export default function NextGenArcadeHubModal({
                 <button
                   disabled={barbutRolling}
                   onClick={() => handleRollBarbut('DUSES')}
-                  className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-yellow-600 via-amber-500 to-yellow-600 hover:from-yellow-500 hover:to-amber-400 border border-yellow-200 text-black font-black transition active:scale-95 shadow text-left disabled:opacity-50"
+                  className="py-2.5 px-3 rounded-xl  bg-blue-600 hover:bg-blue-700 border border-yellow-200 text-black font-black transition active:scale-95 shadow text-left disabled:opacity-50"
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-xs sm:text-sm">DÜŞEŞ (6-6)</span>
@@ -1310,7 +1311,7 @@ export default function NextGenArcadeHubModal({
                 <button
                   disabled={barbutRolling}
                   onClick={() => handleRollBarbut('CIFT')}
-                  className="py-2.5 px-3 rounded-xl bg-[#141a2e] hover:bg-[#1e2642] border border-amber-500/40 text-white transition active:scale-95 shadow text-left disabled:opacity-50"
+                  className="py-2.5 px-3 rounded-xl bg-[radial-gradient(ellipse_at_center,_#14532d,_#052e16)] border-2 border-[#d4af37]/60 hover:border-[#d4af37] shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] text-white transition active:scale-95 shadow text-left disabled:opacity-50"
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-xs sm:text-sm text-amber-300">HERHANGİ ÇİFT</span>
@@ -1322,7 +1323,7 @@ export default function NextGenArcadeHubModal({
                 <button
                   disabled={barbutRolling}
                   onClick={() => handleRollBarbut('YEDILI')}
-                  className="py-2.5 px-3 rounded-xl bg-[#141a2e] hover:bg-[#1e2642] border border-amber-500/40 text-white transition active:scale-95 shadow text-left disabled:opacity-50"
+                  className="py-2.5 px-3 rounded-xl bg-[radial-gradient(ellipse_at_center,_#14532d,_#052e16)] border-2 border-[#d4af37]/60 hover:border-[#d4af37] shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] text-white transition active:scale-95 shadow text-left disabled:opacity-50"
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-xs sm:text-sm text-amber-300">ŞANSLI 7</span>
@@ -1334,7 +1335,7 @@ export default function NextGenArcadeHubModal({
                 <button
                   disabled={barbutRolling}
                   onClick={() => handleRollBarbut('YUKSEK')}
-                  className="py-2.5 px-3 rounded-xl bg-[#141a2e] hover:bg-[#1e2642] border border-amber-500/40 text-white transition active:scale-95 shadow text-left disabled:opacity-50"
+                  className="py-2.5 px-3 rounded-xl bg-[radial-gradient(ellipse_at_center,_#14532d,_#052e16)] border-2 border-[#d4af37]/60 hover:border-[#d4af37] shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] text-white transition active:scale-95 shadow text-left disabled:opacity-50"
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-xs sm:text-sm text-cyan-300">BÜYÜK ZAR (8-12)</span>
@@ -1346,7 +1347,7 @@ export default function NextGenArcadeHubModal({
                 <button
                   disabled={barbutRolling}
                   onClick={() => handleRollBarbut('DUSUK')}
-                  className="py-2.5 px-3 rounded-xl bg-[#141a2e] hover:bg-[#1e2642] border border-amber-500/40 text-white transition active:scale-95 shadow text-left disabled:opacity-50"
+                  className="py-2.5 px-3 rounded-xl bg-[radial-gradient(ellipse_at_center,_#14532d,_#052e16)] border-2 border-[#d4af37]/60 hover:border-[#d4af37] shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] text-white transition active:scale-95 shadow text-left disabled:opacity-50"
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-xs sm:text-sm text-purple-300">KÜÇÜK ZAR (2-6)</span>
@@ -1370,7 +1371,7 @@ export default function NextGenArcadeHubModal({
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs text-gray-300 font-mono">
               
-              <div className="bg-[#0f1524] p-3 rounded-xl border border-rose-500/20 space-y-1">
+              <div className="bg-[#111] p-3 rounded-xl border border-rose-500/20 space-y-1">
                 <div className="font-bold text-rose-400 flex items-center gap-1.5">
                   <span>🚀</span> Roket Crash Mantığı
                 </div>
@@ -1379,16 +1380,16 @@ export default function NextGenArcadeHubModal({
                 </p>
               </div>
 
-              <div className="bg-[#0f1524] p-3 rounded-xl border border-cyan-500/20 space-y-1">
+              <div className="bg-[#111] p-3 rounded-xl border border-cyan-500/20 space-y-1">
                 <div className="font-bold text-cyan-400 flex items-center gap-1.5">
                   <span>💎</span> Elmas Mayın Mantığı
                 </div>
                 <p className="text-[11px] text-gray-400 font-sans leading-relaxed">
-                  <strong>Kazanma Şartı:</strong> 25 kutuda seçtiğiniz kadar bomba gizlidir. Her açtığınız elmas çarpanı katlar. 3, 5, 8 veya 12 adım hedefinizi belirleyip otomatik kâr alabilir veya dilediğiniz an nakite geçebilirsiniz!
+                  <strong>Kazanma Şartı:</strong> 25 kutuda seçtiğiniz kadar bomba gizlidir. Her açtığınız elmas çarpanı katlar. 3, 5, 8 veya 12 adım hedefinizi belirleyip anında kâr alabilir veya dilediğiniz an nakite geçebilirsiniz!
                 </p>
               </div>
 
-              <div className="bg-[#0f1524] p-3 rounded-xl border border-amber-500/20 space-y-1">
+              <div className="bg-[#111] p-3 rounded-xl border border-amber-500/20 space-y-1">
                 <div className="font-bold text-amber-400 flex items-center gap-1.5">
                   <span>🟡</span> Plinko Pin Mantığı
                 </div>
@@ -1397,7 +1398,7 @@ export default function NextGenArcadeHubModal({
                 </p>
               </div>
 
-              <div className="bg-[#0f1524] p-3 rounded-xl border border-purple-500/20 space-y-1">
+              <div className="bg-[#111] p-3 rounded-xl border border-purple-500/20 space-y-1">
                 <div className="font-bold text-purple-400 flex items-center gap-1.5">
                   <span>🎡</span> Viral Şans Çarkı Mantığı
                 </div>
@@ -1406,7 +1407,7 @@ export default function NextGenArcadeHubModal({
                 </p>
               </div>
 
-              <div className="bg-[#0f1524] p-3 rounded-xl border border-emerald-500/20 space-y-1">
+              <div className="bg-[#111] p-3 rounded-xl border border-emerald-500/20 space-y-1">
                 <div className="font-bold text-emerald-400 flex items-center gap-1.5">
                   <span>🪙</span> Seri Yazı-Tura Mantığı
                 </div>
@@ -1415,7 +1416,7 @@ export default function NextGenArcadeHubModal({
                 </p>
               </div>
 
-              <div className="bg-[#0f1524] p-3 rounded-xl border border-red-500/20 space-y-1">
+              <div className="bg-[#111] p-3 rounded-xl border border-red-500/20 space-y-1">
                 <div className="font-bold text-red-400 flex items-center gap-1.5">
                   <span>🎲</span> Klasik Türk Barbutu Mantığı
                 </div>
@@ -1424,7 +1425,7 @@ export default function NextGenArcadeHubModal({
                 </p>
               </div>
 
-              <div className="bg-[#0f1524] p-3 rounded-xl border border-yellow-500/20 space-y-1">
+              <div className="bg-[#111] p-3 rounded-xl border border-yellow-500/20 space-y-1">
                 <div className="font-bold text-yellow-400 flex items-center gap-1.5">
                   <span>👑</span> God Mode Garantisi
                 </div>
@@ -1441,7 +1442,7 @@ export default function NextGenArcadeHubModal({
       </div>
 
       {/* ========================================================================= */}
-      {/* CAESARS & MONTE CARLO GRAND WIN CELEBRATION (ALTIN SİKKE & ZAFER EFEKTİ) */}
+      {/* VIP & MONTE CARLO GRAND WIN CELEBRATION (ALTIN SİKKE & ZAFER EFEKTİ) */}
       {/* ========================================================================= */}
       {winCelebration && (
         <GrandWinCelebration

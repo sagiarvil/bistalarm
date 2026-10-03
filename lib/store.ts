@@ -54,11 +54,11 @@ export const INITIAL_HISTORY: Position[] = VIDEO_HISTORY_ITEMS.map((item, idx) =
   comment: (item as any).comment
 }));
 
-// Videodaki Kullanıcı Hesabı: Fetih Çetin - 20767
+// Videodaki Kullanıcı Hesabı: VIP Trader - 20767
 export const INITIAL_ACCOUNT: UserAccount = {
   id: 'usr-1',
   login: 20767,
-  name: 'Fetih Çetin',
+  name: 'VIP Trader',
   role: 'OWNER',
   balance: 9746.60,
   credit: 4098.00,

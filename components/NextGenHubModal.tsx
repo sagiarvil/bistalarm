@@ -29,7 +29,7 @@ export default function NextGenHubModal({
 
   if (!isOpen) return null;
 
-  // Arbitraj Botunu Çalıştırma
+  // Arbitraj Sistemini Çalıştırma
   const handleRunArbitrage = () => {
     setArbScanning(true);
     setArbSuccess(null);
@@ -69,7 +69,7 @@ export default function NextGenHubModal({
               <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-wide">
                 Yeni Nesil Kaldıraç & Yaratıcı Kazanç Kapıları
               </h2>
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-mono">
+              <span className=" text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-mono">
                 WEB3 & FINTECH 2026
               </span>
             </div>
@@ -128,7 +128,7 @@ export default function NextGenHubModal({
               <div className="bg-gradient-to-r from-blue-900/20 to-indigo-900/20 border border-blue-500/30 rounded-xl p-4">
                 <h3 className="font-bold text-white text-sm mb-1">Dinamik Mikro-Kaldıraç Modeli (Tiered Margin)</h3>
                 <p className="text-xs text-gray-300 leading-relaxed">
-                  Geleneksel brokerların 1:100 kısıtlamasını kırın! Küçük hacimli emirlerde sermaye gereksinimini sıfıra indiren kademeli kaldıraç algoritması ile sadece <strong>$5 teminatla 0.10 Lot Altın veya Endeks</strong> açabilirsiniz.
+                  Geleneksel brokerların 1:100 kısıtlamasını kırın! Küçük hacimli emirlerde sermaye gereksinimini sıfıra indiren kademeli kaldıraç sistemi ile sadece <strong>$5 teminatla 0.10 Lot Altın veya Endeks</strong> açabilirsiniz.
                 </p>
               </div>
 
@@ -158,14 +158,14 @@ export default function NextGenHubModal({
               <div className="p-4 bg-[#141a24] rounded-xl border border-[#232c3d] flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div>
                   <span className="text-xs text-gray-300 font-semibold block">Mevcut Hesap Kaldıracınız: 1:{account.leverage}</span>
-                  <span className="text-[11px] text-gray-500">1:2000 modunu aktif ettiğinizde küçük lotlarda otomatik devreye girer.</span>
+                  <span className="text-[11px] text-gray-500">1:2000 modunu aktif ettiğinizde küçük lotlarda doğrudan devreye girer.</span>
                 </div>
                 <button
                   onClick={() => {
                     onChangeLeverage(2000);
                     onClose();
                   }}
-                  className="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold rounded-lg text-xs transition shadow-lg shrink-0"
+                  className="w-full sm:w-auto px-5 py-2.5  bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs transition shadow-lg shrink-0"
                 >
                   🚀 1:2000 Kaldıracı Aktif Et
                 </button>
@@ -232,13 +232,13 @@ export default function NextGenHubModal({
             </div>
           )}
 
-          {/* 3. GECİKME ARBİTRAJI VE MEV BOTU */}
+          {/* 3. GECİKME ARBİTRAJI VE YÜKSEK FREKANSLI İŞLEM SİSTEMİ */}
           {activeTab === 'arbitrage' && (
             <div className="space-y-4">
               <div className="bg-gradient-to-r from-cyan-900/20 to-blue-900/20 border border-cyan-500/30 rounded-xl p-4">
                 <h3 className="font-bold text-white text-sm mb-1">Milisaniyelik Gecikme Arbitrajı (Latency Arbitrage)</h3>
                 <p className="text-xs text-gray-300 leading-relaxed">
-                  İki farklı likidite sağlayıcı arasındaki 150-250ms ağ gecikmesini tespit eden algoritmik bot.
+                  İki farklı likidite sağlayıcı arasındaki 150-250ms ağ gecikmesini tespit eden arbitraj mekanizması.
                   Hızlı fiyat kaynağında (London Equinix LD4) fiyat hareket ettiği anda, henüz yavaş kaynağa yansımamış fiyat açığını yakalar ve <strong>sıfır piyasa riskiyle</strong> anında kâr kilitler.
                 </p>
               </div>
@@ -279,7 +279,7 @@ export default function NextGenHubModal({
                       <span>Likidite Havuzları Taranıyor (LD4 vs NY4)...</span>
                     </>
                   ) : (
-                    <span>⚡ Tek Tıkla Arbitraj Botunu Çalıştır</span>
+                    <span>⚡ Tek Tıkla Arbitraj Sistemini Çalıştır</span>
                   )}
                 </button>
               </div>
@@ -321,7 +321,7 @@ export default function NextGenHubModal({
                   onDeposit(100000 - account.balance);
                   onClose();
                 }}
-                className="w-full py-3 bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-500 hover:to-amber-500 text-white font-bold rounded-lg text-xs transition font-mono shadow-lg"
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs transition font-mono shadow-lg"
               >
                 🏆 100.000$ Değerlendirme Hesabını Başlat
               </button>

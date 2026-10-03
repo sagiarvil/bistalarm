@@ -447,13 +447,13 @@ export default function ProFXTerminal({
             onClick={() => setMobileTab('quotes')}
             className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition"
           >
-            <div className="w-7 h-7 rounded bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center font-bold text-white text-xs shadow-md">
-              FX
+            <div className="w-7 h-7 rounded bg-[#e51a22] flex items-center justify-center font-serif font-bold text-white text-[10px] tracking-tighter shadow-md">
+              FxPro
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
                 <span className="font-extrabold text-xs sm:text-sm tracking-wider text-white">{selectedSymbol}</span>
-                <span className="text-[10px] text-blue-400 font-mono">▼</span>
+                <span className="text-[10px] text-[#d4af37] font-mono">▼</span>
               </div>
               <span className="text-[9px] text-gray-500 font-mono hidden sm:inline">{spec.name}</span>
             </div>
@@ -495,7 +495,7 @@ export default function ProFXTerminal({
           {onOpenGrandCasino && (
             <button
               onClick={onOpenGrandCasino}
-              className="bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 hover:opacity-95 text-black font-black text-[11px] px-2.5 sm:px-3 py-1 rounded transition shadow-[0_0_15px_rgba(245,158,11,0.4)] border border-amber-300 shrink-0 flex items-center gap-1 font-serif"
+              className=" hover:opacity-95 text-black font-black text-[11px] px-2.5 sm:px-3 py-1 rounded transition  border border-amber-300 shrink-0 flex items-center gap-1 font-serif"
             >
               <span>🇲🇨</span>
               <span>Monte Carlo VIP</span>
@@ -505,7 +505,7 @@ export default function ProFXTerminal({
           {/* Yeni Nesil Kazanç Kapıları Butonu */}
           <button 
             onClick={onOpenNextGenHub}
-            className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:opacity-90 text-white text-[11px] font-extrabold px-2.5 sm:px-3 py-1 rounded transition shadow shrink-0 flex items-center gap-1.5 border border-purple-400/30"
+            className=" hover:opacity-90 text-white text-[11px] font-extrabold px-2.5 sm:px-3 py-1 rounded transition shadow shrink-0 flex items-center gap-1.5 border border-purple-400/30"
           >
             <span>🚀</span>
             <span className="hidden sm:inline">Yeni Nesil</span> Kazanç
@@ -518,12 +518,7 @@ export default function ProFXTerminal({
             <span>+</span> Yatır
           </button>
 
-          <Link
-            href="/admin"
-            className="bg-[#161b22] hover:bg-[#21262d] border border-blue-500/40 text-blue-400 text-[11px] px-2 py-1 rounded transition font-medium hidden sm:flex items-center gap-1"
-          >
-            <span>⚙️</span> Dealer
-          </Link>
+
         </div>
 
       </header>
@@ -622,7 +617,7 @@ export default function ProFXTerminal({
                   </div>
 
                   <div className={`col-span-3 text-right font-semibold text-xs transition-colors duration-300 ${
-                    flash === 'up' ? 'text-emerald-400 bg-emerald-500/10' : flash === 'down' ? 'text-rose-400 bg-rose-500/10' : 'text-blue-400'
+                    flash === 'up' ? 'text-emerald-400 bg-emerald-500/10' : flash === 'down' ? 'text-rose-400 bg-rose-500/10' : 'text-[#d4af37]'
                   }`}>
                     {p.bid.toFixed(sp.digits)}
                   </div>
@@ -687,7 +682,7 @@ export default function ProFXTerminal({
             <div className="text-[11px] font-mono text-gray-400 hidden xl:flex items-center gap-3">
               <span>H: <b className="text-emerald-400">{curPrice.high.toFixed(spec.digits)}</b></span>
               <span>L: <b className="text-rose-400">{curPrice.low.toFixed(spec.digits)}</b></span>
-              <span>Spr: <b className="text-blue-400">{(spec.spread / spec.pipSize).toFixed(1)}p</b></span>
+              <span>Spr: <b className="text-[#d4af37]">{(spec.spread / spec.pipSize).toFixed(1)}p</b></span>
             </div>
 
           </div>
@@ -977,13 +972,7 @@ export default function ProFXTerminal({
                 <span>›</span>
               </button>
 
-              <Link
-                href="/admin"
-                className="w-full p-3 bg-[#1e293b] border border-blue-500/40 rounded-lg flex items-center justify-between text-left text-blue-400 text-xs font-semibold"
-              >
-                <span>⚙️ Market Maker Dealer Masası</span>
-                <span>›</span>
-              </Link>
+
             </div>
           </div>
         )}
@@ -1057,7 +1046,7 @@ export default function ProFXTerminal({
                     <tr key={pos.id} className="hover:bg-[#141b26]">
                       <td className="py-1.5 px-3 text-gray-400">#{pos.ticket}</td>
                       <td className="py-1.5 px-3 text-gray-500">{pos.openTime}</td>
-                      <td className={`py-1.5 px-3 font-bold ${pos.side === 'buy' ? 'text-blue-400' : 'text-rose-400'}`}>
+                      <td className={`py-1.5 px-3 font-bold ${pos.side === 'buy' ? 'text-[#d4af37]' : 'text-rose-400'}`}>
                         {pos.side.toUpperCase()}
                       </td>
                       <td className="py-1.5 px-3 font-bold text-white">{pos.lots}</td>
@@ -1103,7 +1092,7 @@ export default function ProFXTerminal({
                   <tr key={item.id} className="hover:bg-[#141b26]">
                     <td className="py-1.5 px-3 text-gray-400">#{item.ticket}</td>
                     <td className="py-1.5 px-3 text-gray-500">{item.closeTime}</td>
-                    <td className={`py-1.5 px-3 font-bold ${item.side === 'buy' ? 'text-blue-400' : 'text-rose-400'}`}>
+                    <td className={`py-1.5 px-3 font-bold ${item.side === 'buy' ? 'text-[#d4af37]' : 'text-rose-400'}`}>
                       {item.side.toUpperCase()}
                     </td>
                     <td className="py-1.5 px-3 text-white">{item.lots}</td>

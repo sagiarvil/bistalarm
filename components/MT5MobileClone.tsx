@@ -569,16 +569,16 @@ export default function MT5MobileClone({
                   Ayarlar
                 </div>
 
-                {/* Üst Kullanıcı Kartı (Videodaki: Fetih Çetin, Exbina Ltd. 20767 - Exbina-Server Access Server 1) */}
+                {/* Üst Kullanıcı Kartı (Videodaki: VIP Trader, FxPro Ltd. 20767 - FXPro-Server Access Server 1) */}
                 <div
                   onClick={() => setSettingsView('accounts')}
                   className="bg-[#1c1c1e] rounded-2xl p-4 flex items-center justify-between cursor-pointer active:bg-[#2c2c2e] transition"
                 >
                   <div>
-                    <span className="font-bold text-[18px] text-white block">Fetih Çetin</span>
-                    <span className="text-xs text-[#8e8e93] block mt-0.5">Exbina Ltd.</span>
+                    <span className="font-bold text-[18px] text-white block">VIP Trader</span>
+                    <span className="text-xs text-[#8e8e93] block mt-0.5">FxPro Ltd.</span>
                     <span className="text-[11px] text-[#8e8e93] block mt-0.5">
-                      20767 - Exbina-Server
+                      20767 - FXPro-Server
                     </span>
                     <span className="text-[11px] text-[#8e8e93] block">
                       Access Server 1
@@ -758,8 +758,8 @@ export default function MT5MobileClone({
                     >
                       <div className="flex items-center gap-3">
                         {/* Logo */}
-                        <div className="w-10 h-10 rounded-full bg-[#2c2c2e] flex items-center justify-center font-bold text-xs text-white">
-                          {acc.logoType === 'exbina' ? 'EX' : acc.logoType === 'xm' ? 'XM' : acc.logoType === 'raxon' ? 'R' : 'MQ'}
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs text-white ${acc.logoType === 'fxpro' ? 'bg-[#e51a22] font-serif tracking-tighter' : 'bg-[#2c2c2e]'}`}>
+                          {acc.logoType === 'fxpro' ? 'FxPro' : acc.logoType === 'xm' ? 'XM' : acc.logoType === 'raxon' ? 'R' : 'MQ'}
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
@@ -814,7 +814,7 @@ export default function MT5MobileClone({
                   <div className="p-3.5 flex justify-between">
                     <span className="text-[#8e8e93] font-medium text-[13px]">Şirket</span>
                     <span className="text-white font-semibold text-[13px] flex items-center gap-1">
-                      Exbina Ltd. <ChevronRight size={14} className="text-[#8e8e93]" />
+                      FxPro Ltd. <ChevronRight size={14} className="text-[#8e8e93]" />
                     </span>
                   </div>
                   <div className="p-3.5 flex justify-between">

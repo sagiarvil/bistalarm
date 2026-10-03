@@ -28,15 +28,16 @@ export default function Home() {
     }
   }, []);
 
-  const [account, setAccount] = useState<UserAccount>(() => {
+  const [account, setAccount] = useState<UserAccount>(INITIAL_ACCOUNT);
+
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('mt5_user_account');
       if (saved) {
-        try { return JSON.parse(saved); } catch (e) {}
+        try { setAccount(JSON.parse(saved)); } catch (e) {}
       }
     }
-    return INITIAL_ACCOUNT;
-  });
+  }, []);
   const [prices, setPrices] = useState(CURRENT_PRICES);
 
   // Ana Görünüm: 'portal' (Dünya Standardı Landing & Platform Tanıtımı) veya 'terminal' (Tam Ekran Canlı WebTrader)
@@ -135,7 +136,7 @@ export default function Home() {
       const cloned: UserAccount = JSON.parse(JSON.stringify(prev));
       TradingEngine.updateAccountState(cloned, prices);
 
-      // Stop-Out Kontrolü (Teminat Seviyesi %50 altına indiğinde otomatik tasfiye)
+      // Stop-Out Kontrolü (Teminat Seviyesi %50 altına indiğinde tasfiye edilir)
       if (cloned.marginLevel !== null && cloned.marginLevel <= 50.0 && cloned.positions.length > 0) {
         const worstPos = [...cloned.positions].sort((a, b) => a.profit - b.profit)[0];
         if (worstPos) {
@@ -280,7 +281,7 @@ export default function Home() {
     // Admin Finans Kuyruğuna Bildir
     AuthStore.addFinancialRequest({
       userId: currentUser?.id || account.id,
-      userEmail: currentUser?.email || 'trader@exbina.com',
+      userEmail: currentUser?.email || 'trader@fxpro.com',
       type: 'deposit',
       amount,
       method: depositMethod,
@@ -315,7 +316,7 @@ export default function Home() {
     // Admin Finans Masasına Çekim Bildirimi
     AuthStore.addFinancialRequest({
       userId: currentUser?.id || account.id,
-      userEmail: currentUser?.email || 'trader@exbina.com',
+      userEmail: currentUser?.email || 'trader@fxpro.com',
       type: 'withdraw',
       amount: val,
       method: withdrawIban ? 'Banka Transferi' : 'USDT TRC20',
@@ -364,7 +365,7 @@ export default function Home() {
         <div className="bg-[#0b0e14] border-b border-[#1c2230] px-3 sm:px-6 py-1.5 flex items-center justify-between text-xs z-50">
           <div className="flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span className="font-mono text-gray-400 text-[11px] hidden sm:inline">EXBINA PRIME GLOBAL</span>
+            <span className="font-mono text-gray-400 text-[11px] hidden sm:inline">FxPro GLOBAL</span>
 
             {/* Görünüm Değiştirici */}
             <div className="flex items-center bg-[#141a24] p-0.5 rounded border border-[#232c3d]">
@@ -433,7 +434,7 @@ export default function Home() {
           onOpenNextGen={() => setIsNextGenOpen(true)}
           onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
           onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
-          onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
+          onOpenGrandCasino={() => setIsCasinoSlotOpen(true)}
           onOpenTacticsGuide={() => setIsTacticsGuideOpen(true)}
           currentUser={currentUser}
           onOpenAuth={() => setIsAuthModalOpen(true)}
@@ -458,7 +459,7 @@ export default function Home() {
               onOpenNextGenHub={() => setIsNextGenOpen(true)}
               onOpenCasinoSlot={() => setIsCasinoSlotOpen(true)}
               onOpenArcadeHub={() => setIsArcadeHubOpen(true)}
-              onOpenGrandCasino={() => setIsGrandCasinoOpen(true)}
+              onOpenGrandCasino={() => setIsCasinoSlotOpen(true)}
               onBackToPortal={() => setMainView('portal')}
             />
           </div>

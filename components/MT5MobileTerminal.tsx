@@ -75,7 +75,7 @@ export default function MT5MobileTerminal({
   return (
     <div className="w-full flex justify-center items-center py-0 sm:py-6 bg-[#080b0f] min-h-screen text-slate-100">
       {/* Mobil Telefon Kasası Simülasyonu */}
-      <div className="relative w-full sm:max-w-[420px] h-[100dvh] sm:h-[860px] bg-black sm:rounded-[44px] sm:border-[8px] sm:border-[#1e242d] sm:shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col font-sans">
+      <div className="relative w-full sm:max-w-[420px] h-[100dvh] sm:h-[860px] bg-black sm:rounded-[44px] sm:border-[8px] sm:border-[#1e242d] sm: overflow-hidden flex flex-col font-sans">
         
         {/* iOS Üst Durum Çubuğu (Status Bar) */}
         <div className="h-11 px-6 pt-2 flex items-center justify-between text-xs font-semibold text-white select-none z-20">
@@ -471,7 +471,7 @@ export default function MT5MobileTerminal({
             <div className="pt-2">
               <button
                 onClick={() => setActiveView('desktop')}
-                className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl text-xs font-bold text-white shadow-lg flex items-center justify-center gap-2 transition"
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-xl text-xs font-bold text-white shadow-lg flex items-center justify-center gap-2 transition"
               >
                 <BarChart2 size={16} /> Masaüstü Müşteri İşlem Paneline Geç
               </button>

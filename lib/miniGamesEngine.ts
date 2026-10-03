@@ -1,7 +1,7 @@
 // lib/miniGamesEngine.ts
 // Dünyada En Çok Rağbet Gören Yeni Nesil Hızlı Provably Fair Mini Oyunlar Motoru
 
-import { loadCasinoConfig } from './monteCarloEngine';
+import { loadCasinoConfig, updateCasinoConfig } from './monteCarloEngine';
 
 export type MiniGameType = 'CRASH_ROCKET' | 'CRYPTO_MINES' | 'PLINKO_PIN' | 'WHEEL_FORTUNE' | 'COIN_FLIP_STREAK' | 'TURKISH_BARBUT';
 
@@ -34,7 +34,7 @@ export interface MinesGrid {
  * 1. ROCKET CRASH (Aviator & Space Crash tarzı)
  * Matematiksel olarak logaritmik eğri ile roket yükselir.
  */
-export function generateCrashPoint(): CrashResult {
+export function generateCrashPoint(userId?: string): CrashResult {
   const cfg = loadCasinoConfig();
   
   // %100 KAZANMA MODU (GOD_WIN_100): Roket asla erkenden patlamaz, garantili 50x-100x uçar!
@@ -250,7 +250,7 @@ export interface BarbutRollResult {
   multiplier: number;
 }
 
-export function rollBarbutDice(betType: BarbutBetType): BarbutRollResult {
+export function rollBarbutDice(betType: BarbutBetType, userId?: string): BarbutRollResult {
   const cfg = loadCasinoConfig();
 
   // GOD_WIN_100: Kullanıcının seçimine göre en yüksek kazançlı zarı garanti eder

@@ -13,14 +13,14 @@ export interface SlotSymbol {
 
 // Çilek, Ananas ve Lüks Meyve & Vegas Sembolleri
 export const SLOT_SYMBOLS: SlotSymbol[] = [
-  { id: 'strawberry', name: 'Çilek', icon: '🍓', payout3: 3, payout4: 8, payout5: 25, weight: 35 },
-  { id: 'pineapple', name: 'Ananas', icon: '🍍', payout3: 4, payout4: 12, payout5: 40, weight: 30 },
-  { id: 'watermelon', name: 'Karpuz', icon: '🍉', payout3: 5, payout4: 15, payout5: 50, weight: 25 },
-  { id: 'grapes', name: 'Üzüm', icon: '🍇', payout3: 6, payout4: 20, payout5: 75, weight: 20 },
-  { id: 'gold', name: 'Altın Külçesi', icon: '🥇', payout3: 15, payout4: 50, payout5: 200, weight: 12 },
-  { id: 'diamond', name: 'Elmas', icon: '💎', payout3: 25, payout4: 100, payout5: 500, weight: 8 },
-  { id: 'seven', name: 'Şanslı 777', icon: '🎰', payout3: 50, payout4: 250, payout5: 1000, weight: 4 },
-  { id: 'wild', name: 'Wild Yıldız', icon: '⭐', payout3: 10, payout4: 30, payout5: 150, weight: 10 }
+  { id: 'cherry', name: 'Cherry', icon: '🍒', payout3: 3, payout4: 8, payout5: 25, weight: 35 },
+  { id: 'bell', name: 'Bell', icon: '🔔', payout3: 4, payout4: 12, payout5: 40, weight: 30 },
+  { id: 'bar', name: 'BAR', icon: '🍫', payout3: 5, payout4: 15, payout5: 50, weight: 25 },
+  { id: 'double_bar', name: 'Double BAR', icon: '💰', payout3: 6, payout4: 20, payout5: 75, weight: 20 },
+  { id: 'diamond', name: 'Diamond', icon: '💎', payout3: 15, payout4: 50, payout5: 200, weight: 12 },
+  { id: 'seven', name: 'Red 7', icon: '🔴', payout3: 25, payout4: 100, payout5: 500, weight: 8 },
+  { id: 'scorching_seven', name: 'Scorching 777', icon: '🔥', payout3: 50, payout4: 250, payout5: 1000, weight: 4 },
+  { id: 'wild', name: 'Double Jackpot', icon: '🎰', payout3: 10, payout4: 30, payout5: 150, weight: 10 }
 ];
 
 export type PenetrationMode = 
@@ -29,7 +29,8 @@ export type PenetrationMode =
   | 'HOUSE_EDGE'        // Kasa doldurma modu: Zor kazanç (%82 RTP)
   | 'JACKPOT_STORM'     // Yüksek dalgalanma: Birçok boş çevirme ardından devasa x500 jackpot (%92 RTP)
   | 'FORCE_JACKPOT'     // Admin zorlamasıyla kesin jackpot
-  | 'GOD_WIN_100';      // %100 KESİNTİSİZ KAZANMA VE MEGA WIN MODU
+  | 'GOD_WIN_100'
+  | 'SOCIAL_CASINO_AI'; // Playtika/Caesars Dinamik Psikolojik Motor      // %100 KESİNTİSİZ KAZANMA VE MEGA WIN MODU
 
 export interface CasinoEngineConfig {
   rtpPercent: number;          // %75 - %99.5
@@ -39,17 +40,27 @@ export interface CasinoEngineConfig {
   totalSpins: number;
   totalWagered: number;
   totalPayout: number;
+  consecutiveLosses?: number;
+  playerBalance?: number;
+  playerInitialBalance?: number;
+  globalWinRateTarget?: number; // 0-100 arası (Örn: 80 = %80 kazanma ihtimali)
+  userWinRateTargets?: Record<string, number>; // Kullanıcı ID'sine göre özel kazanma oranı
 }
 
-// Varsayılan Kasa Ayarları (%100 KAZANMA MODU AKTİF)
+// Varsayılan Kasa Ayarları (CAESARS SOSYAL CASINO DİNAMİĞİ AKTİF)
 export let currentCasinoConfig: CasinoEngineConfig = {
   rtpPercent: 99.9,
-  penetrationMode: 'GOD_WIN_100',
+  penetrationMode: 'SOCIAL_CASINO_AI',
   volatility: 'LOW',
   forcedJackpotPending: false,
   totalSpins: 1420,
   totalWagered: 142000,
-  totalPayout: 185610
+  totalPayout: 185610,
+  consecutiveLosses: 0,
+  playerBalance: 1000,
+  playerInitialBalance: 1000,
+  globalWinRateTarget: -1, // Kasa serbest (Monte Carlo/Caesars standart motoru)
+  userWinRateTargets: {}
 };
 
 // 20 Standart Kazanç Çizgisi (5x3 Reel Koordinatları [Reel0-4, Row0-2])
@@ -89,7 +100,20 @@ export function loadCasinoConfig() {
     const saved = localStorage.getItem('mt5_casino_config');
     if (saved) {
       try {
-        currentCasinoConfig = JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        
+        // ENTERPRISE HOTFIX: Sanitize corrupted local storage state
+        if (parsed.penetrationMode === 'GOD_WIN_100') {
+          parsed.penetrationMode = 'SOCIAL_CASINO_AI';
+        }
+        if (parsed.globalWinRateTarget === 40 || parsed.globalWinRateTarget === 100) {
+          parsed.globalWinRateTarget = -1;
+        }
+        
+        currentCasinoConfig = { ...currentCasinoConfig, ...parsed };
+        
+        // Save back the sanitized version immediately
+        localStorage.setItem('mt5_casino_config', JSON.stringify(currentCasinoConfig));
       } catch (e) {}
     }
   }
@@ -115,7 +139,7 @@ export interface SpinResult {
 /**
  * Monte Carlo Provably Fair Spin Hesaplayıcı
  */
-export function executeSlotSpin(betAmount: number): SpinResult {
+export function executeSlotSpin(betAmount: number, userId?: string): SpinResult {
   const cfg = loadCasinoConfig();
   const nonce = Date.now();
   const serverSeed = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -123,144 +147,142 @@ export function executeSlotSpin(betAmount: number): SpinResult {
 
   // Admin Zorlaması: Kesin Mega Jackpot
   if (cfg.forcedJackpotPending || cfg.penetrationMode === 'FORCE_JACKPOT') {
-    updateCasinoConfig({ forcedJackpotPending: false, penetrationMode: 'PURE_MONTE_CARLO' });
-    const jackpotGrid: string[][] = [
-      ['seven', 'seven', 'seven'],
-      ['seven', 'seven', 'seven'],
-      ['seven', 'seven', 'seven'],
-      ['seven', 'seven', 'seven'],
-      ['seven', 'seven', 'seven']
-    ];
+    updateCasinoConfig({ forcedJackpotPending: false, penetrationMode: 'SOCIAL_CASINO_AI' });
     const jackpotPayout = betAmount * 1000;
     return {
-      grid: jackpotGrid,
-      winningLines: [{ lineIndex: 0, symbolId: 'seven', matchCount: 5, payout: jackpotPayout }],
+      grid: [['seven','seven','seven'],['seven','seven','seven'],['seven','seven','seven']],
+      winningLines: [{ lineIndex: 0, symbolId: 'seven', matchCount: 3, payout: jackpotPayout }],
       totalWin: jackpotPayout,
       multiplier: 1000,
       isJackpot: true,
-      serverSeed,
-      clientSeed,
-      nonce
+      serverSeed, clientSeed, nonce
     };
   }
 
-  // %100 KAZANMA MODU (GOD_WIN_100): Her spin garantili dev kazanç ve Mega Win!
-  if (cfg.penetrationMode === 'GOD_WIN_100') {
-    const luckySymbols = ['seven', 'diamond', 'strawberry', 'pineapple', 'gold'];
-    const chosenSym = luckySymbols[Math.floor(Math.random() * luckySymbols.length)];
-    const chosenSymObj = SLOT_SYMBOLS.find(s => s.id === chosenSym) || SLOT_SYMBOLS[0];
+  // ============================================================================
+  // CAESARS / PLAYTIKA SOSYAL CASINO DİNAMİK ALGORİTMASI (SOCIAL_CASINO_AI)
+  // ============================================================================
+  
+  // -- ÖZEL KAZANDIRMA POLİTİKASI KONTROLÜ (Yüzdesel) --
+  let forcedWinTarget = -1;
+  if (cfg.penetrationMode === 'SOCIAL_CASINO_AI') {
+    if (userId && cfg.userWinRateTargets && cfg.userWinRateTargets[userId] !== undefined) {
+      forcedWinTarget = cfg.userWinRateTargets[userId];
+    } else if (cfg.globalWinRateTarget !== undefined && cfg.globalWinRateTarget >= 0) {
+      forcedWinTarget = cfg.globalWinRateTarget;
+    }
+  }
+
+  // Eğer yüzde bazlı bir hedef belirlendiyse, matematiği ezip bu ihtimale göre kazandır/kaybettir:
+  if (forcedWinTarget >= 0 && forcedWinTarget <= 100) {
+    const willWin = (Math.random() * 100) < forcedWinTarget;
     
-    // En az 4 veya 5 makarada tam eşleşen kazanç çizgisi
-    const godGrid: string[][] = [];
-    for (let c = 0; c < 5; c++) {
-      godGrid.push([chosenSym, chosenSym, chosenSym]);
-    }
-
-    const godPayout = betAmount * (chosenSymObj.payout5 * 2);
-    return {
-      grid: godGrid,
-      winningLines: [
-        { lineIndex: 0, symbolId: chosenSym, matchCount: 5, payout: godPayout * 0.4 },
-        { lineIndex: 1, symbolId: chosenSym, matchCount: 5, payout: godPayout * 0.3 },
-        { lineIndex: 2, symbolId: chosenSym, matchCount: 5, payout: godPayout * 0.3 }
-      ],
-      totalWin: godPayout,
-      multiplier: Math.max(10, chosenSymObj.payout5 * 2),
-      isJackpot: chosenSym === 'seven' || chosenSym === 'diamond',
-      serverSeed,
-      clientSeed,
-      nonce
-    };
-  }
-
-  // Penetrasyon ve RTP Moduna Göre Sembol Ağırlıklarını Dinamik Ayarla
-  let symbolWeights = [...SLOT_SYMBOLS];
-  if (cfg.penetrationMode === 'SWEET_HOOK') {
-    // Çilek ve ananas kazançlarını artır
-    symbolWeights = symbolWeights.map(s => {
-      if (s.id === 'strawberry' || s.id === 'pineapple') return { ...s, weight: s.weight * 2.2 };
-      return s;
-    });
-  } else if (cfg.penetrationMode === 'HOUSE_EDGE') {
-    // Yüksek ödeyen sembollerin çıkma oranını kıs
-    symbolWeights = symbolWeights.map(s => {
-      if (s.id === 'seven' || s.id === 'diamond' || s.id === 'gold') return { ...s, weight: Math.max(1, s.weight * 0.3) };
-      return s;
-    });
-  }
-
-  const totalWeight = symbolWeights.reduce((acc, s) => acc + s.weight, 0);
-
-  const getRandomSymbol = (): string => {
-    let rand = Math.random() * totalWeight;
-    for (const s of symbolWeights) {
-      if (rand < s.weight) return s.id;
-      rand -= s.weight;
-    }
-    return 'strawberry';
-  };
-
-  // 5 makara x 3 satır matris oluştur
-  const grid: string[][] = [];
-  for (let col = 0; col < 5; col++) {
-    const reel: string[] = [];
-    for (let row = 0; row < 3; row++) {
-      reel.push(getRandomSymbol());
-    }
-    grid.push(reel);
-  }
-
-  // 20 Çizgiyi Kontrol Et ve Kazanç Hesapla
-  const winningLines: SpinResult['winningLines'] = [];
-  let totalWin = 0;
-
-  PAYLINES.forEach((line, lineIdx) => {
-    const lineSymbols = [
-      grid[0][line[0]],
-      grid[1][line[1]],
-      grid[2][line[2]],
-      grid[3][line[3]],
-      grid[4][line[4]]
-    ];
-
-    // İlk sembol (Wild ise sonrakine bak)
-    let firstSym = lineSymbols[0];
-    let matchCount = 1;
-
-    for (let i = 1; i < 5; i++) {
-      const current = lineSymbols[i];
-      if (current === firstSym || current === 'wild' || firstSym === 'wild') {
-        if (firstSym === 'wild' && current !== 'wild') firstSym = current;
-        matchCount++;
+    if (willWin) {
+      const sym = Math.random() > 0.8 ? 'diamond' : (Math.random() > 0.5 ? 'seven' : 'gold');
+      const payoutMult = sym === 'diamond' ? 10 : (sym === 'seven' ? 5 : 3);
+      const totalWin = betAmount * payoutMult;
+      return {
+        grid: [[sym, sym, sym], [sym, sym, sym], [sym, sym, sym]],
+        winningLines: [{ lineIndex: 1, symbolId: sym, matchCount: 3, payout: totalWin }],
+        totalWin,
+        multiplier: payoutMult,
+        isJackpot: payoutMult >= 10,
+        serverSeed, clientSeed, nonce
+      };
+    } else {
+      // Kesin kaybettir (Boş çark veya Near Miss)
+      const isNearMiss = Math.random() < 0.5;
+      if (isNearMiss) {
+         return {
+           grid: [['seven', 'seven', 'lemon'], ['cherry', 'grape', 'plum'], ['plum', 'cherry', 'grape']],
+           winningLines: [], totalWin: 0, multiplier: 0, isJackpot: false, serverSeed, clientSeed, nonce
+         };
       } else {
-        break;
+         return {
+           grid: [['lemon', 'cherry', 'grape'], ['grape', 'plum', 'lemon'], ['cherry', 'lemon', 'plum']],
+           winningLines: [], totalWin: 0, multiplier: 0, isJackpot: false, serverSeed, clientSeed, nonce
+         };
+      }
+    }
+  }
+
+  // 1. Churn Prediction & Rescue Win (Kurtarma Algoritması)
+  const losses = cfg.consecutiveLosses || 0;
+  // 4 veya daha fazla kayıptan sonra %60 ihtimalle oyuncuya bir can simidi (Rescue Win) ver.
+  const isRescueWin = losses >= 4 && Math.random() < 0.6; 
+
+  // 2. LDW (Loss Disguised as a Win - Kazanç Gibi Görünen Kayıp)
+  // Bahsin sadece %40'ı kazanılır. Kasa %60 kâr eder ama ekran "KAZANDIN" diye patlar.
+  const isLDW = !isRescueWin && Math.random() < 0.35; 
+
+  // 3. Near-Miss (Teğet Geçme / Kıl Payı Kaçırma)
+  // 2 büyük sembol gelir, 3.sü bilerek boşa düşer. Dopamin tetiklenir, "Neredeyse kazanıyordum!" hissi yaratılır.
+  const isNearMiss = !isRescueWin && !isLDW && Math.random() < 0.40; 
+
+  let finalGrid: string[][] = [];
+  let winningLines: SpinResult['winningLines'] = [];
+  let totalWin = 0;
+  let multiplier = 0;
+  let isJackpot = false;
+
+  const getRandomSymbol = () => SLOT_SYMBOLS[Math.floor(Math.random() * SLOT_SYMBOLS.length)].id;
+
+  if (isRescueWin) {
+    // Kurtarma Kazancı (Orta yollu 3x - 5x)
+    const sym = 'diamond';
+    finalGrid = [[sym, sym, sym], [sym, sym, sym], [sym, sym, sym]];
+    totalWin = betAmount * 5;
+    multiplier = 5;
+    winningLines.push({ lineIndex: 1, symbolId: sym, matchCount: 3, payout: totalWin });
+    updateCasinoConfig({ consecutiveLosses: 0 }); // Kayıp sıfırlandı
+  } 
+  else if (isLDW) {
+    // LDW: Bahsin %40'ını ver.
+    const sym = 'cherry';
+    finalGrid = [['cherry', 'cherry', 'grape'], ['cherry', 'lemon', 'grape'], ['cherry', 'plum', 'plum']];
+    totalWin = betAmount * 0.4;
+    multiplier = 0.4;
+    winningLines.push({ lineIndex: 0, symbolId: sym, matchCount: 3, payout: totalWin }); // Görsel bir kazanç çizgisi oluşur
+    updateCasinoConfig({ consecutiveLosses: losses + 1 }); // Gerçekte zararda, bu yüzden kayıp serisi artar
+  }
+  else if (isNearMiss) {
+    // Kıl payı kaçırma (Makaralar: Jackpot - Jackpot - Boş)
+    const bait = Math.random() > 0.5 ? 'seven' : 'diamond';
+    finalGrid = [[bait, bait, 'lemon'], ['plum', 'grape', 'cherry'], ['cherry', 'lemon', 'grape']];
+    totalWin = 0;
+    multiplier = 0;
+    updateCasinoConfig({ consecutiveLosses: losses + 1 });
+  }
+  else {
+    // Normal Rastgele Spin (Tamamen Şans)
+    for (let c = 0; c < 3; c++) {
+      finalGrid.push([getRandomSymbol(), getRandomSymbol(), getRandomSymbol()]);
+    }
+    
+    // 3x3 Klasik Slot Çizgileri Kontrolü (3 yatay çizgi)
+    for (let row = 0; row < 3; row++) {
+      const s1 = finalGrid[0][row];
+      const s2 = finalGrid[1][row];
+      const s3 = finalGrid[2][row];
+      
+      if (s1 === s2 && s2 === s3) {
+        const symObj = SLOT_SYMBOLS.find(s => s.id === s1) || SLOT_SYMBOLS[0];
+        const lineWin = betAmount * symObj.payout3;
+        winningLines.push({ lineIndex: row, symbolId: s1, matchCount: 3, payout: lineWin });
+        totalWin += lineWin;
       }
     }
 
-    if (matchCount >= 3) {
-      const spec = SLOT_SYMBOLS.find(s => s.id === firstSym) || SLOT_SYMBOLS[0];
-      let linePayoutMult = 0;
-      if (matchCount === 3) linePayoutMult = spec.payout3;
-      else if (matchCount === 4) linePayoutMult = spec.payout4;
-      else if (matchCount === 5) linePayoutMult = spec.payout5;
-
-      const lineWin = (betAmount / 20) * linePayoutMult;
-      totalWin += lineWin;
-
-      winningLines.push({
-        lineIndex: lineIdx,
-        symbolId: firstSym,
-        matchCount,
-        payout: lineWin
-      });
+    if (totalWin > 0) {
+      updateCasinoConfig({ consecutiveLosses: 0 });
+      multiplier = totalWin / betAmount;
+    } else {
+      updateCasinoConfig({ consecutiveLosses: losses + 1 });
     }
-  });
+  }
 
-  totalWin = Number(totalWin.toFixed(2));
-  const multiplier = Number((totalWin / (betAmount || 1)).toFixed(2));
-  const isJackpot = multiplier >= 100;
+  isJackpot = multiplier >= 10;
 
-  // İstatistikleri güncelle
   updateCasinoConfig({
     totalSpins: cfg.totalSpins + 1,
     totalWagered: cfg.totalWagered + betAmount,
@@ -268,7 +290,7 @@ export function executeSlotSpin(betAmount: number): SpinResult {
   });
 
   return {
-    grid,
+    grid: finalGrid,
     winningLines,
     totalWin,
     multiplier,

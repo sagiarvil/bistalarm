@@ -71,15 +71,10 @@ export default function GlobalFXPortal({
           
           {/* Logo */}
           <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2.5 cursor-pointer">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center font-extrabold text-white text-sm shadow-[0_0_15px_rgba(41,121,255,0.4)]">
-                ⚡
-              </div>
-              <div className="flex flex-col">
-                <span className="font-black text-base sm:text-lg tracking-wider text-white leading-tight">
-                  EXBINA <span className="text-blue-500">PRIME</span>
-                </span>
-                <span className="text-[8px] text-gray-400 font-mono tracking-widest font-semibold uppercase">
+            <div className="flex items-center gap-3 cursor-pointer">
+              <img src="/fxpro-logo.png" alt="FxPro" className="h-12 w-auto rounded-lg shadow-lg" />
+              <div className="flex flex-col justify-center">
+                <span className="text-[9px] text-gray-400 font-mono tracking-widest font-bold uppercase mt-1">
                   GLOBAL ECN LIQUIDITY
                 </span>
               </div>
@@ -93,7 +88,7 @@ export default function GlobalFXPortal({
                 <span>🚀</span> Prop Fonu ($100K)
               </button>
               {onOpenGrandCasino && (
-                <button onClick={onOpenGrandCasino} className="flex items-center gap-1.5 text-amber-300 hover:text-amber-100 font-serif font-black tracking-wide transition px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+                <button onClick={onOpenGrandCasino} className="flex items-center gap-1.5 text-amber-300 hover:text-amber-100 font-serif font-black tracking-wide transition px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 ">
                   <span>🇲🇨</span> Monte Carlo VIP
                 </button>
               )}
@@ -125,25 +120,20 @@ export default function GlobalFXPortal({
 
             <button
               onClick={onOpenDeposit}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-2 rounded-lg transition whitespace-nowrap active:scale-95 flex items-center gap-1 shadow"
+              className="bg-[#d4af37] hover:bg-[#f3d56a] text-black text-white font-bold text-xs px-3.5 py-2 rounded-lg transition whitespace-nowrap active:scale-95 flex items-center gap-1 shadow"
             >
               <span>+</span> Para Yatır
             </button>
 
             <button
               onClick={() => onOpenTerminal()}
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-extrabold text-xs px-4 py-2 rounded-lg transition shadow-[0_0_15px_rgba(41,121,255,0.35)] flex items-center gap-1.5 active:scale-95 whitespace-nowrap"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs px-4 py-2 rounded-lg transition  flex items-center gap-1.5 active:scale-95 whitespace-nowrap"
             >
               <span>💻</span>
               <span>Canlı WebTrader</span>
             </button>
 
-            <Link
-              href="/admin"
-              className="bg-[#10151f] hover:bg-[#182030] border border-blue-500/30 text-blue-400 text-xs px-2.5 py-2 rounded-lg transition hidden md:flex items-center gap-1 shrink-0 font-mono"
-            >
-              <span>⚙️</span> Dealer
-            </Link>
+
           </div>
 
 
@@ -169,8 +159,8 @@ export default function GlobalFXPortal({
       <section className="relative pt-12 pb-16 lg:pt-20 lg:pb-28 px-4 lg:px-8 overflow-hidden">
         
         {/* Arka Plan Işık Hüzmeleri (Glow Orbs) */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-blue-600/15 rounded-full blur-[140px] pointer-events-none"></div>
-        <div className="absolute top-1/3 left-1/4 w-[300px] h-[250px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-blue-600/15 rounded-full  pointer-events-none"></div>
+        <div className="absolute top-1/3 left-1/4 w-[300px] h-[250px] bg-purple-600/10 rounded-full  pointer-events-none"></div>
 
         <div className="max-w-5xl mx-auto text-center relative z-10 space-y-6">
           
@@ -181,7 +171,7 @@ export default function GlobalFXPortal({
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight sm:leading-none">
             Piyasa Standartlarının Ötesinde <br />
-            <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent">
+            <span className="text-[#d4af37]">
               Kurumsal ECN İşlem Deneyimi
             </span>
           </h1>
@@ -194,7 +184,7 @@ export default function GlobalFXPortal({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-3">
             <button
               onClick={() => onOpenTerminal()}
-              className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-extrabold text-sm rounded-xl transition shadow-[0_0_30px_rgba(41,121,255,0.4)] flex items-center justify-center gap-2 active:scale-95"
+              className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-sm rounded-xl transition  flex items-center justify-center gap-2 active:scale-95"
             >
               <span>🚀</span> WebTrader&apos;ı Hemen Başlat
             </button>
@@ -202,7 +192,7 @@ export default function GlobalFXPortal({
             {onOpenGrandCasino && (
               <button
                 onClick={onOpenGrandCasino}
-                className="w-full sm:w-auto px-7 py-3.5 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 hover:opacity-95 text-black font-black text-sm rounded-xl transition shadow-[0_0_25px_rgba(245,158,11,0.4)] border border-amber-300 flex items-center justify-center gap-2 active:scale-95 font-serif"
+                className="w-full sm:w-auto px-7 py-3.5 bg-amber-600 hover:bg-amber-500 text-black font-black text-sm rounded-xl transition  border border-amber-300 flex items-center justify-center gap-2 active:scale-95 font-serif"
               >
                 <span>🇲🇨</span> Casino de Monte-Carlo VIP
               </button>
@@ -221,7 +211,7 @@ export default function GlobalFXPortal({
             {onOpenTacticsGuide && (
               <button
                 onClick={onOpenTacticsGuide}
-                className="px-4 py-2 bg-gradient-to-r from-amber-950/40 to-yellow-950/40 hover:from-amber-900/60 hover:to-yellow-900/60 border border-yellow-500/40 text-yellow-300 font-semibold text-xs rounded-lg transition flex items-center gap-1.5 shadow-sm active:scale-95 font-mono"
+                className="px-4 py-2 bg-[#182030] hover:bg-[#232f44] border border-yellow-500/40 text-yellow-300 font-semibold text-xs rounded-lg transition flex items-center gap-1.5 shadow-sm active:scale-95 font-mono"
               >
                 <span>⚡</span> VIP Taktik Manifestosu
               </button>
@@ -237,7 +227,7 @@ export default function GlobalFXPortal({
             <div className="bg-[#0b0f17]/90 border border-[#1d273a] rounded-2xl p-4 sm:p-5 backdrop-blur-xl shadow-2xl text-left">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#182234] gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 font-black text-sm">
+                  <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-[#d4af37] font-black text-sm">
                     ⚡
                   </div>
                   <div>
@@ -252,7 +242,7 @@ export default function GlobalFXPortal({
                 <div className="flex items-center gap-3">
                   <div className="text-right font-mono">
                     <span className="text-[10px] text-gray-500 block">CANLI PİYASA ALIŞ / SATIŞ</span>
-                    <span className="text-sm sm:text-base font-black text-blue-400">
+                    <span className="text-sm sm:text-base font-black text-[#d4af37]">
                       {(currentPrices['XAUUSDX']?.bid || 2650.40).toFixed(2)}
                     </span>
                     <span className="text-gray-500 mx-1">/</span>
@@ -262,7 +252,7 @@ export default function GlobalFXPortal({
                   </div>
                   <button
                     onClick={() => onOpenTerminal('XAUUSDX')}
-                    className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg transition active:scale-95 whitespace-nowrap"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-lg transition active:scale-95 whitespace-nowrap"
                   >
                     Terminalde Aç ↗
                   </button>
@@ -294,7 +284,7 @@ export default function GlobalFXPortal({
           {/* Kurumsal Tier-1 Güvenilirlik Çubuğu (Tekil & Mükerrersiz) */}
           <div className="pt-2 flex flex-wrap items-center justify-center gap-6 text-xs text-gray-400 font-mono">
             <span className="flex items-center gap-1.5"><span className="text-emerald-400">●</span> Barclays & JP Morgan Likiditesi</span>
-            <span className="flex items-center gap-1.5"><span className="text-blue-400">●</span> Equinix LD4 Londra Veri Merkezi</span>
+            <span className="flex items-center gap-1.5"><span className="text-[#d4af37]">●</span> Equinix LD4 Londra Veri Merkezi</span>
             <span className="flex items-center gap-1.5"><span className="text-yellow-400">●</span> Ayrılmış Segregated Hesaplar</span>
             <span className="flex items-center gap-1.5"><span className="text-purple-400">●</span> Sıfır Negatif Bakiye Koruması</span>
           </div>
@@ -385,7 +375,7 @@ export default function GlobalFXPortal({
                           </div>
                         </td>
                         <td className="py-3 px-4 text-gray-400 font-sans">{sp.category}</td>
-                        <td className="py-3 px-4 text-right font-bold text-blue-400">{p.bid.toFixed(sp.digits)}</td>
+                        <td className="py-3 px-4 text-right font-bold text-[#d4af37]">{p.bid.toFixed(sp.digits)}</td>
                         <td className="py-3 px-4 text-right font-bold text-rose-400">{p.ask.toFixed(sp.digits)}</td>
                         <td className="py-3 px-4 text-right text-gray-300 font-semibold">{spreadPips} pip</td>
                         <td className="py-3 px-4 text-center">
@@ -396,7 +386,7 @@ export default function GlobalFXPortal({
                         <td className="py-3 px-4 text-center">
                           <button
                             onClick={() => onOpenTerminal(sym)}
-                            className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg text-xs transition active:scale-95 shadow"
+                            className="px-3.5 py-1.5 bg-red-800 hover:bg-red-700 border border-[#d4af37] text-white font-bold rounded-lg text-xs transition active:scale-95 shadow"
                           >
                             Grafik & İşlem
                           </button>
@@ -430,7 +420,7 @@ export default function GlobalFXPortal({
           {/* ECN Raw Spread */}
           <div className="bg-[#0c1017] border border-[#1b2332] rounded-2xl p-4 sm:p-5 space-y-3 flex flex-col justify-between hover:border-blue-500/50 transition">
             <div className="space-y-2.5">
-              <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest block">ALGO & SCALP</span>
+              <span className="text-[10px] font-bold text-[#d4af37] uppercase tracking-widest block">ALGO & SCALP</span>
               <h3 className="text-lg font-bold text-white">ECN Raw Spread</h3>
               <div className="text-2xl font-black text-white font-mono">0.0 <span className="text-xs font-normal text-gray-400">pip&apos;ten</span></div>
               <ul className="text-xs text-gray-300 space-y-1.5 font-mono border-t border-[#182030] pt-2.5">
@@ -446,7 +436,7 @@ export default function GlobalFXPortal({
           </div>
 
           {/* Pro Standart */}
-          <div className="bg-[#0c1017] border-2 border-blue-500 rounded-2xl p-4 sm:p-5 space-y-3 flex flex-col justify-between relative shadow-[0_0_25px_rgba(41,121,255,0.2)]">
+          <div className="bg-[#0c1017] border-2 border-blue-500 rounded-2xl p-4 sm:p-5 space-y-3 flex flex-col justify-between relative ">
             <span className="absolute -top-3 right-4 bg-blue-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">EN POPÜLER</span>
             <div className="space-y-2.5">
               <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block">SIFIR KOMİSYON</span>
@@ -459,7 +449,7 @@ export default function GlobalFXPortal({
                 <li>✓ Mikro Lot (0.01)</li>
               </ul>
             </div>
-            <button onClick={() => onOpenTerminal()} className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition shadow-lg">
+            <button onClick={() => onOpenTerminal()} className="w-full py-2.5 bg-red-800 hover:bg-red-700 border border-[#d4af37] text-white font-bold rounded-xl text-xs transition shadow-lg">
               Hesapla Başla
             </button>
           </div>
@@ -506,7 +496,7 @@ export default function GlobalFXPortal({
       {/* ========================================================================= */}
       {/* 5.0. MONTE CARLO GRAND CASINO & YENİ NESİL OYUN SALONU */}
       {/* ========================================================================= */}
-      <section className="py-14 bg-gradient-to-b from-[#06080d] via-[#120e06] to-[#06080d] border-t border-amber-900/40 px-4 lg:px-8">
+      <section className="py-14 bg-[#06080d] border-t border-amber-900/40 px-4 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-amber-500/20 pb-5">
             <div>
@@ -516,7 +506,7 @@ export default function GlobalFXPortal({
                   MONACO PRINCIPALITY STANDARDS • CANLI VEGAS LİGİ
                 </span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 font-serif mt-1">
+              <h2 className="text-2xl sm:text-3xl font-black text-amber-400 font-serif mt-1">
                 🇲🇨 Casino de Monte-Carlo & VIP Oyun Salonu
               </h2>
               <p className="text-xs text-amber-200/70 max-w-2xl mt-1">
@@ -528,7 +518,7 @@ export default function GlobalFXPortal({
               {onOpenTacticsGuide && (
                 <button
                   onClick={onOpenTacticsGuide}
-                  className="px-4 py-2.5 bg-gradient-to-r from-amber-950 via-yellow-900 to-amber-950 hover:opacity-90 border border-yellow-500/60 text-yellow-300 font-bold text-xs rounded-xl transition shadow-[0_0_20px_rgba(234,179,8,0.25)] flex items-center gap-1.5 active:scale-95"
+                  className="px-4 py-2.5 bg-amber-900 hover:bg-amber-800 border border-yellow-500/60 text-yellow-300 font-bold text-xs rounded-xl transition  flex items-center gap-1.5 active:scale-95"
                 >
                   <span>⚡</span> VIP Taktik Manifestosu
                 </button>
@@ -536,7 +526,7 @@ export default function GlobalFXPortal({
               {onOpenGrandCasino && (
                 <button
                   onClick={onOpenGrandCasino}
-                  className="px-5 py-2.5 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 hover:opacity-95 text-black font-black text-xs rounded-xl transition shadow-[0_0_25px_rgba(245,158,11,0.4)] border border-amber-300 flex items-center gap-1.5 active:scale-95 font-serif"
+                  className="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-black font-black text-xs rounded-xl transition  border border-amber-300 flex items-center gap-1.5 active:scale-95 font-serif"
                 >
                   <span>👑</span> Salona Giriş Yap
                 </button>
@@ -566,7 +556,7 @@ export default function GlobalFXPortal({
                 {onOpenGrandCasino && (
                   <button
                     onClick={onOpenGrandCasino}
-                    className="flex-1 py-2 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-black font-black rounded-xl text-xs transition shadow"
+                    className="flex-1 py-2 bg-amber-600 hover:bg-amber-500 text-black font-black rounded-xl text-xs transition shadow"
                   >
                     Masaya Otur
                   </button>
@@ -588,7 +578,7 @@ export default function GlobalFXPortal({
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-2xl">♠️</span>
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/40">%99.50 RTP</span>
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-500/20 text-[#d4af37] border border-blue-500/40">%99.50 RTP</span>
                 </div>
                 <h3 className="text-base font-black text-amber-200 font-serif">Monaco VIP Blackjack 21</h3>
                 <p className="text-[11px] text-gray-300 leading-relaxed">
@@ -602,7 +592,7 @@ export default function GlobalFXPortal({
                 {onOpenGrandCasino && (
                   <button
                     onClick={onOpenGrandCasino}
-                    className="flex-1 py-2 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-black font-black rounded-xl text-xs transition shadow"
+                    className="flex-1 py-2 bg-amber-600 hover:bg-amber-500 text-black font-black rounded-xl text-xs transition shadow"
                   >
                     Dağıtımı Başlat
                   </button>
@@ -638,7 +628,7 @@ export default function GlobalFXPortal({
                 {onOpenCasinoSlot && (
                   <button
                     onClick={onOpenCasinoSlot}
-                    className="flex-1 py-2 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-black rounded-xl text-xs transition shadow"
+                    className="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-xl text-xs transition shadow"
                   >
                     Makarayı Çevir
                   </button>
@@ -672,12 +662,20 @@ export default function GlobalFXPortal({
               </div>
               <div className="flex items-center gap-2 pt-2">
                 {onOpenArcadeHub && (
-                  <button
-                    onClick={onOpenArcadeHub}
-                    className="flex-1 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black rounded-xl text-xs transition shadow"
-                  >
-                    Roketi Ateşle
-                  </button>
+                  <>
+                    <button
+                      onClick={onOpenArcadeHub}
+                      className="flex-1 py-2 bg-[#222] border border-[#d4af37] hover:bg-[#333] text-white font-black rounded-xl text-[10px] sm:text-xs transition shadow"
+                    >
+                      Roketi Ateşle
+                    </button>
+                    <button
+                      onClick={onOpenArcadeHub}
+                      className="flex-1 py-2 bg-[#222] border border-[#d4af37] hover:bg-[#333] text-white font-black rounded-xl text-[10px] sm:text-xs transition shadow border border-red-500"
+                    >
+                      🎲 Barbut Oyna
+                    </button>
+                  </>
                 )}
                 {onOpenTacticsGuide && (
                   <button
@@ -724,7 +722,7 @@ export default function GlobalFXPortal({
                   <span className="text-rose-400 line-through font-bold">1.4 Pip</span>
                 </div>
                 <div className="flex justify-between items-center text-white bg-blue-500/10 p-2 rounded-lg border border-blue-500/20">
-                  <span className="text-blue-300 font-bold">Exbina Prime ECN:</span>
+                  <span className="text-[#d4af37] font-bold">FxPro ECN:</span>
                   <span className="text-emerald-400 font-extrabold text-sm">0.0 Pip</span>
                 </div>
               </div>
@@ -732,7 +730,7 @@ export default function GlobalFXPortal({
             </div>
 
             {/* Parite 2: XAU/USD (Ons Altın) */}
-            <div className="bg-[#0c1017] border border-blue-500/40 rounded-2xl p-5 space-y-4 shadow-[0_0_20px_rgba(41,121,255,0.15)]">
+            <div className="bg-[#0c1017] border border-blue-500/40 rounded-2xl p-5 space-y-4 ">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-white text-sm">XAU / USD (Altın)</span>
                 <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-bold">-%82 TASARRUF</span>
@@ -743,7 +741,7 @@ export default function GlobalFXPortal({
                   <span className="text-rose-400 line-through font-bold">35 Cent ($0.35)</span>
                 </div>
                 <div className="flex justify-between items-center text-white bg-blue-500/10 p-2 rounded-lg border border-blue-500/20">
-                  <span className="text-blue-300 font-bold">Exbina Prime ECN:</span>
+                  <span className="text-[#d4af37] font-bold">FxPro ECN:</span>
                   <span className="text-emerald-400 font-extrabold text-sm">8 Cent ($0.08)</span>
                 </div>
               </div>
@@ -782,7 +780,7 @@ export default function GlobalFXPortal({
             <div>
               <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest font-mono">0 SANİYE OTOMASYON</span>
               <h2 className="text-2xl font-black text-white">
-                Otomatik ve Kesintisiz Finansal Ağlar
+                Doğrudan ve Kesintisiz Finansal Ağlar
               </h2>
               <p className="text-xs text-gray-400 mt-1">
                 Kuyruk beklemeden, bankacılık ve blokzincir API mutabakatıyla anında para yatırma ve 7/24 kesintisiz çekim.
@@ -791,7 +789,7 @@ export default function GlobalFXPortal({
             <div className="flex items-center gap-2">
               <button
                 onClick={onOpenDeposit}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition shadow active:scale-95"
+                className="px-4 py-2 bg-[#d4af37] hover:bg-[#f3d56a] text-black text-white font-bold text-xs rounded-xl transition shadow active:scale-95"
               >
                 Hemen Para Yatır
               </button>
@@ -838,7 +836,7 @@ export default function GlobalFXPortal({
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           
           <div className="space-y-4">
-            <span className="text-xs font-bold text-blue-400 uppercase font-mono tracking-wider">KURUMSAL ALTYAPI</span>
+            <span className="text-xs font-bold text-[#d4af37] uppercase font-mono tracking-wider">KURUMSAL ALTYAPI</span>
             <h2 className="text-2xl sm:text-3xl font-black text-white">
               Londra Equinix LD4 Veri Merkezine Doğrudan Optik Bağlantı
             </h2>
@@ -889,45 +887,7 @@ export default function GlobalFXPortal({
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* 7. KURUMSAL FOOTER VE YASAL UYARI (REGULATORY FOOTER) */}
-      {/* ========================================================================= */}
-      <footer className="bg-[#05070a] border-t border-[#141a24] py-12 px-4 lg:px-8 text-xs text-gray-500">
-        <div className="max-w-7xl mx-auto space-y-8">
-          
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[#141a24] pb-6">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center font-bold text-white text-xs">
-                ⚡
-              </div>
-              <span className="font-extrabold text-white text-sm tracking-wider">EXBINA PRIME ECN</span>
-            </div>
 
-            <div className="flex items-center gap-6 text-gray-400">
-              <button onClick={() => onOpenTerminal()} className="hover:text-white transition">WebTrader</button>
-              <button onClick={onOpenDeposit} className="hover:text-white transition">Para Yatır</button>
-              <button onClick={onOpenWithdraw} className="hover:text-white transition">Para Çek</button>
-              <Link href="/admin" className="hover:text-blue-400 transition">Dealer Masası</Link>
-            </div>
-          </div>
-
-          {/* Yasal Risk Açıklaması */}
-          <div className="space-y-2 text-[11px] leading-relaxed text-gray-500 font-sans">
-            <p>
-              <strong>Yasal Risk Uyarısı:</strong> Kaldıraçlı döviz (Forex) ve CFD (Fark Sözleşmeleri) işlemleri yüksek düzeyde risk içerir ve yatırdığınız tüm sermayeyi kaybetmenize yol açabilir. Bireysel yatırımcı hesaplarının %74-%89&apos;u CFD işlemi yaparken para kaybetmektedir. Bu tür finansal türev ürünlerin nasıl çalıştığını tam olarak anladığınızdan ve yüksek para kaybetme riskini göze alıp alamayacağınızdan emin olmalısınız.
-            </p>
-            <p>
-              Exbina Prime Ltd., uluslararası finansal denetim standartlarına tabi olup ayrılmış müşteri hesapları (segregated accounts) politikasını katı bir şekilde uygulamaktadır.
-            </p>
-          </div>
-
-          <div className="text-[10px] text-gray-600 flex flex-col sm:flex-row justify-between items-center gap-2 pt-4 border-t border-[#10141d]">
-            <span>© 2026 Exbina Prime Ltd. Tüm hakları saklıdır.</span>
-            <span>Equinix LD4 Server Connection • 0.01ms Latency SLA</span>
-          </div>
-
-        </div>
-      </footer>
 
     </div>
   );

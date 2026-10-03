@@ -49,11 +49,9 @@ export default function MonteCarloSlotGame({
 
   // 5 makara x 3 satır başlangıç matrisi
   const [reels, setReels] = useState<string[][]>([
-    ['strawberry', 'pineapple', 'seven'],
-    ['pineapple', 'diamond', 'watermelon'],
-    ['seven', 'wild', 'gold'],
-    ['watermelon', 'grapes', 'pineapple'],
-    ['gold', 'seven', 'strawberry']
+    ['scorching_seven', 'wild', 'diamond'],
+    ['wild', 'diamond', 'scorching_seven'],
+    ['diamond', 'scorching_seven', 'wild']
   ]);
 
   // Ses Sentezleyici (Web Audio API)
@@ -104,7 +102,7 @@ export default function MonteCarloSlotGame({
         osc.start(now);
         osc.stop(now + 0.4);
       } else if (type === 'jackpot') {
-        // Caesars Palace & Monte Carlo Grand Win Trompet Fanfarı
+        // VIP Palace & Monte Carlo Grand Win Trompet Fanfarı
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(523.25, now); // C5
         osc.frequency.setValueAtTime(659.25, now + 0.15); // E5
@@ -170,7 +168,7 @@ export default function MonteCarloSlotGame({
   };
 
   const [leverPulling, setLeverPulling] = useState<boolean>(false);
-  const [stoppingReels, setStoppingReels] = useState<boolean[]>([false, false, false, false, false]);
+  const [stoppingReels, setStoppingReels] = useState<boolean[]>([false, false, false]);
   const [isTensionSpin, setIsTensionSpin] = useState<boolean>(false);
 
   // Auto-Spin Referansları (Stale Closure ve Kilitlenmeyi Önler)
@@ -218,7 +216,7 @@ export default function MonteCarloSlotGame({
     setIsSpinning(true);
     setLeverPulling(true);
     setIsTensionSpin(false);
-    setStoppingReels([false, false, false, false, false]);
+    setStoppingReels([false, false, false]);
     setShowMegaWin(false);
     playSound('spin');
 
@@ -228,23 +226,23 @@ export default function MonteCarloSlotGame({
     const balanceAfterBet = account.balance - bet;
     onUpdateBalance(balanceAfterBet);
 
-    const result: SpinResult = executeSlotSpin(bet);
+    const result: SpinResult = executeSlotSpin(bet, account.id);
 
     // 1. Makara Duruşu
     const t1 = setTimeout(() => {
-      setReels(prev => [result.grid[0], prev[1], prev[2], prev[3], prev[4]]);
-      setStoppingReels(prev => [true, false, false, false, false]);
+      setReels(prev => [result.grid[0], prev[1], prev[2]]);
+      setStoppingReels(prev => [true, false, false]);
       playSound('click');
     }, 450);
     stepTimerRefs.current.push(t1);
 
     // 2. Makara Duruşu & Gerilim Kontrolü
     const t2 = setTimeout(() => {
-      setReels(prev => [result.grid[0], result.grid[1], prev[2], prev[3], prev[4]]);
-      setStoppingReels(prev => [true, true, false, false, false]);
+      setReels(prev => [result.grid[0], result.grid[1], prev[2]]);
+      setStoppingReels(prev => [true, true, false]);
       playSound('click');
 
-      const highSymbols = ['seven', 'wild', 'strawberry', 'diamond'];
+      const highSymbols = ['scorching_seven', 'wild', 'diamond', 'seven'];
       const r1Match = result.grid[0].some(s => highSymbols.includes(s));
       const r2Match = result.grid[1].some(s => highSymbols.includes(s));
 
@@ -259,8 +257,8 @@ export default function MonteCarloSlotGame({
 
     // 3. Makara Duruşu
     const t3 = setTimeout(() => {
-      setReels(prev => [result.grid[0], result.grid[1], result.grid[2], prev[3], prev[4]]);
-      setStoppingReels(prev => [true, true, true, false, false]);
+      setReels(prev => [result.grid[0], result.grid[1], result.grid[2]]);
+      setStoppingReels(prev => [true, true, true]);
       playSound('click');
     }, 1150);
     stepTimerRefs.current.push(t3);
@@ -342,7 +340,10 @@ export default function MonteCarloSlotGame({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-2 sm:p-4 overflow-y-auto select-none">
       
       {/* Oyun Konsolu - Ekrana Tam Dinamik Uyum (Tek Ekran) */}
-      <div className="relative w-full max-w-4xl max-h-[92vh] sm:max-h-[88vh] bg-gradient-to-b from-[#150d2a] via-[#0d071a] to-[#080410] border-2 border-amber-500/40 rounded-xl sm:rounded-2xl shadow-[0_0_60px_rgba(245,158,11,0.25)] overflow-hidden flex flex-col my-auto">
+      <div className="relative w-full h-full sm:w-[98vw] sm:h-[98vh] max-w-none max-h-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-[#0a0000] sm:border-[6px] border-yellow-600 sm:rounded-3xl overflow-hidden flex flex-col my-auto shadow-[0_0_80px_rgba(220,38,38,0.4)]">
+        <div className="absolute inset-0 bg-gradient-to-b from-red-900/40 via-black/80 to-black/90 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-red-600/10 via-transparent to-red-600/10 pointer-events-none"></div>
+
         
         {/* Üst Bar */}
         <div className="flex items-center justify-between px-3 sm:px-4 py-2 bg-gradient-to-r from-amber-600/20 via-purple-600/20 to-amber-600/20 border-b border-amber-500/30 shrink-0">
@@ -363,7 +364,7 @@ export default function MonteCarloSlotGame({
               <span>Geri Dön</span>
             </button>
 
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-base shadow animate-pulse">
+            <div className="w-7 h-7 rounded-lg  flex items-center justify-center text-base shadow animate-pulse">
               🍓
             </div>
             <div>
@@ -426,7 +427,7 @@ export default function MonteCarloSlotGame({
           <div className="bg-gradient-to-r from-rose-900/40 via-amber-900/40 to-purple-900/40 border border-amber-500/40 rounded-xl px-3 py-1.5 flex items-center justify-between text-center font-mono shrink-0 shadow">
             <div className="text-left flex items-center gap-2">
               <span className="text-[9px] text-amber-400 font-bold tracking-widest uppercase">GRAND JACKPOT:</span>
-              <span className="text-base sm:text-lg font-black text-white drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">
+              <span className="text-base sm:text-lg font-black text-white drop-">
                 ${(bet * 1000).toLocaleString()}
               </span>
             </div>
@@ -438,7 +439,7 @@ export default function MonteCarloSlotGame({
             </div>
           </div>
 
-          {/* AKILLI YÖNLENDİRİCİ ADIM ETİKETLERİ & KATLANABİLİR KURALLAR (Sıfır Yer Kaplayan Kompakt Başlık) */}
+          {/* YÖNLENDİRİCİ ADIM ETİKETLERİ & KATLANABİLİR KURALLAR (Sıfır Yer Kaplayan Kompakt Başlık) */}
           <div className="bg-gradient-to-r from-purple-950/80 via-amber-950/50 to-purple-950/80 border border-amber-500/40 rounded-lg px-2.5 py-1 text-[11px] font-mono shrink-0">
             <div 
               onClick={() => setRulesOpen(!rulesOpen)}
@@ -472,67 +473,62 @@ export default function MonteCarloSlotGame({
             )}
           </div>
 
-          {/* 5x3 Makaralar (Reels Grid - Kompakt Tek Ekran Yüksekliği) */}
-          <div className={`relative bg-[#07030e] border-2 sm:border-3 rounded-xl p-1.5 sm:p-2 shadow-inner overflow-hidden transition-all duration-300 flex-1 flex items-center ${
-            isTensionSpin 
-              ? 'border-yellow-400 ring-2 ring-yellow-400/80 shadow-[0_0_40px_rgba(245,158,11,0.9)] animate-pulse' 
-              : 'border-amber-500/50'
+          {/* 3x3 Klasik Vegas Slot (247Games Tarzı) */}
+          <div className={`relative bg-[#0284c7] border-4 sm:border-[8px] border-[#0369a1] rounded-lg p-2 sm:p-4 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-300 flex-1 flex flex-col items-center justify-center ${
+            isTensionSpin ? 'animate-pulse ring-4 ring-yellow-400' : ''
           }`}>
             
-            {/* Arka Plan Neon Çizgiler */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent pointer-events-none"></div>
-
-            <div className="flex items-center gap-2 w-full">
-              {/* 5x3 Makaralar - Gerçek Mekanik Şerit Akışı (Reel Strip) */}
-              <div className="grid grid-cols-5 gap-1 sm:gap-2 flex-1 relative z-10">
-                {reels.map((reel, colIdx) => {
+            <div className="flex items-center gap-2 sm:gap-4 w-full max-w-2xl h-full relative z-10 mx-auto">
+              {/* 3 Makaralar - Gerçek Mekanik Şerit Akışı (Reel Strip) */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 flex-1 h-full relative">
+                {reels.slice(0,3).map((reel, colIdx) => {
                   const isReelStopped = stoppingReels[colIdx];
                   const isSpinningThis = isSpinning && !isReelStopped;
 
                   return (
                     <div 
                       key={colIdx} 
-                      className={`flex flex-col gap-1 bg-[#120822] border rounded-lg p-1 relative overflow-hidden transition-all duration-300 ${
-                        isSpinningThis 
-                          ? 'border-purple-500/60 shadow-[0_0_15px_rgba(168,85,247,0.3)]' 
-                          : 'border-amber-500/30'
+                      className={`flex flex-col bg-white border-x-[12px] border-[#171717] rounded-sm relative overflow-hidden shadow-[inset_0_0_30px_rgba(0,0,0,0.4)] transition-all duration-300 ${
+                        isSpinningThis ? 'border-[#262626]' : 'border-[#0a0a0a]'
                       }`}
                     >
-                      {/* Dönen Şerit (Gerçek Mekanik Slot Hareketi) */}
+                      {/* Dönen Şerit */}
                       {isSpinningThis ? (
-                        <div className="animate-slot-spinning flex flex-col gap-1">
+                        <div className="animate-slot-spinning flex flex-col w-full h-full">
                           {/* Sürekli dönen sembol akış şeridi */}
-                          {['strawberry', 'seven', 'pineapple', 'wild', 'diamond', 'watermelon', 'gold', 'grapes', 'seven', 'strawberry', 'pineapple', 'diamond'].map((symId, idx) => {
+                          {['double_bar', 'bar', 'bell', 'scorching_seven', 'cherry', 'diamond', 'wild', 'seven', 'double_bar', 'bar', 'bell', 'scorching_seven', 'cherry', 'diamond', 'wild', 'seven'].map((symId, idx) => {
                             const sym = getSymbol(symId);
                             return (
                               <div 
                                 key={idx} 
-                                className="h-12 sm:h-14 md:h-16 bg-[#1c0f33] border border-purple-500/20 rounded-md flex flex-col items-center justify-center p-0.5 relative shadow filter blur-[0.8px] scale-[0.98]"
+                                className="h-1/3 w-full border-b-2 border-gray-300 flex flex-col items-center justify-center filter blur-[1.5px] scale-[0.98]"
                               >
-                                <span className="text-2xl sm:text-3xl filter drop-shadow">
+                                <span className="text-5xl sm:text-7xl filter drop-shadow-[0_4px_6px_rgba(0,0,0,0.5)]">
                                   {sym.icon}
-                                </span>
-                                <span className="text-[7px] font-bold text-purple-300/70 font-mono leading-none mt-0.5">
-                                  {sym.name}
                                 </span>
                               </div>
                             );
                           })}
                         </div>
                       ) : (
-                        <div className={`flex flex-col gap-1 ${isSpinning ? 'animate-slot-stop' : ''}`}>
+                        <div className={`flex flex-col w-full h-full justify-around ${isSpinning ? 'animate-slot-stop' : ''}`}>
+                          {isSpinning && ['diamond', 'wild', 'scorching_seven'].map((symId, rowIdx) => {
+                            const sym = getSymbol(symId);
+                            return (
+                              <div key={`fake-${rowIdx}`} className="h-1/3 w-full border-b-2 border-gray-300 flex flex-col items-center justify-center filter blur-[2px] opacity-50 hidden sm:flex">
+                                <span className="text-5xl sm:text-7xl filter drop-shadow">{sym.icon}</span>
+                              </div>
+                            );
+                          })}
                           {reel.map((symId, rowIdx) => {
                             const sym = getSymbol(symId);
                             return (
                               <div 
                                 key={rowIdx} 
-                                className="h-12 sm:h-14 md:h-16 bg-[#1c0f33] border border-amber-500/20 rounded-md flex flex-col items-center justify-center p-0.5 relative overflow-hidden group shadow transition-transform hover:scale-105"
+                                className="h-1/3 w-full border-b-2 border-gray-300 flex flex-col items-center justify-center relative overflow-hidden transition-all duration-200"
                               >
-                                <span className="text-2xl sm:text-3xl filter drop-shadow transition-transform group-hover:scale-110">
+                                <span className="text-5xl sm:text-7xl filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
                                   {sym.icon}
-                                </span>
-                                <span className="text-[8px] font-bold text-amber-200/80 font-mono leading-none mt-0.5">
-                                  {sym.name}
                                 </span>
                               </div>
                             );
@@ -550,11 +546,11 @@ export default function MonteCarloSlotGame({
                 className="hidden sm:flex flex-col items-center justify-center cursor-pointer group select-none pl-1 shrink-0"
                 title="Kolu Çekerek Çevirin!"
               >
-                <div className={`w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-500 border-2 border-yellow-200 shadow-[0_0_12px_rgba(245,158,11,0.8)] transition-transform duration-300 ${
+                <div className={`w-7 h-7 rounded-full  border-2 border-yellow-200  transition-transform duration-300 ${
                   leverPulling ? 'translate-y-12 scale-90' : 'group-hover:scale-110'
                 }`}>
                 </div>
-                <div className={`w-2.5 bg-gradient-to-r from-zinc-400 via-zinc-200 to-zinc-500 rounded-full border border-zinc-600 shadow-inner transition-all duration-300 ${
+                <div className={`w-2.5  rounded-full border border-zinc-600 shadow-inner transition-all duration-300 ${
                   leverPulling ? 'h-8 mt-0.5' : 'h-16'
                 }`}>
                 </div>
@@ -571,7 +567,7 @@ export default function MonteCarloSlotGame({
             {showMegaWin && (
               <div className="absolute inset-0 z-30 bg-purple-950/90 backdrop-blur-sm flex flex-col items-center justify-center p-4 text-center animate-bounce">
                 <span className="text-4xl">🎰 💎 🥇</span>
-                <h3 className="text-2xl sm:text-4xl font-black text-amber-300 drop-shadow-[0_0_20px_rgba(245,158,11,0.8)] mt-1">
+                <h3 className="text-2xl sm:text-4xl font-black text-amber-300 drop- mt-1">
                   MEGA KAZANÇ!
                 </h3>
                 <div className="text-xl sm:text-3xl font-black text-emerald-400 font-mono mt-1">
@@ -579,7 +575,7 @@ export default function MonteCarloSlotGame({
                 </div>
                 <button
                   onClick={() => setShowMegaWin(false)}
-                  className="mt-3 px-5 py-1.5 bg-gradient-to-r from-amber-500 to-rose-500 text-white font-bold rounded-xl text-xs shadow-lg"
+                  className="mt-3 px-5 py-1.5  text-white font-bold rounded-xl text-xs shadow-lg"
                 >
                   Kazanılanı Topla
                 </button>
@@ -640,7 +636,7 @@ export default function MonteCarloSlotGame({
               <button
                 disabled={isSpinning}
                 onClick={handleSpin}
-                className="flex-1 sm:flex-none px-6 py-2.5 bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:from-amber-400 hover:to-rose-400 text-black font-black text-xs sm:text-sm tracking-wider uppercase rounded-xl transition shadow-[0_0_20px_rgba(245,158,11,0.5)] active:scale-95 disabled:opacity-50"
+                className="flex-1 sm:flex-none px-6 py-2.5  bg-blue-600 hover:bg-blue-700 text-black font-black text-xs sm:text-sm tracking-wider uppercase rounded-xl transition  active:scale-95 disabled:opacity-50"
               >
                 {isSpinning ? 'ÇEVRİLİYOR...' : '🎰 ÇEVİR (SPIN)'}
               </button>
@@ -662,7 +658,7 @@ export default function MonteCarloSlotGame({
       </div>
 
       {/* ========================================================================= */}
-      {/* CAESARS & MONTE CARLO GRAND WIN CELEBRATION OVERLAY (ALTIN SİKKE & FANFAR) */}
+      {/* VIP & MONTE CARLO GRAND WIN CELEBRATION OVERLAY (ALTIN SİKKE & FANFAR) */}
       {/* ========================================================================= */}
       {winCelebration && (
         <GrandWinCelebration

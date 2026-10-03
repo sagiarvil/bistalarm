@@ -32,7 +32,7 @@ export default function GrandWinCelebration({
 }: GrandWinCelebrationProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Web Audio Context - Caesars & Monte Carlo Gerçekçi Zafer Sentezleyicisi
+  // Web Audio Context - VIP & Monte Carlo Gerçekçi Zafer Sentezleyicisi
   useEffect(() => {
     if (!isOpen) return;
 
@@ -190,8 +190,8 @@ export default function GrandWinCelebration({
       {/* Altın Işık Hüzmesi (Radyal Glow) */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,215,0,0.35)_0%,_rgba(180,83,9,0.15)_45%,_transparent_75%)] pointer-events-none animate-pulse" />
 
-      {/* Ana Lüks Zafer Kartı (Caesars Palace & Monte Carlo VIP) */}
-      <div className="relative z-20 max-w-md sm:max-w-lg w-full bg-gradient-to-b from-[#2b1204] via-[#4d2208] to-[#1a0802] border-4 border-[#ffd700] rounded-3xl p-6 sm:p-8 text-center shadow-[0_0_100px_rgba(255,215,0,0.9)] transform transition-transform animate-scaleUp">
+      {/* Ana Lüks Zafer Kartı (VIP Palace & Monte Carlo VIP) */}
+      <div className="relative z-20 max-w-md sm:max-w-lg w-full bg-gradient-to-b from-[#2b1204] via-[#4d2208] to-[#1a0802] border-4 border-[#ffd700] rounded-3xl p-6 sm:p-8 text-center  transform transition-transform animate-scaleUp">
         
         {/* Kapat Butonu */}
         <button
@@ -202,23 +202,23 @@ export default function GrandWinCelebration({
         </button>
 
         {/* Taç / Kupa Rozeti */}
-        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-gradient-to-tr from-amber-500 via-yellow-200 to-amber-600 border-4 border-white shadow-[0_0_40px_rgba(255,215,0,1)] flex items-center justify-center text-3xl sm:text-4xl mb-3 animate-bounce">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full  border-4 border-white  flex items-center justify-center text-3xl sm:text-4xl mb-3 animate-bounce">
           👑
         </div>
 
-        {/* Caesars Başlığı */}
+        {/* VIP Başlığı */}
         <span className="text-[10px] sm:text-xs font-mono tracking-widest text-amber-300 uppercase font-black block">
-          ⚜️ CAESARS PALACE & MONTE CARLO VIP ⚜️
+          ⚜️ VIP PALACE & MONTE CARLO VIP ⚜️
         </span>
 
         {/* Ana Zafer Başlığı */}
-        <h2 className="text-xl sm:text-3xl font-black font-serif text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 tracking-wider my-2 drop-shadow-[0_2px_12px_rgba(255,215,0,0.6)]">
+        <h2 className="text-xl sm:text-3xl font-black font-serif   tracking-wider my-2 drop-shadow-[0_2px_12px_rgba(255,215,0,0.6)]">
           {title}
         </h2>
 
         {/* Parlayan Kazanılan Para Tutarı */}
         <div className="my-3 py-3 px-6 bg-black/75 rounded-2xl border-2 border-yellow-400 inline-block shadow-[inset_0_0_20px_rgba(255,215,0,0.4)]">
-          <span className="text-3xl sm:text-5xl font-black font-mono text-emerald-400 tracking-tight drop-shadow-[0_0_25px_rgba(52,211,153,0.9)]">
+          <span className="text-3xl sm:text-5xl font-black font-mono text-emerald-400 tracking-tight drop-">
             +${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
         </div>
@@ -232,7 +232,7 @@ export default function GrandWinCelebration({
         <div className="mt-5">
           <button
             onClick={onClose}
-            className="px-8 py-2.5 rounded-xl bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600 hover:from-yellow-400 hover:to-amber-300 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(255,215,0,0.5)] transition active:scale-95 font-serif"
+            className="px-8 py-2.5 rounded-xl  bg-blue-600 hover:bg-blue-700 text-black font-black text-xs sm:text-sm uppercase tracking-wider  transition active:scale-95 font-serif"
           >
             KAZANCI AL VE DEVAM ET
           </button>

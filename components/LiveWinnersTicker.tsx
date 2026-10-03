@@ -97,11 +97,11 @@ export default function LiveWinnersTicker() {
 
       <div className="max-w-7xl mx-auto flex items-center px-3 sm:px-6">
         
-        {/* Sol Sabit Caesars Rozeti (Caesars Palace & Monte Carlo Prestij Kutusu) */}
-        <div className="flex items-center gap-2 bg-gradient-to-r from-[#ffd700] via-[#f59e0b] to-[#b45309] text-black px-3.5 py-1.5 rounded-xl font-black text-xs shrink-0 mr-4 shadow-[0_0_20px_rgba(255,215,0,0.6)] z-20 font-serif tracking-wider border border-yellow-200">
+        {/* Sol Sabit VIP Rozeti (VIP Palace & Monte Carlo Prestij Kutusu) */}
+        <div className="flex items-center gap-2 bg-gradient-to-r from-[#ffd700] via-[#f59e0b] to-[#b45309] text-black px-3.5 py-1.5 rounded-xl font-black text-xs shrink-0 mr-4  z-20 font-serif tracking-wider border border-yellow-200">
           <span className="text-sm animate-pulse">⚜️</span>
           <div className="flex flex-col leading-tight">
-            <span className="text-[11px] font-black tracking-widest uppercase">CAESARS PALACE</span>
+            <span className="text-[11px] font-black tracking-widest uppercase">VIP PALACE</span>
             <span className="text-[9px] font-mono font-bold text-black/80 flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping inline-block" />
               CANLI VIP KAZANANLAR
@@ -126,7 +126,7 @@ export default function LiveWinnersTicker() {
                 key={`win1-${item.id}`}
                 className="flex items-center gap-3 bg-gradient-to-r from-[#201007]/90 via-[#361c0c]/90 to-[#201007]/90 border border-[#d4af37]/50 hover:border-yellow-400 px-3.5 py-1.5 rounded-2xl text-xs font-mono shrink-0 transition-transform duration-200 hover:scale-105 shadow-[0_2px_12px_rgba(0,0,0,0.6)] select-none"
               >
-                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-yellow-400 border border-yellow-200 flex items-center justify-center text-sm shadow">
+                <div className="w-7 h-7 rounded-full  border border-yellow-200 flex items-center justify-center text-sm shadow">
                   {item.avatar}
                 </div>
 
@@ -136,7 +136,7 @@ export default function LiveWinnersTicker() {
                     <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded font-extrabold border ${
                       item.badge === 'JACKPOT' ? 'bg-amber-500/20 text-yellow-300 border-yellow-400/50 animate-pulse' :
                       item.badge === 'ROYAL' ? 'bg-purple-500/20 text-purple-300 border-purple-400/50' :
-                      item.badge === 'CAESARS VIP' ? 'bg-rose-500/20 text-rose-300 border-rose-400/50' :
+                      item.badge === 'VIP VIP' ? 'bg-rose-500/20 text-rose-300 border-rose-400/50' :
                       'bg-emerald-500/20 text-emerald-300 border-emerald-400/50'
                     }`}>
                       {item.badge}
@@ -149,7 +149,7 @@ export default function LiveWinnersTicker() {
                 </div>
 
                 <div className="text-right pl-2 border-l border-[#d4af37]/30">
-                  <div className="text-emerald-400 font-black text-sm font-mono tracking-tight drop-shadow-[0_0_8px_rgba(52,211,153,0.5)]">
+                  <div className="text-emerald-400 font-black text-sm font-mono tracking-tight drop-">
                     +${item.amount.toLocaleString()}
                   </div>
                   <div className="text-yellow-400 font-bold text-[10px] font-mono">
@@ -167,7 +167,7 @@ export default function LiveWinnersTicker() {
                 key={`win2-${item.id}`}
                 className="flex items-center gap-3 bg-gradient-to-r from-[#201007]/90 via-[#361c0c]/90 to-[#201007]/90 border border-[#d4af37]/50 hover:border-yellow-400 px-3.5 py-1.5 rounded-2xl text-xs font-mono shrink-0 transition-transform duration-200 hover:scale-105 shadow-[0_2px_12px_rgba(0,0,0,0.6)] select-none"
               >
-                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-yellow-400 border border-yellow-200 flex items-center justify-center text-sm shadow">
+                <div className="w-7 h-7 rounded-full  border border-yellow-200 flex items-center justify-center text-sm shadow">
                   {item.avatar}
                 </div>
 
@@ -177,7 +177,7 @@ export default function LiveWinnersTicker() {
                     <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded font-extrabold border ${
                       item.badge === 'JACKPOT' ? 'bg-amber-500/20 text-yellow-300 border-yellow-400/50 animate-pulse' :
                       item.badge === 'ROYAL' ? 'bg-purple-500/20 text-purple-300 border-purple-400/50' :
-                      item.badge === 'CAESARS VIP' ? 'bg-rose-500/20 text-rose-300 border-rose-400/50' :
+                      item.badge === 'VIP VIP' ? 'bg-rose-500/20 text-rose-300 border-rose-400/50' :
                       'bg-emerald-500/20 text-emerald-300 border-emerald-400/50'
                     }`}>
                       {item.badge}
@@ -190,7 +190,7 @@ export default function LiveWinnersTicker() {
                 </div>
 
                 <div className="text-right pl-2 border-l border-[#d4af37]/30">
-                  <div className="text-emerald-400 font-black text-sm font-mono tracking-tight drop-shadow-[0_0_8px_rgba(52,211,153,0.5)]">
+                  <div className="text-emerald-400 font-black text-sm font-mono tracking-tight drop-">
                     +${item.amount.toLocaleString()}
                   </div>
                   <div className="text-yellow-400 font-bold text-[10px] font-mono">

@@ -10,7 +10,7 @@ export interface WinnerItem {
   amount: number;
   multiplier: string;
   timeAgo: string;
-  badge: 'MEGA' | 'EPIC' | 'JACKPOT' | 'CAESARS VIP' | 'ROYAL';
+  badge: 'MEGA' | 'EPIC' | 'JACKPOT' | 'VIP VIP' | 'ROYAL';
 }
 
 export const MASKED_TURKISH_NAMES_500: string[] = [
@@ -581,7 +581,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 5200,
     "multiplier": "26x",
     "timeAgo": "25 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-7",
@@ -614,7 +614,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 460,
     "multiplier": "23x",
     "timeAgo": "1 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-10",
@@ -625,7 +625,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1750,
     "multiplier": "7x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-11",
@@ -713,7 +713,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 8600,
     "multiplier": "43x",
     "timeAgo": "34 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-19",
@@ -746,7 +746,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1425,
     "multiplier": "19x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-22",
@@ -757,7 +757,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 750,
     "multiplier": "5x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-23",
@@ -845,7 +845,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 16600,
     "multiplier": "83x",
     "timeAgo": "42 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-31",
@@ -878,7 +878,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 750,
     "multiplier": "30x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-34",
@@ -889,7 +889,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1200,
     "multiplier": "8x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-35",
@@ -977,7 +977,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 22000,
     "multiplier": "44x",
     "timeAgo": "1 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-43",
@@ -1010,7 +1010,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 2025,
     "multiplier": "27x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-46",
@@ -1021,7 +1021,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1500,
     "multiplier": "3x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-47",
@@ -1109,7 +1109,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 4050,
     "multiplier": "54x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-55",
@@ -1142,7 +1142,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 2700,
     "multiplier": "18x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-58",
@@ -1153,7 +1153,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 900,
     "multiplier": "6x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-59",
@@ -1241,7 +1241,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 7650,
     "multiplier": "51x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-67",
@@ -1274,7 +1274,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 375,
     "multiplier": "15x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-70",
@@ -1285,7 +1285,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1750,
     "multiplier": "7x",
     "timeAgo": "12 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-71",
@@ -1373,7 +1373,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1525,
     "multiplier": "61x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-79",
@@ -1406,7 +1406,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 2800,
     "multiplier": "14x",
     "timeAgo": "12 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-82",
@@ -1417,7 +1417,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 200,
     "multiplier": "4x",
     "timeAgo": "18 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-83",
@@ -1505,7 +1505,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1575,
     "multiplier": "63x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-91",
@@ -1538,7 +1538,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 180,
     "multiplier": "9x",
     "timeAgo": "18 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-94",
@@ -1549,7 +1549,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 180,
     "multiplier": "9x",
     "timeAgo": "25 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-95",
@@ -1637,7 +1637,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1650,
     "multiplier": "22x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-103",
@@ -1670,7 +1670,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1000,
     "multiplier": "10x",
     "timeAgo": "25 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-106",
@@ -1681,7 +1681,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1350,
     "multiplier": "9x",
     "timeAgo": "34 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-107",
@@ -1769,7 +1769,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 760,
     "multiplier": "38x",
     "timeAgo": "12 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-115",
@@ -1802,7 +1802,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 425,
     "multiplier": "17x",
     "timeAgo": "34 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-118",
@@ -1813,7 +1813,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 150,
     "multiplier": "3x",
     "timeAgo": "42 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-119",
@@ -1901,7 +1901,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1100,
     "multiplier": "44x",
     "timeAgo": "18 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-127",
@@ -1934,7 +1934,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 150,
     "multiplier": "6x",
     "timeAgo": "42 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-130",
@@ -1945,7 +1945,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 50,
     "multiplier": "2x",
     "timeAgo": "1 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-131",
@@ -2033,7 +2033,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1075,
     "multiplier": "43x",
     "timeAgo": "25 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-139",
@@ -2066,7 +2066,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 5400,
     "multiplier": "27x",
     "timeAgo": "1 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-142",
@@ -2077,7 +2077,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1600,
     "multiplier": "8x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-143",
@@ -2165,7 +2165,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 19500,
     "multiplier": "78x",
     "timeAgo": "34 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-151",
@@ -2198,7 +2198,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1500,
     "multiplier": "20x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-154",
@@ -2209,7 +2209,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 150,
     "multiplier": "2x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-155",
@@ -2297,7 +2297,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 3900,
     "multiplier": "26x",
     "timeAgo": "42 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-163",
@@ -2330,7 +2330,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 625,
     "multiplier": "25x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-166",
@@ -2341,7 +2341,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 600,
     "multiplier": "3x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-167",
@@ -2429,7 +2429,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1080,
     "multiplier": "54x",
     "timeAgo": "1 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-175",
@@ -2462,7 +2462,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 800,
     "multiplier": "16x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-178",
@@ -2473,7 +2473,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 400,
     "multiplier": "8x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-179",
@@ -2561,7 +2561,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1480,
     "multiplier": "74x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-187",
@@ -2594,7 +2594,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 225,
     "multiplier": "3x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-190",
@@ -2605,7 +2605,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 2500,
     "multiplier": "5x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-191",
@@ -2693,7 +2693,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1580,
     "multiplier": "79x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-199",
@@ -2726,7 +2726,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 300,
     "multiplier": "12x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-202",
@@ -2737,7 +2737,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1000,
     "multiplier": "4x",
     "timeAgo": "12 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-203",
@@ -2825,7 +2825,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 860,
     "multiplier": "43x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-211",
@@ -2858,7 +2858,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1000,
     "multiplier": "20x",
     "timeAgo": "12 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-214",
@@ -2869,7 +2869,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 175,
     "multiplier": "7x",
     "timeAgo": "18 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-215",
@@ -2957,7 +2957,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 10800,
     "multiplier": "54x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-223",
@@ -2990,7 +2990,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 3000,
     "multiplier": "6x",
     "timeAgo": "18 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-226",
@@ -3001,7 +3001,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1750,
     "multiplier": "7x",
     "timeAgo": "25 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-227",
@@ -3089,7 +3089,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 8400,
     "multiplier": "56x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-235",
@@ -3122,7 +3122,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1150,
     "multiplier": "23x",
     "timeAgo": "25 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-238",
@@ -3133,7 +3133,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1500,
     "multiplier": "6x",
     "timeAgo": "34 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-239",
@@ -3221,7 +3221,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 9500,
     "multiplier": "38x",
     "timeAgo": "12 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-247",
@@ -3254,7 +3254,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 750,
     "multiplier": "5x",
     "timeAgo": "34 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-250",
@@ -3265,7 +3265,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 40,
     "multiplier": "2x",
     "timeAgo": "42 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-251",
@@ -3353,7 +3353,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1375,
     "multiplier": "55x",
     "timeAgo": "18 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-259",
@@ -3386,7 +3386,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1950,
     "multiplier": "13x",
     "timeAgo": "42 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-262",
@@ -3397,7 +3397,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 500,
     "multiplier": "2x",
     "timeAgo": "1 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-263",
@@ -3485,7 +3485,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1275,
     "multiplier": "51x",
     "timeAgo": "25 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-271",
@@ -3518,7 +3518,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 8500,
     "multiplier": "17x",
     "timeAgo": "1 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-274",
@@ -3529,7 +3529,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 200,
     "multiplier": "2x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-275",
@@ -3617,7 +3617,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 3225,
     "multiplier": "43x",
     "timeAgo": "34 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-283",
@@ -3650,7 +3650,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 2700,
     "multiplier": "18x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-286",
@@ -3661,7 +3661,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 675,
     "multiplier": "9x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-287",
@@ -3749,7 +3749,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 40500,
     "multiplier": "81x",
     "timeAgo": "42 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-295",
@@ -3782,7 +3782,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 7250,
     "multiplier": "29x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-298",
@@ -3793,7 +3793,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1800,
     "multiplier": "9x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-299",
@@ -3881,7 +3881,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 20750,
     "multiplier": "83x",
     "timeAgo": "1 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-307",
@@ -3914,7 +3914,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1000,
     "multiplier": "4x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-310",
@@ -3925,7 +3925,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1400,
     "multiplier": "7x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-311",
@@ -4013,7 +4013,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 6400,
     "multiplier": "32x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-319",
@@ -4046,7 +4046,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1200,
     "multiplier": "8x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-322",
@@ -4057,7 +4057,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 450,
     "multiplier": "9x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-323",
@@ -4145,7 +4145,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 2025,
     "multiplier": "27x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-331",
@@ -4178,7 +4178,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1275,
     "multiplier": "17x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-334",
@@ -4189,7 +4189,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1400,
     "multiplier": "7x",
     "timeAgo": "12 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-335",
@@ -4277,7 +4277,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1125,
     "multiplier": "15x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-343",
@@ -4310,7 +4310,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 3000,
     "multiplier": "6x",
     "timeAgo": "12 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-346",
@@ -4321,7 +4321,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 140,
     "multiplier": "7x",
     "timeAgo": "18 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-347",
@@ -4409,7 +4409,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 2400,
     "multiplier": "12x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-355",
@@ -4442,7 +4442,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 4000,
     "multiplier": "8x",
     "timeAgo": "18 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-358",
@@ -4453,7 +4453,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 375,
     "multiplier": "5x",
     "timeAgo": "25 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-359",
@@ -4541,7 +4541,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 6400,
     "multiplier": "32x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-367",
@@ -4574,7 +4574,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 3250,
     "multiplier": "13x",
     "timeAgo": "25 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-370",
@@ -4585,7 +4585,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 4500,
     "multiplier": "9x",
     "timeAgo": "34 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-371",
@@ -4673,7 +4673,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 25500,
     "multiplier": "51x",
     "timeAgo": "12 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-379",
@@ -4706,7 +4706,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 3750,
     "multiplier": "25x",
     "timeAgo": "34 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-382",
@@ -4717,7 +4717,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 350,
     "multiplier": "7x",
     "timeAgo": "42 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-383",
@@ -4805,7 +4805,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1800,
     "multiplier": "36x",
     "timeAgo": "18 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-391",
@@ -4838,7 +4838,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1100,
     "multiplier": "11x",
     "timeAgo": "42 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-394",
@@ -4849,7 +4849,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 3000,
     "multiplier": "6x",
     "timeAgo": "1 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-395",
@@ -4937,7 +4937,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 11500,
     "multiplier": "23x",
     "timeAgo": "25 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-403",
@@ -4970,7 +4970,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 400,
     "multiplier": "20x",
     "timeAgo": "1 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-406",
@@ -4981,7 +4981,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 2000,
     "multiplier": "4x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-407",
@@ -5069,7 +5069,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 18000,
     "multiplier": "36x",
     "timeAgo": "34 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-415",
@@ -5102,7 +5102,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 540,
     "multiplier": "27x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-418",
@@ -5113,7 +5113,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 50,
     "multiplier": "2x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-419",
@@ -5201,7 +5201,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 7600,
     "multiplier": "38x",
     "timeAgo": "42 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-427",
@@ -5234,7 +5234,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 4000,
     "multiplier": "20x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-430",
@@ -5245,7 +5245,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 120,
     "multiplier": "6x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-431",
@@ -5333,7 +5333,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 4250,
     "multiplier": "85x",
     "timeAgo": "1 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-439",
@@ -5366,7 +5366,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1600,
     "multiplier": "8x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-442",
@@ -5377,7 +5377,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1200,
     "multiplier": "8x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-443",
@@ -5465,7 +5465,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 8000,
     "multiplier": "40x",
     "timeAgo": "2 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-451",
@@ -5498,7 +5498,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 2250,
     "multiplier": "15x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-454",
@@ -5509,7 +5509,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 200,
     "multiplier": "2x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-455",
@@ -5597,7 +5597,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 5250,
     "multiplier": "21x",
     "timeAgo": "3 dk önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-463",
@@ -5630,7 +5630,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 750,
     "multiplier": "5x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-466",
@@ -5641,7 +5641,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 1000,
     "multiplier": "4x",
     "timeAgo": "12 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-467",
@@ -5729,7 +5729,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 13500,
     "multiplier": "54x",
     "timeAgo": "Az önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-475",
@@ -5762,7 +5762,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 4750,
     "multiplier": "19x",
     "timeAgo": "12 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-478",
@@ -5773,7 +5773,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 600,
     "multiplier": "6x",
     "timeAgo": "18 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-479",
@@ -5861,7 +5861,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 16600,
     "multiplier": "83x",
     "timeAgo": "3 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-487",
@@ -5894,7 +5894,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 11000,
     "multiplier": "22x",
     "timeAgo": "18 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-490",
@@ -5905,7 +5905,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 125,
     "multiplier": "5x",
     "timeAgo": "25 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-491",
@@ -5993,7 +5993,7 @@ export const WINNERS_SCENARIOS_500: WinnerItem[] = [
     "amount": 2600,
     "multiplier": "52x",
     "timeAgo": "7 sn önce",
-    "badge": "CAESARS VIP"
+    "badge": "VIP VIP"
   },
   {
     "id": "w-499",
@@ -6058,7 +6058,7 @@ export const CASINO_GAMES_POOL = [
   {
     "game": "Elmas Mayın Tarlası",
     "icon": "💎",
-    "badge": "CAESARS VIP",
+    "badge": "VIP VIP",
     "minM": 12,
     "maxM": 85
   },
@@ -6079,14 +6079,14 @@ export const CASINO_GAMES_POOL = [
   {
     "game": "Türk Barbutu (Zar Düellosu)",
     "icon": "🎲",
-    "badge": "CAESARS VIP",
+    "badge": "VIP VIP",
     "minM": 3,
     "maxM": 30
   },
   {
     "game": "Baccarat Punto Banco",
     "icon": "🏛️",
-    "badge": "CAESARS VIP",
+    "badge": "VIP VIP",
     "minM": 2,
     "maxM": 9
   },
