@@ -49,17 +49,17 @@ export interface CasinoEngineConfig {
 
 // Varsayılan Kasa Ayarları (CAESARS SOSYAL CASINO DİNAMİĞİ AKTİF)
 export let currentCasinoConfig: CasinoEngineConfig = {
-  rtpPercent: 99.9,
-  penetrationMode: 'SOCIAL_CASINO_AI',
-  volatility: 'LOW',
+  rtpPercent: 85.0, // Safkan Caesars RTP (%85)
+  penetrationMode: 'HOUSE_EDGE', // Kasa odaklı Brutal Mod
+  volatility: 'EXTREME',
   forcedJackpotPending: false,
-  totalSpins: 1420,
-  totalWagered: 142000,
-  totalPayout: 185610,
+  totalSpins: 0,
+  totalWagered: 0,
+  totalPayout: 0,
   consecutiveLosses: 0,
   playerBalance: 1000,
   playerInitialBalance: 1000,
-  globalWinRateTarget: -1, // Kasa serbest (Monte Carlo/Caesars standart motoru)
+  globalWinRateTarget: -1,
   userWinRateTargets: {}
 };
 
@@ -90,14 +90,14 @@ export const PAYLINES: number[][] = [
 export function updateCasinoConfig(newConfig: Partial<CasinoEngineConfig>) {
   currentCasinoConfig = { ...currentCasinoConfig, ...newConfig };
   if (typeof window !== 'undefined') {
-    localStorage.setItem('mt5_casino_config_v4', JSON.stringify(currentCasinoConfig));
+    localStorage.setItem('mt5_casino_config_v5_pure_caesars', JSON.stringify(currentCasinoConfig));
   }
   return currentCasinoConfig;
 }
 
 export function loadCasinoConfig() {
   if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem('mt5_casino_config_v4');
+    const saved = localStorage.getItem('mt5_casino_config_v5_pure_caesars');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -113,7 +113,7 @@ export function loadCasinoConfig() {
         currentCasinoConfig = { ...currentCasinoConfig, ...parsed };
         
         // Save back the sanitized version immediately
-        localStorage.setItem('mt5_casino_config_v4', JSON.stringify(currentCasinoConfig));
+        localStorage.setItem('mt5_casino_config_v5_pure_caesars', JSON.stringify(currentCasinoConfig));
       } catch (e) {}
     }
   }
@@ -184,7 +184,8 @@ export function executeSlotSpin(betAmount: number, userId?: string): SpinResult 
   let isJackpot = false;
 
   const getRandomSymbol = () => {
-    const rand = Math.random() * 100;
+    const totalWeight = SLOT_SYMBOLS.reduce((sum, s) => sum + s.weight, 0);
+    const rand = Math.random() * totalWeight;
     let acc = 0;
     for (const s of SLOT_SYMBOLS) {
       acc += s.weight;

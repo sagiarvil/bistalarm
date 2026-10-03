@@ -273,30 +273,14 @@ export default function MonteCarloSlotGame({
     }, 800);
     stepTimerRefs.current.push(t2);
 
-    // 3. Makara Duruşu
+    // 3. Makara Duruşu (Final)
     const t3 = setTimeout(() => {
-      setReels(prev => [result.grid[0], result.grid[1], result.grid[2]]);
-      setStoppingReels(prev => [true, true, true]);
-      playSound('click');
-    }, 1150);
-    stepTimerRefs.current.push(t3);
-
-    // 4. Makara Duruşu
-    const t4 = setTimeout(() => {
-      setReels(prev => [result.grid[0], result.grid[1], result.grid[2], result.grid[3], prev[4]]);
-      setStoppingReels(prev => [true, true, true, true, false]);
-      playSound('click');
-    }, 1500);
-    stepTimerRefs.current.push(t4);
-
-    // 5. Makara Duruşu
-    const t5 = setTimeout(() => {
       setReels(result.grid);
-      setStoppingReels([true, true, true, true, true]);
+      setStoppingReels([true, true, true]);
       playSound('click');
       setIsTensionSpin(false);
-    }, 1850);
-    stepTimerRefs.current.push(t5);
+    }, 1150);
+    stepTimerRefs.current.push(t3);
 
     // Final Sonuç ve Kazanç Bildirimi
     const tFinal = setTimeout(() => {
