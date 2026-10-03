@@ -1,4 +1,9 @@
-'use client';
+file_path = "components/LiveWinnersTicker.tsx"
+with open(file_path, "r", encoding="utf-8") as f:
+    content = f.read()
+
+# Replace the entire file with a new highly polished version
+new_content = """'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -94,14 +99,14 @@ export default function LiveWinnersTicker() {
           <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[#0a0505] to-transparent z-10 pointer-events-none" />
 
           {/* Marquee Wrapper (Width must hold 2x content) */}
-          <div className="flex w-max animate-marquee-infinite hover:animation-play-state-paused gap-3">
+          <div className="flex w-[200%] animate-marquee-infinite">
             {/* Tek Bir Liste, İki Kere Tekrar Eder (Seamless Loop) */}
-            <div className="flex w-max items-center justify-start gap-3 shrink-0 pr-3">
+            <div className="flex w-1/2 items-center justify-around gap-3 shrink-0">
               {winners.map((item) => (
                 <WinnerCard key={`a-${item.id}`} item={item} />
               ))}
             </div>
-            <div className="flex w-max items-center justify-start gap-3 shrink-0 pr-3">
+            <div className="flex w-1/2 items-center justify-around gap-3 shrink-0">
               {winners.map((item) => (
                 <WinnerCard key={`b-${item.id}`} item={item} />
               ))}
@@ -145,3 +150,8 @@ function WinnerCard({ item }: { item: WinnerItem }) {
     </div>
   );
 }
+"""
+
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(new_content)
+
